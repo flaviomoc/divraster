@@ -3,3 +3,4 @@
 export(alphadv)
 export(betatempdv)
 export(ecogen)
+export(loadmota)
