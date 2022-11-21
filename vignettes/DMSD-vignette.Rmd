@@ -1,0 +1,103 @@
+---
+title: "DMSD Vignette"
+author: "Flávio Mota"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DMSD-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+*DMSD* is a package created to calculate Diversity Metrics from Spatialized Data. It is an alternative to process big datasets with less memory usage. The functions of this package can calculate spatial and temporal beta diversity, separating the turnover and nestedness components of taxonomic, functional, and phylogenetic diversity.
+
+## Loading data
+```{r, fig.height = 5, fig.width = 8, fig.align = 'center',}
+library(terra)
+library(DMSD)
+
+# SpatRaster
+ref <- rast(system.file("extdata", "ref_Mota.tif", package = "DMSD"))
+ref
+fut <- rast(system.file("extdata", "fut_Mota.tif", package = "DMSD"))
+fut
+
+# data.frame
+area <- read.csv(system.file("extdata", "area_Mota.csv", package = "DMSD"), sep = ";")
+area$area2 <- area$area/1000 # adding new column
+area$arealog <- log(area$area) # adding new column
+area
+```
+
+## Calculating alpha diversity
+It is a spatial representation of *species richness* of a given scenario calculated by the sum of the same cell of each species.
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# alpha diversity for reference scenario
+r.rich <- alphadv(ref)
+r.rich
+terra::plot(r.rich, main = names(r.rich))
+
+# alpha diversity for future scenario
+f.rich <- alphadv(fut)
+f.rich
+terra::plot(f.rich, main = names(f.rich))
+
+# species richness difference between future and reference scenarios
+d.rich <- alphadv(ref, fut)
+d.rich
+terra::plot(d.rich, main = names(d.rich))
+```
+
+## Calculating beta diversity
+It is a spatial representation of *species composition* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *beta diversity* means higher changes, which can be by species replacement, *turnover*, or species gain/loss, *nestedness*. The *ratio* is calculated dividing the *turnover* by the *total beta diversity*, thus, values close to 1 indicates predominance of *turnover* component while values close to 0 indicates predominance of *nestedness* component.
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# total beta diversity between scenarios
+beta <- betatempdv(ref, fut, "beta")
+beta
+terra::plot(beta, main = names(beta))
+
+# turnover component
+turn <- betatempdv(ref, fut, "turn")
+turn
+terra::plot(turn, main = names(turn))
+
+# nestedness component
+nest <- betatempdv(ref, fut, "nest")
+nest
+terra::plot(nest, main = names(nest))
+
+# ratio (turnover/total beta diversity)
+ratio <- betatempdv(ref, fut, "ratio")
+ratio
+terra::plot(ratio, main = names(ratio))
+
+# calculate all beta diversity metrics at once
+beta.all <- betatempdv(ref, fut)
+beta.all
+```
+
+## Calculating trait generalization
+It is a spatial representation of the *average* of a given trait.
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# ecological generalization for the first trait
+area1.t <- ecogen(ref, area, "one") # scenario 1
+area1.t
+terra::plot(area1.t, main = names(area1.t))
+
+area2.t <- ecogen(fut, area, "one") # scenario 2
+area2.t
+terra::plot(area2.t, main = names(area2.t))
+
+area.delta <- area2.t - area1.t # diference between scenarios
+area.delta
+terra::plot(area.delta)
+```
+
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# ecological generalization for all column traits
+traits <- ecogen(ref, area, "all")
+traits
+terra::plot(traits[[1]], main = names(traits[[1]]))
+terra::plot(traits[[2]], main = names(traits[[2]]))
+terra::plot(traits[[3]], main = names(traits[[3]]))
+```
