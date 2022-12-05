@@ -2,7 +2,7 @@
 % Please edit documentation in R/alphadv.R
 \name{alphadv}
 \alias{alphadv}
-\title{Alpha diversity calculation}
+\title{Alpha diversity calculation for raster}
 \usage{
 alphadv(bin1, bin2)
 }
@@ -15,9 +15,10 @@ alphadv(bin1, bin2)
 Object of class SpatRaster with alpha diversity/species richness. If bin2 is provide, it calculates delta richness
 }
 \description{
-Alpha diversity calculation
+Alpha diversity calculation for raster
 }
 \examples{
+\dontrun{
 set.seed(100)
 ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
 names(ref) <- paste0("sp", 1:10)
@@ -31,4 +32,5 @@ fut.rich <- alphadv(fut)
 fut.rich
 delta.rich <- alphadv(ref, fut)
 delta.rich
+}
 }
