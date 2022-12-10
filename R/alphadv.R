@@ -22,17 +22,15 @@
 #' delta.rich <- alphadv(ref, fut)
 #' delta.rich
 #' }
-alphadv <- function(bin1, bin2, filename = NULL){
+alphadv <- function(bin1, bin2){
   if(!missing(bin2)){
     r1 <- terra::app(bin1, sum, na.rm = TRUE)
     r2 <- terra::app(bin2, sum, na.rm = TRUE)
     r <- r2 - r1 # delta richness
     names(r) <- "Delta richness"
-    rr <- r # terra::app function does not work when it returns only one raster
   } else {
     r <- terra::app(bin1, sum, na.rm = TRUE) # species richness
     names(r) <- "Richness"
-    rr <- r # terra::app function does not work when it returns only one raster
   }
-  return(c(r, rr))
+  return(c(r, r)) # terra::app function does not work when it returns only one raster
 }
