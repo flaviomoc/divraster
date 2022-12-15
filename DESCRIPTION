@@ -2,7 +2,7 @@ Package: DMSD
 Title: Calculating Diversity Metrics from Spatialized Data
 Version: 0.0.0.9000
 Authors@R: 
-    person("Flavio", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre"),
+    person("Flávio", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0308-7151"))
 Description: Calculate spatial and temporal beta diversity, separating the turnover and nestedness components of taxonomic, functional, and phylogenetic diversity.
 License: GPL (>= 3)

@@ -6,8 +6,10 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' data <- loadmota()
 #' data
+#' }
 loadmota <- function(){
   ref <- terra::rast(system.file("extdata", "ref_Mota.tif", package = "DMSD"))
   fut <- terra::rast(system.file("extdata", "fut_Mota.tif", package = "DMSD"))

@@ -10,6 +10,7 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' set.seed(100)
 #' ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
 #' names(ref) <- paste0("sp", 1:10)
@@ -19,6 +20,7 @@
 #' fut
 #' b <- betatempdv(ref, fut, "beta")
 #' b
+#' }
 betatempdv <- function(ref, fut, index){
   total <- ref + fut # total number of species
   a <- sum(total == 2) # species in both scenarios simultaneously

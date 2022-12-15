@@ -8,7 +8,8 @@
 #' @export
 #'
 #' @examples
-#' #' set.seed(100)
+#' \dontrun{
+#' set.seed(100)
 #' ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
 #' names(ref) <- paste0("sp", 1:10)
 #'
@@ -21,6 +22,7 @@
 #' t1
 #' t2 <- ecogen(ref, traits, "all")
 #' t2
+#' }
 ecogen <- function(bin, tab, trait = "one"){
   tab <- as.data.frame(tab)
   tab <- tab[-1]

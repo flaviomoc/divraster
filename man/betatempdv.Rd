@@ -20,6 +20,7 @@ Object of class SpatRaster with the metric chosen. If "index" is missing, it ret
 It calculates beta diversity based on Jaccard dissimilarity index between reference and future scenarios
 }
 \examples{
+\dontrun{
 set.seed(100)
 ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
 names(ref) <- paste0("sp", 1:10)
@@ -29,4 +30,5 @@ names(fut) <- paste0("sp", 1:10)
 fut
 b <- betatempdv(ref, fut, "beta")
 b
+}
 }

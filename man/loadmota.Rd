@@ -13,6 +13,8 @@ List with climate scenarios and suitable area of reference climate scenario by s
 Available at \url{https://doi.org/10.1111/ddi.13602}
 }
 \examples{
+\dontrun{
 data <- loadmota()
 data
+}
 }

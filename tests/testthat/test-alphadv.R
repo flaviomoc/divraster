@@ -10,7 +10,7 @@ test_that("function alphadv works", {
   delta <- alphadv(ref, fut)
 
   # testing
-  expect_equal(r.rich@ptr$range_min, 12)
-  expect_equal(f.rich@ptr$range_min, 5)
-  expect_equal(delta@ptr$range_min, -23)
+  expect_equal(r.rich@ptr$range_min[1], 12)
+  expect_equal(f.rich@ptr$range_min[1], 5)
+  expect_equal(delta@ptr$range_min[1], -23)
 })
