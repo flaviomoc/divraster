@@ -47,28 +47,18 @@ terra::plot(f.rich, main = names(f.rich))
 It is a spatial representation of *species composition* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *beta diversity* means higher changes, which can be by species replacement, *turnover*, or species gain/loss, *nestedness*. The *ratio* is calculated dividing the *turnover* by the *total beta diversity*, thus, values close to 1 indicates predominance of *turnover* component while values close to 0 indicates predominance of *nestedness* component.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
 # total beta diversity between scenarios
-beta <- betatempdv(ref, fut, "beta")
+beta <- betatempdv(ref, fut)
 beta
-terra::plot(beta, main = names(beta))
+terra::plot(beta[[1]], main = names(beta[[1]]))
 
 # turnover component
-turn <- betatempdv(ref, fut, "turn")
-turn
-terra::plot(turn, main = names(turn))
+terra::plot(beta[[2]], main = names(beta[[2]]))
 
 # nestedness component
-nest <- betatempdv(ref, fut, "nest")
-nest
-terra::plot(nest, main = names(nest))
+terra::plot(beta[[3]], main = names(beta[[3]]))
 
 # ratio (turnover/total beta diversity)
-ratio <- betatempdv(ref, fut, "ratio")
-ratio
-terra::plot(ratio, main = names(ratio))
-
-# calculate all beta diversity metrics at once
-beta.all <- betatempdv(ref, fut)
-beta.all
+terra::plot(beta[[4]], main = names(beta[[4]]))
 ```
 
 ## Calculating trait generalization

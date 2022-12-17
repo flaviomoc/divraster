@@ -1,12 +1,9 @@
-#' Temporal beta diversity calculation
+#' Beta diversity parameters
 #'
-#' It calculates beta diversity based on Jaccard dissimilarity index between reference and future scenarios
+#' @param r Binary vector of reference climate scenario
+#' @param f Binary vector of future climate scenario
 #'
-#' @param ref Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1
-#' @param fut Object of class SpatRaster with binarized distribution projected to all species from climate scenario 2
-#' @param index Metric chosen
-#'
-#' @return Object of class SpatRaster with the metric chosen. If "index" is missing, it return a list with all metrics (i.e., beta total, turnover, nestedness, and ratio)
+#' @return SpatRaster of beta diversity parameters
 #' @export
 #'
 #' @examples
@@ -18,41 +15,54 @@
 #' fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
 #' names(fut) <- paste0("sp", 1:10)
 #' fut
-#' b <- betatempdv(ref, fut, "beta")
+#' pars <- .abc(ref, fut)
+#' pars
+#' }
+.abc <- function(r, f){
+  a <- sum((r + f) == 2)
+  b <- sum(r > f)
+  c <- sum(f > r)
+  return(c(a, b, c))
+}
+#'
+#' Temporal beta diversity calculation
+#'
+#' It calculates beta diversity based on Jaccard dissimilarity index between reference and future scenarios
+#'
+#' @param ref Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1
+#' @param fut Object of class SpatRaster with binarized distribution projected to all species from climate scenario 2
+#' @param ... Additional arguments to be passed to the function
+#'
+#' @return Object of class SpatRaster with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' set.seed(100)
+#' ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+#' names(ref) <- paste0("sp", 1:10)
+#' ref
+#' fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
+#' names(fut) <- paste0("sp", 1:10)
+#' fut
+#' b <- betatempdv(ref, fut)
 #' b
 #' }
-betatempdv <- function(ref, fut, index){
-  total <- ref + fut # total number of species
-  a <- sum(total == 2) # species in both scenarios simultaneously
-  b <- sum(ref > fut, 1, 0) # species in reference scenario only
-  c <- sum(fut > ref, 1, 0) # species in future scenario only
-  if(missing(index) == "TRUE"){
-    res <- list()
-    res[1] <- (b + c) / (a + b + c) # beta
-    res[2] <- (2 * min(b, c)) / (a + (2 * min(b, c))) # turn
-    res[3] <- ((b + c) / (a + b + c)) - ((2 * min(b, c)) / (a + (2 * min(b, c)))) # nest
-    res[4] <- ((2 * min(b, c)) / (a + (2 * min(b, c)))) / ((b + c) / (a + b + c))
-    names(res) <- c("Beta total", "Beta turnover", "Beta nestedness", "Beta ratio")
-    return(res)
-  } else if(index == "beta"){
-    res <- (b + c) / (a + b + c) # beta diversity calculation (Jaccard dissimilarity index)
-    names(res) <- "Beta total"
-    return(res)
-  } else if(index == "turn"){
-    res <- (2 * min(b, c)) / (a + (2 * min(b, c)))
-    names(res) <- "Beta turnover"
-    return(res)
-  } else if(index == "nest"){
-    Beta <- (b + c) / (a + b + c)
-    Bturn <- (2 * min(b, c)) / (a + (2 * min(b, c)))
-    res <- Beta - Bturn
-    names(res) <- "Beta nestedness"
-    return(res)
-  } else if(index == "ratio"){
-    Beta <- (b + c) / (a + b + c)
-    Bturn <- (2 * min(b, c)) / (a + (2 * min(b, c)))
-    res <- Bturn / Beta
-    names(res) <- "Beta ratio"
-    return(res)
+betatempdv <- function(ref, fut, ...){
+  nspp <- terra::nlyr(ref)
+  if(terra::nlyr(ref) != terra::nlyr(fut)){
+    stop("rasters must have the same number of layers")
   }
+  r <- terra::app(c(ref, fut),
+                  function(x, nspp){
+                    res <- numeric(4)
+                    pars <- .abc(r = x[1:nspp], f = x[nspp + (1:nspp)])
+                    res[1] <- (pars[2] + pars[3]) / (pars[1] + pars[2] + pars[3])
+                    res[2] <- (2 * min(pars[2], pars[3])) / (pars[1] + (2 * min(pars[2], pars[3]))) # turn
+                    res[3] <- ((pars[2] + pars[3]) / (pars[1] + pars[2] + pars[3])) - ((2 * min(pars[2], pars[3])) / (pars[1] + (2 * min(pars[2], pars[3])))) # nest
+                    res[4] <- ((2 * min(pars[2], pars[3])) / (pars[1] + (2 * min(pars[2], pars[3])))) / ((pars[2] + pars[3]) / (pars[1] + pars[2] + pars[3]))
+                    names(res) <- c("Beta total", "Beta turnover", "Beta nestedness", "Beta ratio")
+                    return(res)
+                  }, nspp = nspp, ...)
+  return(r)
 }

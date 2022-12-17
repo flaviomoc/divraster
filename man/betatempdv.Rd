@@ -4,17 +4,17 @@
 \alias{betatempdv}
 \title{Temporal beta diversity calculation}
 \usage{
-betatempdv(ref, fut, index)
+betatempdv(ref, fut, ...)
 }
 \arguments{
 \item{ref}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1}
 
 \item{fut}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 2}
 
-\item{index}{Metric chosen}
+\item{...}{Additional arguments to be passed to the function}
 }
 \value{
-Object of class SpatRaster with the metric chosen. If "index" is missing, it return a list with all metrics (i.e., beta total, turnover, nestedness, and ratio)
+Object of class SpatRaster with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
 }
 \description{
 It calculates beta diversity based on Jaccard dissimilarity index between reference and future scenarios
@@ -28,7 +28,7 @@ ref
 fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
 names(fut) <- paste0("sp", 1:10)
 fut
-b <- betatempdv(ref, fut, "beta")
+b <- betatempdv(ref, fut)
 b
 }
 }
