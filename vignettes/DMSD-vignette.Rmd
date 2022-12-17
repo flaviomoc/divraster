@@ -41,11 +41,6 @@ terra::plot(r.rich, main = names(r.rich))
 f.rich <- alphadv(fut)
 f.rich
 terra::plot(f.rich, main = names(f.rich))
-
-# species richness difference between future and reference scenarios
-d.rich <- alphadv(ref, fut)
-d.rich
-terra::plot(d.rich, main = names(d.rich))
 ```
 
 ## Calculating beta diversity

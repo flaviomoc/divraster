@@ -4,15 +4,13 @@
 \alias{alphadv}
 \title{Alpha diversity calculation for raster}
 \usage{
-alphadv(bin1, bin2)
+alphadv(bin)
 }
 \arguments{
-\item{bin1}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1}
-
-\item{bin2}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 2}
+\item{bin}{Object of class SpatRaster with binarized distribution projected to all species for a given climate scenario}
 }
 \value{
-Object of class SpatRaster with alpha diversity/species richness. If bin2 is provide, it calculates delta richness
+Object of class SpatRaster with alpha diversity/species richness
 }
 \description{
 Alpha diversity calculation for raster
@@ -23,14 +21,7 @@ set.seed(100)
 ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
-fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
-names(fut) <- paste0("sp", 1:10)
-fut
 ref.rich <- alphadv(ref)
 ref.rich
-fut.rich <- alphadv(fut)
-fut.rich
-delta.rich <- alphadv(ref, fut)
-delta.rich
 }
 }
