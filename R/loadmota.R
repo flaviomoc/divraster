@@ -13,6 +13,6 @@
 loadmota <- function(){
   ref <- terra::rast(system.file("extdata", "ref_Mota.tif", package = "DMSD"))
   fut <- terra::rast(system.file("extdata", "fut_Mota.tif", package = "DMSD"))
-  area <- utils::read.csv(system.file("extdata", "area_Mota.csv", package = "DMSD"), sep = ";")
-  return(list(ref = ref, fut = fut, area = area))
+  traits <- utils::read.csv(system.file("extdata", "traits_Mota.csv", package = "DMSD"), sep = ";")
+  return(list(reference = ref, fututure = fut, traits = traits))
 }

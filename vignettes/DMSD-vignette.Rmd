@@ -23,10 +23,7 @@ fut <- rast(system.file("extdata", "fut_Mota.tif", package = "DMSD"))
 fut
 
 # data.frame
-area <- read.csv(system.file("extdata", "area_Mota.csv", package = "DMSD"), sep = ";")
-area$area2 <- area$area/1000 # adding new column
-area$arealog <- log(area$area) # adding new column
-area
+traits <- read.csv(system.file("extdata", "traits_Mota.csv", package = "DMSD"), sep = ";")
 ```
 
 ## Calculating alpha diversity
@@ -64,25 +61,12 @@ terra::plot(beta[[4]], main = names(beta[[4]]))
 ## Calculating trait generalization
 It is a spatial representation of the *average* of a given trait.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# ecological generalization for the first trait
-area1.t <- ecogen(ref, area, "one") # scenario 1
-area1.t
-terra::plot(area1.t, main = names(area1.t))
+# ecological generalization for the trait wing length
+wing.ref <- ecogen(ref, traits$Wing.Length) # reference scenario
+wing.ref
+terra::plot(wing.ref, main = names(wing.ref))
 
-area2.t <- ecogen(fut, area, "one") # scenario 2
-area2.t
-terra::plot(area2.t, main = names(area2.t))
-
-area.delta <- area2.t - area1.t # diference between scenarios
-area.delta
-terra::plot(area.delta)
-```
-
-```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# ecological generalization for all column traits
-traits <- ecogen(ref, area, "all")
-traits
-terra::plot(traits[[1]], main = names(traits[[1]]))
-terra::plot(traits[[2]], main = names(traits[[2]]))
-terra::plot(traits[[3]], main = names(traits[[3]]))
+wing.fut <- ecogen(fut, traits$Wing.Length) # future scenario
+wing.fut
+terra::plot(wing.fut, main = names(wing.fut))
 ```

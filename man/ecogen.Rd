@@ -4,17 +4,15 @@
 \alias{ecogen}
 \title{Calculate average trait generalization}
 \usage{
-ecogen(bin, tab, trait = "one")
+ecogen(r, trait)
 }
 \arguments{
-\item{bin}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1}
+\item{r}{Object of class SpatRaster with binarized distribution projected to all species in a given climate scenario}
 
-\item{tab}{Table with species as rows and traits as columns}
-
-\item{trait}{The default parameter of the argument is "one" that calculates ecological generalization to a single trait in the first column of the tab object. Alternatively, the parameter can be set to "all" that calculates ecological generalization to all traits at once}
+\item{trait}{Numeric vector with trait value for each species}
 }
 \value{
-Object of class SpatRaster with average trait chosen. If trait = "all", it return a list with all traits
+Object of class SpatRaster with the average trait chosen
 }
 \description{
 Calculate average trait generalization
@@ -23,16 +21,11 @@ Calculate average trait generalization
 \dontrun{
 set.seed(100)
 ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
-names(ref) <- paste0("sp", 1:10)
-
 set.seed(100)
 mass <- runif(10, 10, 800) # grams
-beaksize <- runif(10, 5, 30) # millimeters
-sp <- paste0("sp", 1:10)
-traits <- as.data.frame(cbind(sp, mass, beaksize))
-t1 <- ecogen(ref, traits, "one")
-t1
-t2 <- ecogen(ref, traits, "all")
-t2
+mass
+t <- ecogen(ref, mass)
+t
+terra::plot(t)
 }
 }
