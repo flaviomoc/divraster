@@ -12,8 +12,7 @@ RoxygenNote: 7.2.2
 URL: https://github.com/flaviomoc/DMSD
 BugReports: https://github.com/flaviomoc/DMSD/issues
 Imports: 
-    terra,
-    devtools
+    terra
 Suggests: 
     knitr,
     rmarkdown,
