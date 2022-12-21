@@ -2,6 +2,7 @@
 
 export(.abc)
 export(alphadv)
+export(betatemp_fd_sp)
 export(betatempdv)
 export(ecogen)
 export(loadmota)
