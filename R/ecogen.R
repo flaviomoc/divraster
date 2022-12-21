@@ -1,9 +1,9 @@
-#' Calculate average trait generalization
+#' Average trait generalization
 #'
 #' @param trait Numeric vector with trait value for each species
-#' @param r Object of class SpatRaster with binarized distribution projected to all species in a given climate scenario
+#' @param r SpatRaster object with binarized distribution projected to all species in a given climate scenario
 #'
-#' @return Object of class SpatRaster with the average trait chosen
+#' @return SpatRaster object with the average trait chosen
 #' @export
 #'
 #' @examples
@@ -15,9 +15,17 @@
 #' mass
 #' t <- ecogen(ref, mass)
 #' t
-#' terra::plot(t)
 #' }
 ecogen <- function(r, trait){
+  if(class(ref) != "SpatRaster"){
+    stop("'r' must be a SpatRaster object")
+  }
+  if(class(trait) != "numeric"){
+    stop("'trait' must be a numeric vector")
+  }
+  if(terra::nlyr(r) != length(trait)){
+    stop("'trait' length must be same as the number of 'r' layers in the same order")
+  }
   nm <- deparse(substitute(trait))
   res <- terra::app(r,
                     function(x, trait){

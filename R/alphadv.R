@@ -1,8 +1,8 @@
 #' Alpha diversity calculation for raster
 #'
-#' @param bin Object of class SpatRaster with binarized distribution projected to all species for a given climate scenario
+#' @param bin SpatRaster object with binarized distribution projected to all species for a given climate scenario
 #'
-#' @return Object of class SpatRaster with alpha diversity/species richness
+#' @return SpatRaster object with alpha diversity/species richness
 #' @export
 #'
 #' @examples
@@ -14,8 +14,16 @@
 #' ref.rich <- alphadv(ref)
 #' ref.rich
 #' }
-alphadv <- function(bin){
-  r <- terra::app(bin, sum, na.rm = TRUE) # species richness
-  names(r) <- "Richness"
-  return(r) # terra::app function does not work when it returns only one raster
+alphadv <- function(bin, ...){
+  if(class(bin) != "SpatRaster"){
+    stop("'bin' must be a SpatRaster object")
+  }
+  if(terra::nlyr(bin) == 1){
+    stop("'bin' must have at least 2 layers")
+  }
+  else {
+    r <- terra::app(bin, sum, na.rm = TRUE, ...) # species richness
+    names(r) <- "Richness"
+    return(r) # terra::app function does not work when it returns only one raster
+  }
 }

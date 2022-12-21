@@ -30,15 +30,30 @@
 #' beta.fd
 #' }
 betatemp_fd_sp <- function(ref, fut, traits, ...){
-  nspp <- terra::nlyr(ref)
-  if(terra::nlyr(ref) != terra::nlyr(fut)){
-    stop("Rasters must have the same number of layers")
+  if(class(ref) != "SpatRaster"){
+    stop("'bin' must be a SpatRaster object")
   }
+  if(class(traits) != "data.frame"){
+    stop("'traits' must be a data.frame object")
+  }
+  if(!all(names(ref) == rownames(traits))){
+    stop("names of 'ref' and rownames of 'traits' must match")
+  }
+  if(!all(names(ref) == names(fut))){
+    stop("names of 'ref' and 'fut' must match")
+  }
+  if(!is.numeric(traits[1,1])){
+    stop("'traits' first column must be numeric")
+  }
+  if(terra::nlyr(ref) != terra::nlyr(fut)){
+    stop("'ref' and 'fut' must have the same number of layers")
+  }
+  nspp <- terra::nlyr(ref)
   spp <- names(ref)
   res <- numeric(3)
   names(res) <- c("funct.beta.jtu", "funct.beta.jne", "funct.beta.jac")
   terra::app(c(ref, fut),
-             function(x, traits, nspp, spp, res){
+             function(x, traits, nspp, spp, res, ...){
                if(all(is.na(x))){
                  res[] <- NA
                } else {

@@ -29,11 +29,11 @@
 #'
 #' It calculates beta diversity based on Jaccard dissimilarity index between reference and future scenarios
 #'
-#' @param ref Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1
-#' @param fut Object of class SpatRaster with binarized distribution projected to all species from climate scenario 2
+#' @param ref SpatRaster object with binarized distribution projected to all species from climate scenario 1
+#' @param fut SpatRaster object with binarized distribution projected to all species from climate scenario 2
 #' @param ... Additional arguments to be passed to the function
 #'
-#' @return Object of class SpatRaster with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
+#' @return SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
 #' @export
 #'
 #' @examples
@@ -50,8 +50,17 @@
 #' }
 betatempdv <- function(ref, fut, ...){
   nspp <- terra::nlyr(ref)
+  if(class(ref) != "SpatRaster"){
+    stop("'ref' must be a SpatRaster object")
+  }
+  if(class(fut) != "SpatRaster"){
+    stop("'fut' must be a SpatRaster object")
+  }
+  if(!all(names(ref) == names(fut))){
+    stop("names of 'ref' and 'fut' must match")
+  }
   if(terra::nlyr(ref) != terra::nlyr(fut)){
-    stop("rasters must have the same number of layers")
+    stop("'ref' and 'fut' must have the same number of layers")
   }
   r <- terra::app(c(ref, fut),
                   function(x, nspp){
