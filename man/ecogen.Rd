@@ -2,20 +2,20 @@
 % Please edit documentation in R/ecogen.R
 \name{ecogen}
 \alias{ecogen}
-\title{Calculate average trait generalization}
+\title{Average trait generalization}
 \usage{
 ecogen(r, trait)
 }
 \arguments{
-\item{r}{Object of class SpatRaster with binarized distribution projected to all species in a given climate scenario}
+\item{r}{SpatRaster object with binarized distribution projected to all species in a given climate scenario}
 
 \item{trait}{Numeric vector with trait value for each species}
 }
 \value{
-Object of class SpatRaster with the average trait chosen
+SpatRaster object with the average trait chosen
 }
 \description{
-Calculate average trait generalization
+Average trait generalization
 }
 \examples{
 \dontrun{
@@ -26,6 +26,5 @@ mass <- runif(10, 10, 800) # grams
 mass
 t <- ecogen(ref, mass)
 t
-terra::plot(t)
 }
 }

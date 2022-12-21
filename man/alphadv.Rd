@@ -4,13 +4,13 @@
 \alias{alphadv}
 \title{Alpha diversity calculation for raster}
 \usage{
-alphadv(bin)
+alphadv(bin, ...)
 }
 \arguments{
-\item{bin}{Object of class SpatRaster with binarized distribution projected to all species for a given climate scenario}
+\item{bin}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
 }
 \value{
-Object of class SpatRaster with alpha diversity/species richness
+SpatRaster object with alpha diversity/species richness
 }
 \description{
 Alpha diversity calculation for raster

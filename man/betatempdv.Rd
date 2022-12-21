@@ -7,14 +7,14 @@
 betatempdv(ref, fut, ...)
 }
 \arguments{
-\item{ref}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 1}
+\item{ref}{SpatRaster object with binarized distribution projected to all species from climate scenario 1}
 
-\item{fut}{Object of class SpatRaster with binarized distribution projected to all species from climate scenario 2}
+\item{fut}{SpatRaster object with binarized distribution projected to all species from climate scenario 2}
 
 \item{...}{Additional arguments to be passed to the function}
 }
 \value{
-Object of class SpatRaster with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
+SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
 }
 \description{
 It calculates beta diversity based on Jaccard dissimilarity index between reference and future scenarios
