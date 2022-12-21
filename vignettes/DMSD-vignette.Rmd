@@ -14,16 +14,28 @@ vignette: >
 ## Loading data
 ```{r, fig.height = 5, fig.width = 8, fig.align = 'center',}
 library(terra)
+library(betapart)
 library(DMSD)
 
 # SpatRaster
-ref <- rast(system.file("extdata", "ref_Mota.tif", package = "DMSD"))
+set.seed(100)
+
+ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+names(ref) <- paste0("sp", 1:10)
 ref
-fut <- rast(system.file("extdata", "fut_Mota.tif", package = "DMSD"))
+
+fut <- terra::rast(array(sample(c(rep(1, 500), rep(0, 500))), dim = c(20, 20, 10)))
+names(fut) <- names(ref)
 fut
 
 # data.frame
-traits <- read.csv(system.file("extdata", "traits_Mota.csv", package = "DMSD"), sep = ";")
+set.seed(100)
+mass <- runif(10, 10, 800)
+beak.size <- runif(10, .2, 5)
+tail.length <- runif(10, 2, 10)
+traits <- as.data.frame(cbind(mass, beak.size, tail.length))
+rownames(traits) <- names(ref)
+traits
 ```
 
 ## Calculating alpha diversity
@@ -61,12 +73,26 @@ terra::plot(beta[[4]], main = names(beta[[4]]))
 ## Calculating trait generalization
 It is a spatial representation of the *average* of a given trait.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# ecological generalization for the trait wing length
-wing.ref <- ecogen(ref, traits$Wing.Length) # reference scenario
-wing.ref
-terra::plot(wing.ref, main = names(wing.ref))
+# ecological generalization for the trait mass
+mass.ref <- ecogen(ref, traits$mass) # reference scenario
+mass.ref
+terra::plot(mass.ref, main = names(mass.ref))
 
-wing.fut <- ecogen(fut, traits$Wing.Length) # future scenario
-wing.fut
-terra::plot(wing.fut, main = names(wing.fut))
+mass.fut <- ecogen(fut, traits$mass.Length) # future scenario
+mass.fut
+terra::plot(mass.fut, main = names(mass.fut))
+```
+## Calculating functional beta diversity
+It is a representation of *functional space* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *functional beta diversity* means higher changes, which can be by species replacement of functions, *turnover*, or  gain/loss of functions, *nestedness*.
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# total functional beta diversity between scenarios
+beta.fd <- betatemp_fd_sp(ref, fut, traits)
+beta.fd
+terra::plot(beta.fd[[1]], main = names(beta.fd[[1]]))
+
+# turnover component
+terra::plot(beta.fd[[2]], main = names(beta.fd[[2]]))
+
+# nestedness component
+terra::plot(beta.fd[[3]], main = names(beta.fd[[3]]))
 ```
