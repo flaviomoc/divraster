@@ -1,6 +1,7 @@
 #' Alpha diversity calculation for raster
 #'
 #' @param bin SpatRaster object with binarized distribution projected to all species for a given climate scenario
+#' @param ... Additional arguments to be passed passed down from a calling function
 #'
 #' @return SpatRaster object with alpha diversity/species richness
 #' @export

@@ -31,7 +31,7 @@
 #'
 #' @param ref SpatRaster object with binarized distribution projected to all species from climate scenario 1
 #' @param fut SpatRaster object with binarized distribution projected to all species from climate scenario 2
-#' @param ... Additional arguments to be passed to the function
+#' @param ... Additional arguments to be passed passed down from a calling function
 #'
 #' @return SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
 #' @export

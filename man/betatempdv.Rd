@@ -11,7 +11,7 @@ betatempdv(ref, fut, ...)
 
 \item{fut}{SpatRaster object with binarized distribution projected to all species from climate scenario 2}
 
-\item{...}{Additional arguments to be passed to the function}
+\item{...}{Additional arguments to be passed passed down from a calling function}
 }
 \value{
 SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)

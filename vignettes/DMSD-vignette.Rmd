@@ -78,7 +78,7 @@ mass.ref <- ecogen(ref, traits$mass) # reference scenario
 mass.ref
 terra::plot(mass.ref, main = names(mass.ref))
 
-mass.fut <- ecogen(fut, traits$mass.Length) # future scenario
+mass.fut <- ecogen(fut, traits$mass) # future scenario
 mass.fut
 terra::plot(mass.fut, main = names(mass.fut))
 ```

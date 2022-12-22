@@ -4,12 +4,14 @@
 \alias{ecogen}
 \title{Average trait generalization}
 \usage{
-ecogen(r, trait)
+ecogen(r, trait, ...)
 }
 \arguments{
 \item{r}{SpatRaster object with binarized distribution projected to all species in a given climate scenario}
 
 \item{trait}{Numeric vector with trait value for each species}
+
+\item{...}{Additional arguments to be passed passed down from a calling function}
 }
 \value{
 SpatRaster object with the average trait chosen
@@ -20,11 +22,11 @@ Average trait generalization
 \examples{
 \dontrun{
 set.seed(100)
-ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+r <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
 set.seed(100)
 mass <- runif(10, 10, 800) # grams
 mass
-t <- ecogen(ref, mass)
+t <- ecogen(r, mass)
 t
 }
 }
