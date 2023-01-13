@@ -2,6 +2,7 @@
 #'
 #' @param bin SpatRaster object with binarized distribution projected to all species for a given climate scenario
 #' @param ... Additional arguments to be passed passed down from a calling function
+#' @param filename Output filename
 #'
 #' @return SpatRaster object with alpha diversity/species richness
 #' @export
@@ -15,7 +16,7 @@
 #' ref.rich <- alphadv(ref)
 #' ref.rich
 #' }
-alphadv <- function(bin, ...){
+alphadv <- function(bin, filename = NULL, ...){
   if(class(bin) != "SpatRaster"){
     stop("'bin' must be a SpatRaster object")
   }
@@ -25,6 +26,9 @@ alphadv <- function(bin, ...){
   else {
     r <- terra::app(bin, sum, na.rm = TRUE, ...) # species richness
     names(r) <- "Richness"
-    return(r) # terra::app function does not work when it returns only one raster
   }
+  if(!is.null(filename)){ # to save the rasters when the output filename is provide
+    r <- terra::writeRaster(r, filename)
+  }
+  return(r) # terra::app function does not work when it returns only one raster
 }

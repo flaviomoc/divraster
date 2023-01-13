@@ -4,10 +4,12 @@
 \alias{alphadv}
 \title{Alpha diversity calculation for raster}
 \usage{
-alphadv(bin, ...)
+alphadv(bin, filename = NULL, ...)
 }
 \arguments{
 \item{bin}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
+
+\item{filename}{Output filename}
 
 \item{...}{Additional arguments to be passed passed down from a calling function}
 }

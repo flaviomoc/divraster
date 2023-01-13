@@ -4,12 +4,14 @@
 \alias{ecogen}
 \title{Average trait generalization}
 \usage{
-ecogen(r, trait, ...)
+ecogen(r, trait, filename = NULL, ...)
 }
 \arguments{
 \item{r}{SpatRaster object with binarized distribution projected to all species in a given climate scenario}
 
 \item{trait}{Numeric vector with trait value for each species}
+
+\item{filename}{Output filename}
 
 \item{...}{Additional arguments to be passed passed down from a calling function}
 }

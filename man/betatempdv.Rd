@@ -4,12 +4,14 @@
 \alias{betatempdv}
 \title{Temporal beta diversity calculation}
 \usage{
-betatempdv(ref, fut, ...)
+betatempdv(ref, fut, filename = NULL, ...)
 }
 \arguments{
 \item{ref}{SpatRaster object with binarized distribution projected to all species from climate scenario 1}
 
 \item{fut}{SpatRaster object with binarized distribution projected to all species from climate scenario 2}
+
+\item{filename}{Output filename}
 
 \item{...}{Additional arguments to be passed passed down from a calling function}
 }

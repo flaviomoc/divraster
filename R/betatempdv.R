@@ -32,6 +32,7 @@
 #' @param ref SpatRaster object with binarized distribution projected to all species from climate scenario 1
 #' @param fut SpatRaster object with binarized distribution projected to all species from climate scenario 2
 #' @param ... Additional arguments to be passed passed down from a calling function
+#' @param filename Output filename
 #'
 #' @return SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
 #' @export
@@ -48,7 +49,7 @@
 #' b <- betatempdv(ref, fut)
 #' b
 #' }
-betatempdv <- function(ref, fut, ...){
+betatempdv <- function(ref, fut, filename = NULL, ...){
   nspp <- terra::nlyr(ref)
   if(class(ref) != "SpatRaster"){
     stop("'ref' must be a SpatRaster object")
@@ -73,5 +74,8 @@ betatempdv <- function(ref, fut, ...){
                     names(res) <- c("Beta total", "Beta turnover", "Beta nestedness", "Beta ratio")
                     return(res)
                   }, nspp = nspp, ...)
+  if(!is.null(filename)){ # to save the rasters when the output filename is provide
+    r <- terra::writeRaster(r, filename)
+  }
   return(r)
 }

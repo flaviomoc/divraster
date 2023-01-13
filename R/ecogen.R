@@ -3,6 +3,7 @@
 #' @param trait Numeric vector with trait value for each species
 #' @param r SpatRaster object with binarized distribution projected to all species in a given climate scenario
 #' @param ... Additional arguments to be passed passed down from a calling function
+#' @param filename Output filename
 #'
 #' @return SpatRaster object with the average trait chosen
 #' @export
@@ -17,7 +18,7 @@
 #' t <- ecogen(r, mass)
 #' t
 #' }
-ecogen <- function(r, trait, ...){
+ecogen <- function(r, trait, filename = NULL, ...){
   if(class(r) != "SpatRaster"){
     stop("'r' must be a SpatRaster object")
   }
@@ -33,5 +34,8 @@ ecogen <- function(r, trait, ...){
                       x1 <- x == 1
                       mean((x * trait)[x1], na.rm = TRUE)
                     }, trait = trait, ...)
+  if(!is.null(filename)){ # to save the rasters when the output filename is provide
+    res <- terra::writeRaster(res, filename)
+  }
   return(stats::setNames(res, nm))
 }
