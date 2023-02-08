@@ -33,15 +33,15 @@ alpha_fd <- function(r, traits, filename = NULL, ...){
                     function(x, traits, ...){
                       dist <- vegan::vegdist(traits, "euclidean")
                       axes <- stats::cmdscale(dist, k = ncol(traits)-1)
-                      geometry::convhulln(axes[x > 0, , drop = FALSE], output.options = T)$vol
+                      geometry::convhulln(axes[x > 0, , drop = FALSE], output.options = T)$vol # convex hull by site
                     }, traits = traits, ...)
   max <- terra::app(r,
                     function(x, traits, ...){
                       dist <- vegan::vegdist(traits, "euclidean")
                       axes <- stats::cmdscale(dist, k = ncol(traits)-1)
-                      geometry::convhulln(axes, output.options = T)$vol
+                      geometry::convhulln(axes, output.options = T)$vol # total convex hull
                     }, traits = traits, ...)
-  resu <- res/max
+  resu <- res/max # rescale values between 0 and 1
   names(resu) <- "Functional Richness"
   if(!is.null(filename)){ # to save the rasters when the output filename is provide
     resu <- terra::writeRaster(resu, filename)
