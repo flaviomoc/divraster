@@ -4,7 +4,7 @@
 \alias{alpha_fd}
 \title{Functional alpha diversity calculation}
 \usage{
-alpha_fd(r, traits, filename = NULL, ...)
+alpha_fd(r, traits, filename = NULL, stand = TRUE, ...)
 }
 \arguments{
 \item{r}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
@@ -12,6 +12,8 @@ alpha_fd(r, traits, filename = NULL, ...)
 \item{traits}{data.frame object with traits as columns and species as rownames}
 
 \item{filename}{Output filename}
+
+\item{stand}{A boolean indicating whether to standardize FRic values over the observed maximum over all species (default: TRUE)}
 
 \item{...}{Additional arguments to be passed passed down from a calling function}
 }

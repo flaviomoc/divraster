@@ -6,6 +6,7 @@
 #' @param traits data.frame object with traits as columns and species as rownames
 #' @param filename Output filename
 #' @param ... Additional arguments to be passed passed down from a calling function
+#' @param stand A boolean indicating whether to divide FRic values by their maximum over all species (default: TRUE)
 #'
 #' @return SpatRaster object with functional diversity calculates as functional richness
 #' @export
@@ -28,23 +29,39 @@
 #' alpha.fd <- alpha_fd(ref, traits)
 #' alpha.fd
 #' }
-alpha_fd <- function(r, traits, filename = NULL, ...){
+alpha_fd <- function(r, traits, filename = NULL, stand = TRUE, ...){
   res <- terra::app(r,
                     function(x, traits, ...){
-                      dist <- vegan::vegdist(traits, "euclidean")
+                      dist <- stats::dist(traits, "euclidean")
                       axes <- stats::cmdscale(dist, k = ncol(traits)-1)
-                      geometry::convhulln(axes[x > 0, , drop = FALSE], output.options = T)$vol # convex hull by site
+                      geometry::convhulln(axes[x > 0, , drop = FALSE], output.options = T)$vol
                     }, traits = traits, ...)
-  max <- terra::app(r,
+  tot <- terra::app(r,
                     function(x, traits, ...){
-                      dist <- vegan::vegdist(traits, "euclidean")
+                      dist <- stats::dist(traits, "euclidean")
                       axes <- stats::cmdscale(dist, k = ncol(traits)-1)
-                      geometry::convhulln(axes, output.options = T)$vol # total convex hull
+                      geometry::convhulln(axes, output.options = T)$vol
                     }, traits = traits, ...)
-  resu <- res/max # rescale values between 0 and 1
-  names(resu) <- "Functional Richness"
-  if(!is.null(filename)){ # to save the rasters when the output filename is provide
-    resu <- terra::writeRaster(resu, filename)
+  resu <- terra::app(c(res, tot),
+                     function(x){
+                       site <- x[[1]]
+                       tot <- x[[2]]
+                       site/tot
+                     }, ...)
+  if(stand == TRUE){
+    names(resu) <- "Functional richness"
+    return(resu)
   }
-  return(resu)
+  else{
+    resu <- c(res, resu)
+    names(resu) <- c("Functional richness", "Functional richness stand")
+    return(resu)
+  }
+  if(!is.null(filename)){ # to save the rasters when the output filename is provide
+    resu <- terra::writeRaster(resu, filename, overwrite = TRUE)
+  }
 }
+
+## REESCALAR (TRAITS COM VALORES MUITO DIFERENTES)
+## COMPARAR RESULTADO COM OUTROS PACOTES (CONSISTENCIA)
+## INCLUIR NOVO ARGUMENTO OU APRESENTAR AMBOS OS RESULTADOS (ORIGINAL E DIVIDIDO PELO MAXIMO)
