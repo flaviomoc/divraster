@@ -13,7 +13,7 @@ alpha_fd(r, traits, filename = NULL, stand = TRUE, ...)
 
 \item{filename}{Output filename}
 
-\item{stand}{A boolean indicating whether to standardize FRic values over the observed maximum over all species (default: TRUE)}
+\item{stand}{A boolean indicating whether to divide FRic values by their maximum over all species (default: TRUE). It allows to compare indices values between assemblages}
 
 \item{...}{Additional arguments to be passed passed down from a calling function}
 }
@@ -21,7 +21,7 @@ alpha_fd(r, traits, filename = NULL, stand = TRUE, ...)
 SpatRaster object with functional diversity calculates as functional richness
 }
 \description{
-It calculates functional richness for a given climate scenario
+It calculates functional richness for a given climate scenario. It is computed as the volume of the convex hull following Villéger et al. (2008)
 }
 \examples{
 \dontrun{
@@ -41,4 +41,7 @@ traits
 alpha.fd <- alpha_fd(ref, traits)
 alpha.fd
 }
+}
+\references{
+Villéger, S. et al. 2008. New Multidimensional Functional Diversity Indices for a Multifaceted Framework in Functional Ecology. - Ecology 89: 2290–2301.
 }

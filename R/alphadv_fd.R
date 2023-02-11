@@ -1,12 +1,13 @@
 #' Functional alpha diversity calculation
 #'
-#' It calculates functional richness for a given climate scenario
+#' It calculates functional richness for a given climate scenario. It is computed as the volume of the convex hull following Villéger et al. (2008)
 #'
 #' @param r SpatRaster object with binarized distribution projected to all species for a given climate scenario
 #' @param traits data.frame object with traits as columns and species as rownames
 #' @param filename Output filename
 #' @param ... Additional arguments to be passed passed down from a calling function
-#' @param stand A boolean indicating whether to divide FRic values by their maximum over all species (default: TRUE)
+#' @param stand A boolean indicating whether to divide FRic values by their maximum over all species (default: TRUE). It allows to compare indices values between assemblages
+#' @references Villéger, S. et al. 2008. New Multidimensional Functional Diversity Indices for a Multifaceted Framework in Functional Ecology. - Ecology 89: 2290–2301.
 #'
 #' @return SpatRaster object with functional diversity calculates as functional richness
 #' @export
@@ -61,7 +62,3 @@ alpha_fd <- function(r, traits, filename = NULL, stand = TRUE, ...){
     resu <- terra::writeRaster(resu, filename, overwrite = TRUE)
   }
 }
-
-## REESCALAR (TRAITS COM VALORES MUITO DIFERENTES)
-## COMPARAR RESULTADO COM OUTROS PACOTES (CONSISTENCIA)
-## INCLUIR NOVO ARGUMENTO OU APRESENTAR AMBOS OS RESULTADOS (ORIGINAL E DIVIDIDO PELO MAXIMO)
