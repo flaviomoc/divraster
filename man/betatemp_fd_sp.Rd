@@ -4,7 +4,7 @@
 \alias{betatemp_fd_sp}
 \title{Functional beta diversity calculation}
 \usage{
-betatemp_fd_sp(ref, fut, traits, ...)
+betatemp_fd_sp(ref, fut, traits, cores = 1, filename = NULL, ...)
 }
 \arguments{
 \item{ref}{SpatRaster object with binarized distribution projected to all species from climate scenario 1}
@@ -13,7 +13,11 @@ betatemp_fd_sp(ref, fut, traits, ...)
 
 \item{traits}{data.frame object with traits as columns and species as rownames}
 
-\item{...}{Additional arguments to be passed passed down from a calling function}
+\item{cores}{A positive integer indicating if parallel processing should be used (cores > 1)}
+
+\item{filename}{Output filename}
+
+\item{...}{Additional arguments to be passed down from a calling function}
 }
 \value{
 SpatRaster object with functional beta diversity components
@@ -24,17 +28,19 @@ It calculates functional beta diversity and its components between climate scena
 \examples{
 \dontrun{
 set.seed(100)
-ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
-fut <- terra::rast(array(sample(c(rep(1, 500), rep(0, 500))), dim = c(20, 20, 10)))
+fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 names(fut) <- paste0("sp", 1:10)
 fut
 set.seed(100)
 mass <- runif(10, 10, 800)
 beak.size <- runif(10, .2, 5)
 tail.length <- runif(10, 2, 10)
-traits <- as.data.frame(cbind(mass, beak.size, tail.length))
+wing.length <- runif(10, 15, 60)
+range.size <- runif(10, 10000, 100000)
+traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
 rownames(traits) <- paste0("sp", 1:10)
 traits
 beta.fd <- betatemp_fd_sp(ref, fut, traits)

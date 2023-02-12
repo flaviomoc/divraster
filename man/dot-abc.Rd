@@ -20,10 +20,10 @@ Beta diversity parameters
 \examples{
 \dontrun{
 set.seed(100)
-ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
-fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
+fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 names(fut) <- paste0("sp", 1:10)
 fut
 pars <- .abc(ref, fut)

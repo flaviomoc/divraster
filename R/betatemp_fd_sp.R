@@ -5,7 +5,9 @@
 #' @param ref SpatRaster object with binarized distribution projected to all species from climate scenario 1
 #' @param fut SpatRaster object with binarized distribution projected to all species from climate scenario 2
 #' @param traits data.frame object with traits as columns and species as rownames
-#' @param ... Additional arguments to be passed passed down from a calling function
+#' @param ... Additional arguments to be passed down from a calling function
+#' @param cores A positive integer indicating if parallel processing should be used (cores > 1)
+#' @param filename Output filename
 #'
 #' @return SpatRaster object with functional beta diversity components
 #' @export
@@ -13,23 +15,25 @@
 #' @examples
 #' \dontrun{
 #' set.seed(100)
-#' ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+#' ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 #' names(ref) <- paste0("sp", 1:10)
 #' ref
-#' fut <- terra::rast(array(sample(c(rep(1, 500), rep(0, 500))), dim = c(20, 20, 10)))
+#' fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 #' names(fut) <- paste0("sp", 1:10)
 #' fut
 #' set.seed(100)
 #' mass <- runif(10, 10, 800)
 #' beak.size <- runif(10, .2, 5)
 #' tail.length <- runif(10, 2, 10)
-#' traits <- as.data.frame(cbind(mass, beak.size, tail.length))
+#' wing.length <- runif(10, 15, 60)
+#' range.size <- runif(10, 10000, 100000)
+#' traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
 #' rownames(traits) <- paste0("sp", 1:10)
 #' traits
 #' beta.fd <- betatemp_fd_sp(ref, fut, traits)
 #' beta.fd
 #' }
-betatemp_fd_sp <- function(ref, fut, traits, ...){
+betatemp_fd_sp <- function(ref, fut, traits, cores = 1, filename = NULL, ...){
   if(class(ref) != "SpatRaster"){
     stop("'bin' must be a SpatRaster object")
   }
@@ -53,7 +57,7 @@ betatemp_fd_sp <- function(ref, fut, traits, ...){
   res <- numeric(3)
   names(res) <- c("funct.beta.jtu", "funct.beta.jne", "funct.beta.jac")
   terra::app(c(ref, fut),
-             function(x, traits, nspp, spp, res, ...){
+             function(x, traits, nspp, spp, res, cores, ...){
                if(all(is.na(x))){
                  res[] <- NA
                } else {
@@ -75,6 +79,9 @@ betatemp_fd_sp <- function(ref, fut, traits, ...){
                                    })
                  }
                }
+               if(!is.null(filename)){ # to save the rasters when the output filename is provide
+                 res <- terra::writeRaster(res, filename, overwrite = TRUE)
+               }
                return(res)
-             }, traits = traits, nspp = nspp, spp = spp, res = res, ...)
+             }, traits = traits, nspp = nspp, spp = spp, res = res, cores = cores, ...)
 }

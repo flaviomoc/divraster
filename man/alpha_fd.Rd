@@ -4,10 +4,10 @@
 \alias{alpha_fd}
 \title{Functional alpha diversity calculation}
 \usage{
-alpha_fd(r, traits, filename = NULL, stand = TRUE, ...)
+alpha_fd(sce, traits, filename = NULL, stand = TRUE, cores = 1, ...)
 }
 \arguments{
-\item{r}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
+\item{sce}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
 
 \item{traits}{data.frame object with traits as columns and species as rownames}
 
@@ -15,10 +15,12 @@ alpha_fd(r, traits, filename = NULL, stand = TRUE, ...)
 
 \item{stand}{A boolean indicating whether to divide FRic values by their maximum over all species (default: TRUE). It allows to compare indices values between assemblages}
 
+\item{cores}{A positive integer indicating if parallel processing should be used (cores > 1)}
+
 \item{...}{Additional arguments to be passed passed down from a calling function}
 }
 \value{
-SpatRaster object with functional diversity calculates as functional richness
+SpatRaster object with functional richness
 }
 \description{
 It calculates functional richness for a given climate scenario. It is computed as the volume of the convex hull following Villéger et al. (2008)
@@ -26,7 +28,7 @@ It calculates functional richness for a given climate scenario. It is computed a
 \examples{
 \dontrun{
 set.seed(100)
-ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(20, 20, 10)))
+ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
 set.seed(100)
@@ -38,10 +40,10 @@ range.size <- runif(10, 10000, 100000)
 traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
 rownames(traits) <- paste0("sp", 1:10)
 traits
-alpha.fd <- alpha_fd(ref, traits)
-alpha.fd
+fd <- alpha_fd(ref, traits)
+fd
 }
 }
 \references{
-Villéger, S. et al. 2008. New Multidimensional Functional Diversity Indices for a Multifaceted Framework in Functional Ecology. - Ecology 89: 2290–2301.
+Villéger, S. et al. 2008. New Multidimensional Functional Diversity Indices for a Multifaceted Framework in Functional Ecology. - Ecology 89: 2290–2301
 }

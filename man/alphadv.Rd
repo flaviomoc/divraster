@@ -4,14 +4,16 @@
 \alias{alphadv}
 \title{Alpha diversity calculation for raster}
 \usage{
-alphadv(bin, filename = NULL, ...)
+alphadv(bin, filename = NULL, cores = 1, ...)
 }
 \arguments{
 \item{bin}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
 
 \item{filename}{Output filename}
 
-\item{...}{Additional arguments to be passed passed down from a calling function}
+\item{cores}{A positive integer indicating if parallel processing should be used (cores > 1)}
+
+\item{...}{Additional arguments to be passed down from a calling function}
 }
 \value{
 SpatRaster object with alpha diversity/species richness
@@ -22,10 +24,10 @@ Alpha diversity calculation for raster
 \examples{
 \dontrun{
 set.seed(100)
-ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
-ref.rich <- alphadv(ref)
-ref.rich
+rich <- alphadv(ref)
+rich
 }
 }

@@ -9,10 +9,10 @@
 #' @examples
 #' \dontrun{
 #' set.seed(100)
-#' ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+#' ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 #' names(ref) <- paste0("sp", 1:10)
 #' ref
-#' fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
+#' fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 #' names(fut) <- paste0("sp", 1:10)
 #' fut
 #' pars <- .abc(ref, fut)
@@ -31,8 +31,9 @@
 #'
 #' @param ref SpatRaster object with binarized distribution projected to all species from climate scenario 1
 #' @param fut SpatRaster object with binarized distribution projected to all species from climate scenario 2
-#' @param ... Additional arguments to be passed passed down from a calling function
+#' @param ... Additional arguments to be passed down from a calling function
 #' @param filename Output filename
+#' @param cores A positive integer indicating if parallel processing should be used (cores > 1)
 #'
 #' @return SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
 #' @export
@@ -40,16 +41,16 @@
 #' @examples
 #' \dontrun{
 #' set.seed(100)
-#' ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+#' ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 #' names(ref) <- paste0("sp", 1:10)
 #' ref
-#' fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
+#' fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 #' names(fut) <- paste0("sp", 1:10)
 #' fut
 #' b <- betatempdv(ref, fut)
 #' b
 #' }
-betatempdv <- function(ref, fut, filename = NULL, ...){
+betatempdv <- function(ref, fut, filename = NULL, cores = 1, ...){
   nspp <- terra::nlyr(ref)
   if(class(ref) != "SpatRaster"){
     stop("'ref' must be a SpatRaster object")
@@ -73,9 +74,9 @@ betatempdv <- function(ref, fut, filename = NULL, ...){
                     res[4] <- ((2 * min(pars[2], pars[3])) / (pars[1] + (2 * min(pars[2], pars[3])))) / ((pars[2] + pars[3]) / (pars[1] + pars[2] + pars[3]))
                     names(res) <- c("Beta total", "Beta turnover", "Beta nestedness", "Beta ratio")
                     return(res)
-                  }, nspp = nspp, ...)
+                  }, nspp = nspp, cores = cores, ...)
   if(!is.null(filename)){ # to save the rasters when the output filename is provide
-    r <- terra::writeRaster(r, filename)
+    r <- terra::writeRaster(r, filename, overwrite = TRUE)
   }
   return(r)
 }

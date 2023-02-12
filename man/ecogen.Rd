@@ -4,7 +4,7 @@
 \alias{ecogen}
 \title{Average trait generalization}
 \usage{
-ecogen(r, trait, filename = NULL, ...)
+ecogen(r, trait, filename = NULL, cores = 1, ...)
 }
 \arguments{
 \item{r}{SpatRaster object with binarized distribution projected to all species in a given climate scenario}
@@ -13,7 +13,9 @@ ecogen(r, trait, filename = NULL, ...)
 
 \item{filename}{Output filename}
 
-\item{...}{Additional arguments to be passed passed down from a calling function}
+\item{cores}{A positive integer indicating if parallel processing should be used (cores > 1)}
+
+\item{...}{Additional arguments to be passed down from a calling function}
 }
 \value{
 SpatRaster object with the average trait chosen
@@ -24,9 +26,11 @@ Average trait generalization
 \examples{
 \dontrun{
 set.seed(100)
-r <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+r <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
+names(r) <- paste0("sp", 1:10)
+r
 set.seed(100)
-mass <- runif(10, 10, 800) # grams
+mass <- runif(10, 10, 800)
 mass
 t <- ecogen(r, mass)
 t

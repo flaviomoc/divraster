@@ -4,7 +4,7 @@
 \alias{betatempdv}
 \title{Temporal beta diversity calculation}
 \usage{
-betatempdv(ref, fut, filename = NULL, ...)
+betatempdv(ref, fut, filename = NULL, cores = 1, ...)
 }
 \arguments{
 \item{ref}{SpatRaster object with binarized distribution projected to all species from climate scenario 1}
@@ -13,7 +13,9 @@ betatempdv(ref, fut, filename = NULL, ...)
 
 \item{filename}{Output filename}
 
-\item{...}{Additional arguments to be passed passed down from a calling function}
+\item{cores}{A positive integer indicating if parallel processing should be used (cores > 1)}
+
+\item{...}{Additional arguments to be passed down from a calling function}
 }
 \value{
 SpatRaster object with each metric as an individual layer (beta total, turnover, nestedness, and ratio)
@@ -24,10 +26,10 @@ It calculates beta diversity based on Jaccard dissimilarity index between refere
 \examples{
 \dontrun{
 set.seed(100)
-ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
-fut <- terra::rast(array(sample(c(rep(1, 300), rep(0, 700))), dim = c(20, 20, 10)))
+fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 names(fut) <- paste0("sp", 1:10)
 fut
 b <- betatempdv(ref, fut)
