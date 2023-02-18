@@ -18,8 +18,8 @@ test_that("function ses_fd works", {
   rownames(traits2) <- paste0("sp", 1:10)
 
   # applying the function
-  ses.fd <- ses_fd(alpha_fd(ref, traits1))
-  ses.fd2 <- ses_fd(alpha_fd(ref, traits2, "gower"))
+  ses.fd <- ses_fd(alphadv_fd(ref, traits1))
+  ses.fd2 <- ses_fd(alphadv_fd(ref, traits2, "gower"))
 
   # testing
   expect_equal(round(ses.fd@ptr$range_max[4], 1), 1.1)

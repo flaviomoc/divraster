@@ -24,7 +24,7 @@
 #' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 #' rownames(traits) <- paste0("sp", 1:10)
 #' traits
-#' fd <- alpha_fd(ref, traits)
+#' fd <- alphadv_fd(ref, traits)
 #' fd
 #' ses.fd <- ses_fd(fd)
 #' ses.fd

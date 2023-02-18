@@ -16,15 +16,14 @@ vignette: >
 library(terra)
 library(betapart)
 library(DMSD)
+library(FD)
 
 # SpatRaster
 set.seed(100)
-
-ref <- terra::rast(array(sample(c(rep(1, 750), rep(0, 250))), dim = c(20, 20, 10)))
+ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
 ref
-
-fut <- terra::rast(array(sample(c(rep(1, 500), rep(0, 500))), dim = c(20, 20, 10)))
+fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
 names(fut) <- names(ref)
 fut
 
@@ -33,7 +32,9 @@ set.seed(100)
 mass <- runif(10, 10, 800)
 beak.size <- runif(10, .2, 5)
 tail.length <- runif(10, 2, 10)
-traits <- as.data.frame(cbind(mass, beak.size, tail.length))
+wing.length <- runif(10, 15, 60)
+range.size <- runif(10, 10000, 100000)
+traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- names(ref)
 traits
 ```
@@ -82,6 +83,20 @@ mass.fut <- ecogen(fut, traits$mass) # future scenario
 mass.fut
 terra::plot(mass.fut, main = names(mass.fut))
 ```
+## Calculating *Functional richness*
+It represents the functional space filled by a community (convexhull volume).
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# alpha functional diversity for reference scenario
+r.rich.fd <- alphadv_fd(ref, traits)
+r.rich.fd
+terra::plot(r.rich.fd, main = names(r.rich.fd))
+
+## standardized functional richness (null model)
+r.ses.fd <- ses_fd(r.rich.fd)
+r.ses.fd
+terra::plot(r.ses.fd[[4]], main = "ref SES FD")
+```
+
 ## Calculating functional beta diversity
 It is a representation of *functional space* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *functional beta diversity* means higher changes, which can be by species replacement of functions, *turnover*, or  gain/loss of functions, *nestedness*.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}

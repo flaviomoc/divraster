@@ -18,8 +18,8 @@ test_that("function alphadv_fd works", {
   rownames(traits2) <- paste0("sp", 1:10)
 
   # applying the function
-  fd <- alpha_fd(ref, traits1)
-  fd2 <- alpha_fd(ref, traits2, "gower")
+  fd <- alphadv_fd(ref, traits1)
+  fd2 <- alphadv_fd(ref, traits2, "gower")
 
   # testing
   expect_equal(round(fd@ptr$range_min[1], 2), .32)
