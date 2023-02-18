@@ -30,10 +30,10 @@
 #' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 #' rownames(traits) <- paste0("sp", 1:10)
 #' traits
-#' fd <- alpha_fd(ref, traits)
+#' fd <- alphadv_fd(ref, traits)
 #' fd
 #' }
-alpha_fd <- function(sce, traits, method = "euclidean", filename = NULL, stand = TRUE, cores = 1, ...){
+alphadv_fd <- function(sce, traits, method = "euclidean", filename = NULL, stand = TRUE, cores = 1, ...){
   method <- match.arg(method, c("euclidean", "gower"))
   if(terra::nlyr(sce) == 1){
     stop("'sce' must have at least 2 layers")
