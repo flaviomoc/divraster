@@ -7,9 +7,9 @@
 ecogen(r, trait, filename = NULL, cores = 1, ...)
 }
 \arguments{
-\item{r}{SpatRaster object with binarized distribution projected to all species in a given climate scenario}
+\item{r}{A SpatRaster object with binarized distribution projected to all species in a given climate scenario}
 
-\item{trait}{Numeric vector with trait value for each species}
+\item{trait}{A numeric vector with trait value for each species}
 
 \item{filename}{Output filename}
 
@@ -18,7 +18,7 @@ ecogen(r, trait, filename = NULL, cores = 1, ...)
 \item{...}{Additional arguments to be passed down from a calling function}
 }
 \value{
-SpatRaster object with the average trait chosen
+A SpatRaster object with the average trait chosen
 }
 \description{
 Average trait generalization

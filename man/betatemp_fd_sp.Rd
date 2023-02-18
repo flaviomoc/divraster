@@ -40,7 +40,7 @@ beak.size <- runif(10, .2, 5)
 tail.length <- runif(10, 2, 10)
 wing.length <- runif(10, 15, 60)
 range.size <- runif(10, 10000, 100000)
-traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
+traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- paste0("sp", 1:10)
 traits
 beta.fd <- betatemp_fd_sp(ref, fut, traits)

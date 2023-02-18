@@ -1,12 +1,12 @@
 #' Standardized Functional Richness calculation for raster
 #'
-#' @param fd SpatRaster object with functional richness
+#' @param fd A SpatRaster object with functional richness
 #' @param aleats A positive integer indicating how many times the calculation should be repeated
 #' @param cores A positive integer indicating if parallel processing should be used (cores > 1)
 #' @param filename Output filename
 #' @param ... Additional arguments to be passed down from a calling function
 #'
-#' @return SpatRaster object with mean, standard deviation, observed functional richness, and standardized functional richness
+#' @return A SpatRaster object with mean, standard deviation, observed functional richness, and standardized functional richness
 #' @export
 #'
 #' @examples
@@ -21,7 +21,7 @@
 #' tail.length <- runif(10, 2, 10)
 #' wing.length <- runif(10, 15, 60)
 #' range.size <- runif(10, 10000, 100000)
-#' traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
+#' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 #' rownames(traits) <- paste0("sp", 1:10)
 #' traits
 #' fd <- alpha_fd(ref, traits)
@@ -30,6 +30,9 @@
 #' ses.fd
 #' }
 ses_fd <- function(fd, aleats = 999, cores = 1, filename = NULL, ...){
+  if(class(fd) != "SpatRaster"){
+    stop("'fd' must be a SpatRaster object")
+  }
   rand <- list()
   for(i in 1:aleats){
     rand[[i]] <- terra::spatSample(fd, aleats, "random", as.raster = TRUE)

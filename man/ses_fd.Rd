@@ -7,7 +7,7 @@
 ses_fd(fd, aleats = 999, cores = 1, filename = NULL, ...)
 }
 \arguments{
-\item{fd}{SpatRaster object with functional richness}
+\item{fd}{A SpatRaster object with functional richness}
 
 \item{aleats}{A positive integer indicating how many times the calculation should be repeated}
 
@@ -18,7 +18,7 @@ ses_fd(fd, aleats = 999, cores = 1, filename = NULL, ...)
 \item{...}{Additional arguments to be passed down from a calling function}
 }
 \value{
-SpatRaster object with mean, standard deviation, observed functional richness, and standardized functional richness
+A SpatRaster object with mean, standard deviation, observed functional richness, and standardized functional richness
 }
 \description{
 Standardized Functional Richness calculation for raster
@@ -35,7 +35,7 @@ beak.size <- runif(10, .2, 5)
 tail.length <- runif(10, 2, 10)
 wing.length <- runif(10, 15, 60)
 range.size <- runif(10, 10000, 100000)
-traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
+traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- paste0("sp", 1:10)
 traits
 fd <- alpha_fd(ref, traits)

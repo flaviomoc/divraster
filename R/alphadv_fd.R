@@ -35,6 +35,12 @@
 #' }
 alpha_fd <- function(sce, traits, method = "euclidean", filename = NULL, stand = TRUE, cores = 1, ...){
   method <- match.arg(method, c("euclidean", "gower"))
+  if(terra::nlyr(sce) == 1){
+    stop("'sce' must have at least 2 layers")
+  }
+  if (missing(traits) || is.null(traits)) {
+    stop("Please provide a trait dataset", call. = FALSE)
+  }
   if(terra::nlyr(sce) != nrow(traits)){
     stop("'sce' and 'traits' must have the same number of species")
   }

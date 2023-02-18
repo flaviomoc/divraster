@@ -52,6 +52,9 @@
 #' }
 betatempdv <- function(ref, fut, filename = NULL, cores = 1, ...){
   nspp <- terra::nlyr(ref)
+  if (missing(fut) || is.null(fut)) {
+    stop("Please provide a second SpatRaster dataset", call. = FALSE)
+  }
   if(class(ref) != "SpatRaster"){
     stop("'ref' must be a SpatRaster object")
   }
@@ -60,6 +63,12 @@ betatempdv <- function(ref, fut, filename = NULL, cores = 1, ...){
   }
   if(!all(names(ref) == names(fut))){
     stop("names of 'ref' and 'fut' must match")
+  }
+  if(terra::nlyr(ref) == 1){
+    stop("'ref' must have at least 2 layers")
+  }
+  if(terra::nlyr(fut) == 1){
+    stop("'fut' must have at least 2 layers")
   }
   if(terra::nlyr(ref) != terra::nlyr(fut)){
     stop("'ref' and 'fut' must have the same number of layers")

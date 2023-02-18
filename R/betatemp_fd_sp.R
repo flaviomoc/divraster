@@ -27,13 +27,16 @@
 #' tail.length <- runif(10, 2, 10)
 #' wing.length <- runif(10, 15, 60)
 #' range.size <- runif(10, 10000, 100000)
-#' traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
+#' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 #' rownames(traits) <- paste0("sp", 1:10)
 #' traits
 #' beta.fd <- betatemp_fd_sp(ref, fut, traits)
 #' beta.fd
 #' }
 betatemp_fd_sp <- function(ref, fut, traits, cores = 1, filename = NULL, ...){
+  if (missing(fut) || is.null(fut)) {
+    stop("Please provide a second SpatRaster dataset", call. = FALSE)
+  }
   if(class(ref) != "SpatRaster"){
     stop("'bin' must be a SpatRaster object")
   }
@@ -48,6 +51,12 @@ betatemp_fd_sp <- function(ref, fut, traits, cores = 1, filename = NULL, ...){
   }
   if(!is.numeric(traits[1,1])){
     stop("'traits' first column must be numeric")
+  }
+  if(terra::nlyr(ref) == 1){
+    stop("'ref' must have at least 2 layers")
+  }
+  if(terra::nlyr(fut) == 1){
+    stop("'fut' must have at least 2 layers")
   }
   if(terra::nlyr(ref) != terra::nlyr(fut)){
     stop("'ref' and 'fut' must have the same number of layers")
