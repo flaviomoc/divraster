@@ -4,12 +4,22 @@
 \alias{alpha_fd}
 \title{Functional alpha diversity calculation}
 \usage{
-alpha_fd(sce, traits, filename = NULL, stand = TRUE, cores = 1, ...)
+alpha_fd(
+  sce,
+  traits,
+  method = "euclidean",
+  filename = NULL,
+  stand = TRUE,
+  cores = 1,
+  ...
+)
 }
 \arguments{
-\item{sce}{SpatRaster object with binarized distribution projected to all species for a given climate scenario}
+\item{sce}{A SpatRaster object with binarized distribution projected to all species for a given climate scenario}
 
-\item{traits}{data.frame object with traits as columns and species as rownames}
+\item{traits}{A data.frame object with traits as columns and species as rownames}
+
+\item{method}{The distance measure to be used. This must be "euclidean" for numeric traits or "gower" for mixed traits}
 
 \item{filename}{Output filename}
 
@@ -37,7 +47,7 @@ beak.size <- runif(10, .2, 5)
 tail.length <- runif(10, 2, 10)
 wing.length <- runif(10, 15, 60)
 range.size <- runif(10, 10000, 100000)
-traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
+traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- paste0("sp", 1:10)
 traits
 fd <- alpha_fd(ref, traits)

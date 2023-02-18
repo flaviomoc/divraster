@@ -14,7 +14,8 @@ BugReports: https://github.com/flaviomoc/DMSD/issues
 Imports: 
     terra,
     betapart,
-    geometry
+    geometry,
+    FD
 Suggests: 
     knitr,
     rmarkdown,

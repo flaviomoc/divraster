@@ -2,12 +2,13 @@
 #'
 #' It calculates functional richness for a given climate scenario. It is computed as the volume of the convex hull following Villéger et al. (2008)
 #'
-#' @param traits data.frame object with traits as columns and species as rownames
+#' @param traits A data.frame object with traits as columns and species as rownames
 #' @param filename Output filename
 #' @param ... Additional arguments to be passed passed down from a calling function
 #' @param cores A positive integer indicating if parallel processing should be used (cores > 1)
+#' @param method The distance measure to be used. This must be "euclidean" for numeric traits or "gower" for mixed traits
 #' @param stand A boolean indicating whether to divide FRic values by their maximum over all species (default: TRUE). It allows to compare indices values between assemblages
-#' @param sce SpatRaster object with binarized distribution projected to all species for a given climate scenario
+#' @param sce A SpatRaster object with binarized distribution projected to all species for a given climate scenario
 #'
 #' @references Villéger, S. et al. 2008. New Multidimensional Functional Diversity Indices for a Multifaceted Framework in Functional Ecology. - Ecology 89: 2290–2301
 #'
@@ -26,23 +27,47 @@
 #' tail.length <- runif(10, 2, 10)
 #' wing.length <- runif(10, 15, 60)
 #' range.size <- runif(10, 10000, 100000)
-#' traits <- as.data.frame(cbind(mass, beak.size, tail.length, wing.length, range.size))
+#' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 #' rownames(traits) <- paste0("sp", 1:10)
 #' traits
 #' fd <- alpha_fd(ref, traits)
 #' fd
 #' }
-alpha_fd <- function(sce, traits, filename = NULL, stand = TRUE, cores = 1, ...){
-  r1 <- terra::app(sce, function(x){
-    axes <- stats::cmdscale(stats::dist(traits, "euclidean"), k = ncol(traits)-1)
-    geometry::convhulln(axes[x > 0, , drop = FALSE],
-                        output.options = T)$vol
-  }, ...)
-  r2 <- terra::app(sce, function(x){
-    axes <- stats::cmdscale(stats::dist(traits, "euclidean"), k = ncol(traits)-1)
-    geometry::convhulln(axes,
-                        output.options = T)$vol
-  }, ...)
+alpha_fd <- function(sce, traits, method = "euclidean", filename = NULL, stand = TRUE, cores = 1, ...){
+  method <- match.arg(method, c("euclidean", "gower"))
+  if(terra::nlyr(sce) != nrow(traits)){
+    stop("'sce' and 'traits' must have the same number of species")
+  }
+  if(class(sce) != "SpatRaster"){
+    stop("'sce' must be a SpatRaster object")
+  }
+  if(class(traits) != "data.frame"){
+    stop("'traits' must be a data.frame object")
+  }
+  if(method == "euclidean"){
+    r1 <- terra::app(sce, function(x){
+      axes <- stats::cmdscale(stats::dist(traits, "euclidean"))
+      geometry::convhulln(axes[x > 0, , drop = FALSE],
+                          output.options = T)$vol
+    }, cores = cores, ...)
+    r2 <- terra::app(sce, function(x){
+      axes <- stats::cmdscale(stats::dist(traits, "euclidean"))
+      geometry::convhulln(axes,
+                          output.options = T)$vol
+    }, cores = cores, ...)
+  }
+  else {
+    r1 <- terra::app(sce, function(x){
+      axes <- stats::cmdscale(FD::gowdis(traits))
+      geometry::convhulln(axes[x > 0, , drop = FALSE],
+                          output.options = T)$vol
+    }, cores = cores, ...)
+    r2 <- terra::app(sce, function(x){
+      axes <- stats::cmdscale(FD::gowdis(traits))
+      geometry::convhulln(axes,
+                          output.options = T)$vol
+    }, cores = cores, ...)
+  }
   resu <- terra::app(c(r1, r2), function(x){
     x[[1]]/x[[2]]
   })
