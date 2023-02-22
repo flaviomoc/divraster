@@ -2,6 +2,8 @@
 
 export(alphadv)
 export(alphadv_fd)
+export(beta.focal.spat)
+export(beta.temp.spat)
 export(betatemp_fd)
 export(betatemp_pd)
 export(betatemp_td)

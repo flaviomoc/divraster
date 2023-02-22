@@ -4,22 +4,28 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Flávio", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0308-7151"))
-Description: Calculate spatial and temporal beta diversity, separating the turnover and nestedness components of taxonomic, functional, and phylogenetic diversity.
+Description: Calculate spatial and temporal beta diversity, separating the
+    turnover and nestedness components of taxonomic, functional, and
+    phylogenetic diversity.
 License: GPL (>= 3)
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
 URL: https://github.com/flaviomoc/DMSD
 BugReports: https://github.com/flaviomoc/DMSD/issues
 Imports: 
-    ape,
-    terra,
-    geometry,
     BAT,
-    FD
+    betapart,
+    FD,
+    geometry,
+    stats,
+    terra,
+    utils
 Suggests: 
+    ape,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
-VignetteBuilder: knitr
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
