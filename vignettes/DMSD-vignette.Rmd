@@ -14,11 +14,11 @@ vignette: >
 ## Loading data
 ```{r, fig.height = 5, fig.width = 8, fig.align = 'center',}
 library(terra)
-library(betapart)
+library(BAT)
 library(DMSD)
 library(FD)
 
-# SpatRaster
+# Create SpatRaster objects
 set.seed(100)
 ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
 names(ref) <- paste0("sp", 1:10)
@@ -27,7 +27,7 @@ fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10
 names(fut) <- names(ref)
 fut
 
-# data.frame
+# Create data.frame object
 set.seed(100)
 mass <- runif(10, 10, 800)
 beak.size <- runif(10, .2, 5)
@@ -37,44 +37,46 @@ range.size <- runif(10, 10000, 100000)
 traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- names(ref)
 traits
+
+# Create phylo object
+set.seed(100)
+tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+tree
 ```
 
-## Calculating alpha diversity
+## Calculating alpha of taxonomic diversity
 It is a spatial representation of *species richness* of a given scenario calculated by the sum of the same cell of each species.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# alpha diversity for reference scenario
+# Alpha diversity for reference scenario
 r.rich <- alphadv(ref)
 r.rich
 terra::plot(r.rich, main = names(r.rich))
 
-# alpha diversity for future scenario
+# Alpha diversity for future scenario
 f.rich <- alphadv(fut)
 f.rich
 terra::plot(f.rich, main = names(f.rich))
 ```
 
-## Calculating beta diversity
-It is a spatial representation of *species composition* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *beta diversity* means higher changes, which can be by species replacement, *turnover*, or species gain/loss, *nestedness*. The *ratio* is calculated dividing the *turnover* by the *total beta diversity*, thus, values close to 1 indicates predominance of *turnover* component while values close to 0 indicates predominance of *nestedness* component.
+## Calculating beta temporal of taxonomic diversity
+It is a spatial representation of *species composition* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *beta diversity* means higher changes, which can be due to species replacement, *turnover*, or species gain/loss, *nestedness*.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# total beta diversity between scenarios
-beta <- betatempdv(ref, fut)
-beta
-terra::plot(beta[[1]], main = names(beta[[1]]))
+# Beta total
+beta.td <- betatemp_td(ref, fut)
+beta.td
+terra::plot(beta.td[[1]], main = names(beta.td[[1]]))
 
-# turnover component
-terra::plot(beta[[2]], main = names(beta[[2]]))
+# Turnover
+terra::plot(beta.td[[2]], main = names(beta.td[[2]]))
 
-# nestedness component
-terra::plot(beta[[3]], main = names(beta[[3]]))
-
-# ratio (turnover/total beta diversity)
-terra::plot(beta[[4]], main = names(beta[[4]]))
+# Nestedness
+terra::plot(beta.td[[3]], main = names(beta.td[[3]]))
 ```
 
 ## Calculating trait generalization
 It is a spatial representation of the *average* of a given trait.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# ecological generalization for the trait mass
+# Ecological generalization for the trait mass
 mass.ref <- ecogen(ref, traits$mass) # reference scenario
 mass.ref
 terra::plot(mass.ref, main = names(mass.ref))
@@ -86,28 +88,43 @@ terra::plot(mass.fut, main = names(mass.fut))
 ## Calculating *Functional richness*
 It represents the functional space filled by a community (convexhull volume).
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# alpha functional diversity for reference scenario
+# Alpha functional diversity for reference scenario
 r.rich.fd <- alphadv_fd(ref, traits)
 r.rich.fd
 terra::plot(r.rich.fd, main = names(r.rich.fd))
 
-## standardized functional richness (null model)
+## Standardized functional richness (null model)
 r.ses.fd <- ses_fd(r.rich.fd)
 r.ses.fd
 terra::plot(r.ses.fd[[4]], main = "ref SES FD")
 ```
 
-## Calculating functional beta diversity
-It is a representation of *functional space* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *functional beta diversity* means higher changes, which can be by species replacement of functions, *turnover*, or  gain/loss of functions, *nestedness*.
+## Calculating beta temporal of functional diversity
+It is a representation of *functional space* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *functional beta diversity* means higher changes, which can be due to species replacement of functions, *turnover*, or  gain/loss of functions, *nestedness*.
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# total functional beta diversity between scenarios
-beta.fd <- betatemp_fd_sp(ref, fut, traits)
+# Beta total
+beta.fd <- betatemp_fd(ref, fut, traits)
 beta.fd
 terra::plot(beta.fd[[1]], main = names(beta.fd[[1]]))
 
-# turnover component
+# Turnover
 terra::plot(beta.fd[[2]], main = names(beta.fd[[2]]))
 
-# nestedness component
+# Nestedness
 terra::plot(beta.fd[[3]], main = names(beta.fd[[3]]))
+```
+
+## Calculating beta temporal of phylogenetic diversity
+It is a representation of the change in *phylogenetic relationship* of species between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *phylogenetic beta diversity* means higher changes, which can be due to species replacement, *turnover*, or gain/loss, *nestedness*.
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# Beta total
+beta.pd <- betatemp_pd(ref, fut, tree)
+beta.pd
+terra::plot(beta.pd[[1]], main = names(beta.pd[[1]]))
+
+# Turnover
+terra::plot(beta.pd[[2]], main = names(beta.pd[[2]]))
+
+# Nestedness
+terra::plot(beta.pd[[3]], main = names(beta.pd[[3]]))
 ```
