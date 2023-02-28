@@ -63,9 +63,9 @@
 #' }
 beta.temporal <- function(bin1, bin2, type = NULL, cores = 1, filename = NULL, ...) {
   # Check if bin2 is NULL or invalid
-  stopifnot(!is.null(substitute(bin2)), is(bin2, "SpatRaster"))
+  stopifnot(!is.null(substitute(bin2)), inherits(bin2, "SpatRaster"))
   # Check if bin1 is NULL or invalid
-  stopifnot(!is.null(substitute(bin1)), is(bin1, "SpatRaster"))
+  stopifnot(!is.null(substitute(bin1)), inherits(bin1, "SpatRaster"))
   # Check if bin1 and bin2 are SpatRaster objects with matching names
   stopifnot(all(names(bin1) %in% names(bin2)))
   stopifnot(all(names(bin2) %in% names(bin1)))
@@ -84,7 +84,7 @@ beta.temporal <- function(bin1, bin2, type = NULL, cores = 1, filename = NULL, .
   if (is.null(type)) {
     names(res) <- paste0(lyrnames, ".TD")
   }
-  else if (is(type, "data.frame")) {
+  else if (inherits(type, "data.frame")) {
     names(res) <- paste0(lyrnames, ".FD")
   }
   else {

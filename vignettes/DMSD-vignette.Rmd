@@ -67,18 +67,6 @@ terra::plot(beta.td[[2]], main = names(beta.td[[2]]))
 terra::plot(beta.td[[3]], main = names(beta.td[[3]]))
 ```
 
-## Calculating trait generalization
-It is a spatial representation of the *average* of a given trait.
-```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Ecological generalization for the trait mass
-mass.ref <- ecogen(ref, traits$mass) # reference scenario
-mass.ref
-terra::plot(mass.ref, main = names(mass.ref))
-
-mass.fut <- ecogen(fut, traits$mass) # future scenario
-mass.fut
-terra::plot(mass.fut, main = names(mass.fut))
-```
 ## Calculating alpha for functional diversity
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
 # Alpha functional diversity for reference scenario

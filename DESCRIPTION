@@ -12,7 +12,8 @@ URL: https://github.com/flaviomoc/DMSD
 BugReports: https://github.com/flaviomoc/DMSD/issues
 Imports: 
     BAT,
-    terra
+    terra,
+    betapart
 Suggests: 
     ape,
     knitr,
