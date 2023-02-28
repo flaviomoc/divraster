@@ -1,4 +1,4 @@
-test_that("function betatemp_fd works", {
+test_that("function beta.temporal works", {
 
   # creating data
   set.seed(100)
@@ -16,11 +16,25 @@ test_that("function betatemp_fd works", {
   traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
   rownames(traits) <- names(ref)
 
+  set.seed(100)
+  tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+
   # applying the function
-  beta.fd <- betatemp_fd(ref, fut, traits)
+  beta.td <- beta.temporal(ref, fut)
+  beta.td
+  beta.fd <- beta.temporal(ref, fut, traits)
+  beta.fd
+  beta.pd <- beta.temporal(ref, fut, tree)
+  beta.pd
 
   # testing
+  expect_equal(round(beta.td[[1]]@ptr$range_min, 2), .25)
+  expect_equal(round(beta.td[[2]]@ptr$range_max, 2), .67)
+  expect_equal(round(beta.td[[3]]@ptr$range_max, 2), .88)
   expect_equal(round(beta.fd[[1]]@ptr$range_max, 2), .93)
   expect_equal(round(beta.fd[[2]]@ptr$range_max, 2), .55)
   expect_equal(round(beta.fd[[3]]@ptr$range_max, 2), .88)
+  expect_equal(round(beta.pd[[1]]@ptr$range_max, 2), .86)
+  expect_equal(round(beta.pd[[2]]@ptr$range_max, 2), .51)
+  expect_equal(round(beta.pd[[3]]@ptr$range_max, 2), .83)
 })
