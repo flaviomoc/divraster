@@ -58,13 +58,13 @@ alpha <- function(bin, type = NULL, cores = 1, filename = NULL, ...) {
   res <- terra::app(bin, .alpha.vec, type = type, cores = cores, ...)
   # Define names
   if (is.null(type)) {
-    names(res) <- "α.TD"
+    names(res) <- "Alpha.TD"
   }
   else if (inherits(type, "data.frame")) {
-    names(res) <- "α.FD"
+    names(res) <- "Alpha.FD"
   }
   else {
-    names(res) <- "α.PD"
+    names(res) <- "Alpha.PD"
   }
   # Save the output if filename is provided
   if (!is.null(filename)) {

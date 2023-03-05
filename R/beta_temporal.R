@@ -40,10 +40,10 @@
 #' @examples
 #' \dontrun{
 #' set.seed(100)
-#' ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
-#' names(ref) <- paste0("sp", 1:10)
-#' fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
-#' names(fut) <- names(ref)
+#' bin1 <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
+#' names(bin1) <- paste0("sp", 1:10)
+#' bin2 <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
+#' names(bin2) <- names(bin1)
 #' set.seed(100)
 #' mass <- runif(10, 10, 800)
 #' beak.size <- runif(10, .2, 5)
@@ -51,7 +51,7 @@
 #' wing.length <- runif(10, 15, 60)
 #' range.size <- runif(10, 10000, 100000)
 #' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
-#' rownames(traits) <- names(ref)
+#' rownames(traits) <- names(bin1)
 #' set.seed(100)
 #' tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
 #' beta.td <- beta.temporal(bin1, bin2)
@@ -80,7 +80,7 @@ beta.temporal <- function(bin1, bin2, type = NULL, cores = 1, filename = NULL, .
   # Apply the function to SpatRaster object
   res <- terra::app(c(bin1, bin2), .beta.temporal.vec, type = type, nspp = nspp, spp = spp, cores = cores, ...)
   # Define names
-  lyrnames <- c("βtotal", "βturn", "βnest")
+  lyrnames <- c("Beta total", "Beta turn", "Beta nest")
   if (is.null(type)) {
     names(res) <- paste0(lyrnames, ".TD")
   }
