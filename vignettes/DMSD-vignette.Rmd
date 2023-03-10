@@ -8,9 +8,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
-*DMSD* is a package created to calculate Diversity Metrics from Spatialized Data. It is an alternative to process big datasets with less memory usage. The functions of this package can temporal beta diversity and its components turnover and nestedness for taxonomic, functional, and phylogenetic diversity. It also calculates alpha diversity to all three facets of diversity.
-
 ## Loading data
 ```{r, fig.height = 5, fig.width = 8, fig.align = 'center',}
 library(terra)
@@ -18,13 +15,16 @@ library(BAT)
 library(DMSD)
 
 # Create SpatRaster objects
-ref <- terra::rast(array(sample(c(rep(1, 800), rep(0, 200))), dim = c(10, 10, 10)))
-names(ref) <- paste0("sp", 1:10)
-ref
+set.seed(100)
+bin1 <- terra::rast(ncol = 5, nrow = 5, nlyr = 10)
+values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
+names(bin1) <- paste0("sp", 1:10)
+bin1
 
-fut <- terra::rast(array(sample(c(rep(1, 400), rep(0, 600))), dim = c(10, 10, 10)))
-names(fut) <- names(ref)
-fut
+bin2 <- terra::rast(ncol = 5, nrow = 5, nlyr = 10)
+values(bin2) <- round(runif(ncell(bin2) * nlyr(bin2)))
+names(bin2) <- names(bin1)
+bin2
 
 # Create data.frame object
 set.seed(100)
@@ -34,80 +34,65 @@ tail.length <- runif(10, 2, 10)
 wing.length <- runif(10, 15, 60)
 range.size <- runif(10, 10000, 100000)
 traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
-rownames(traits) <- names(ref)
+rownames(traits) <- names(bin1)
 traits
 
 # Create phylo object
 set.seed(100)
-tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+tree <- ape::rtree(n = 10, tip.label = names(bin1))
 tree
 ```
 
-## Calculating alpha of taxonomic diversity
-It is a spatial representation of *species richness* of a given scenario calculated by the sum of the same cell of each species.
+## Alpha diversity
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Alpha diversity for reference scenario
-r.rich <- alpha(ref)
-r.rich
-terra::plot(r.rich, main = names(r.rich))
+# Taxonomic
+alpha.td <- spat.alpha(bin1)
+alpha.td
+terra::plot(alpha.td)
+
+# Functional
+alpha.fd <- spat.alpha(bin1, traits)
+alpha.fd
+terra::plot(alpha.fd)
+
+# Phylogenetic
+alpha.pd <- spat.alpha(bin1, tree)
+alpha.pd
+terra::plot(alpha.pd)
 ```
 
-## Calculating beta temporal of taxonomic diversity
-It is a spatial representation of *species composition* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *beta diversity* means higher changes, which can be due to species replacement, *turnover*, or species gain/loss, *nestedness*.
+## Spatial beta diversity
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Beta total
-beta.td <- beta.temporal(ref, fut)
+# Taxonomic
+beta.td <- spat.beta(bin1)
 beta.td
-terra::plot(beta.td[[1]], main = names(beta.td[[1]]))
+terra::plot(beta.td)
 
-# Turnover
-terra::plot(beta.td[[2]], main = names(beta.td[[2]]))
-
-# Nestedness
-terra::plot(beta.td[[3]], main = names(beta.td[[3]]))
-```
-
-## Calculating alpha for functional diversity
-```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Alpha functional diversity for reference scenario
-r.rich.fd <- alpha(ref, traits)
-r.rich.fd
-terra::plot(r.rich.fd, main = names(r.rich.fd))
-```
-
-## Calculating beta temporal for functional diversity
-It is a representation of *functional space* change between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *functional beta diversity* means higher changes, which can be due to species replacement of functions, *turnover*, or  gain/loss of functions, *nestedness*.
-```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Beta total
-beta.fd <- beta.temporal(ref, fut, traits)
+# Functional
+beta.fd <- spat.beta(bin1, traits)
 beta.fd
-terra::plot(beta.fd[[1]], main = names(beta.fd[[1]]))
+terra::plot(beta.fd)
 
-# Turnover
-terra::plot(beta.fd[[2]], main = names(beta.fd[[2]]))
-
-# Nestedness
-terra::plot(beta.fd[[3]], main = names(beta.fd[[3]]))
-```
-## Calculating alpha for phylogenetic diversity
-```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Alpha functional diversity for reference scenario
-r.rich.pd <- alpha(ref, tree)
-r.rich.pd
-terra::plot(r.rich.pd, main = names(r.rich.pd))
-```
-
-## Calculating beta temporal of phylogenetic diversity
-It is a representation of the change in *phylogenetic relationship* of species between two scenarios. It indicates the differentiation in communities from the reference scenario to the future scenario by cell. Higher values of *phylogenetic beta diversity* means higher changes, which can be due to species replacement, *turnover*, or gain/loss, *nestedness*.
-```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
-# Beta total
-beta.pd <- beta.temporal(ref, fut, tree)
+# Phylogenetic
+beta.pd <- spat.beta(bin1, tree)
 beta.pd
-terra::plot(beta.pd[[1]], main = names(beta.pd[[1]]))
+terra::plot(beta.pd)
+```
 
-# Turnover
-terra::plot(beta.pd[[2]], main = names(beta.pd[[2]]))
+## Temporal beta diversity
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+# Taxonomic
+betatemp.td <- temp.beta(bin1, bin2)
+betatemp.td
+terra::plot(betatemp.td)
 
-# Nestedness
-terra::plot(beta.pd[[3]], main = names(beta.pd[[3]]))
+# Functional
+betatemp.fd <- temp.beta(bin1, bin2, traits)
+betatemp.fd
+terra::plot(betatemp.fd)
+
+# Phylogenetic
+betatemp.pd <- temp.beta(bin1, bin2, tree)
+betatemp.pd
+terra::plot(betatemp.pd)
 ```
