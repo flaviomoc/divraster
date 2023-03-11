@@ -4,6 +4,8 @@ Version: 0.0.0.9000
 Authors@R: 
     person("Flávio", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0308-7151"))
+    person("Neander", "Heming", , "neanderh@yahoo.com.br", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-2461-5045"))
 Description: Calculate spatial and temporal beta diversity, separating the
     turnover and nestedness components of taxonomic, functional, and
     phylogenetic diversity.
@@ -12,7 +14,9 @@ URL: https://github.com/flaviomoc/DMSD
 BugReports: https://github.com/flaviomoc/DMSD/issues
 Imports: 
     BAT,
+    stats,
     terra,
+    utils
 Suggests: 
     ape,
     knitr,

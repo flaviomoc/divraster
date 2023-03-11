@@ -58,7 +58,9 @@ spat.beta.vec <- function(x, tree, global = FALSE, func = "jac", spp, nspp){
 #' @export
 #'
 #' @examples
-#' \dontrun {
+#' \dontrun{
+#' library(terra)
+#' library(ape)
 #' set.seed(100)
 #' bin1 <- terra::rast(ncol = 5, nrow = 5, nlyr = 10)
 #' values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
