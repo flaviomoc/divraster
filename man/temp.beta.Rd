@@ -4,25 +4,23 @@
 \alias{temp.beta}
 \title{Temporal beta diversity calculation for raster}
 \usage{
-temp.beta(bin1, bin2, tree, cores = 1, filename = NULL, overwrite = TRUE, ...)
+temp.beta(bin1, bin2, tree, filename = NULL, cores = 1, ...)
 }
 \arguments{
-\item{bin1}{spatraster}
+\item{bin1}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
 
-\item{bin2}{spatraster}
+\item{bin2}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
 
-\item{tree}{species traits or phylogenetic tree}
+\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
 
-\item{cores}{parallel calculation}
+\item{filename}{Character. Save results if a name is provided.}
 
-\item{filename}{save file if a name is provided}
+\item{cores}{A positive integer. If cores > 1, a 'parallel' package cluster with that many cores is created and used.}
 
-\item{overwrite}{replace old file}
-
-\item{...}{additional arguments}
+\item{...}{Additional arguments to be passed passed down from a calling function.}
 }
 \value{
-spatraster
+A SpatRaster with beta results.
 }
 \description{
 Temporal beta diversity calculation for raster
@@ -30,7 +28,6 @@ Temporal beta diversity calculation for raster
 \examples{
 \dontrun{
 library(terra)
-library(ape)
 set.seed(100)
 bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
 values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
@@ -47,7 +44,7 @@ range.size <- runif(10, 10000, 100000)
 traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- names(bin1)
 set.seed(100)
-tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+tree <- ape::rtree(n = 10, tip.label = names(bin1))
 temp.beta(bin1, bin2)
 temp.beta(bin1, bin2, traits)
 temp.beta(bin1, bin2, tree)

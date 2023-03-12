@@ -2,18 +2,18 @@
 % Please edit documentation in R/alpha.R
 \name{spat.alpha}
 \alias{spat.alpha}
-\title{Alpha calculation for each raster cell}
+\title{Alpha calculation for raster}
 \usage{
 spat.alpha(bin, tree, cores = 1, filename = NULL, ...)
 }
 \arguments{
 \item{bin}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
 
-\item{tree}{It can be a phylo object with phylogenetic tree for a set of species or a data.frame object with species traits.}
+\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
 
 \item{cores}{A positive integer. If cores > 1, a 'parallel' package cluster with that many cores is created and used.}
 
-\item{filename}{A character. Output filename.}
+\item{filename}{Character. Save results if a name is provided.}
 
 \item{...}{Additional arguments to be passed passed down from a calling function.}
 }
@@ -21,14 +21,13 @@ spat.alpha(bin, tree, cores = 1, filename = NULL, ...)
 A SpatRaster with alpha result.
 }
 \description{
-Alpha calculation for each raster cell
+Compute alpha diversity for taxonomic, functional, and phylogenetic diversity.
 }
 \examples{
 \dontrun{
 library(terra)
-library(ape)
 set.seed(100)
-bin1 <- terra::rast(ncol = 5, nrow = 5, nlyr = 10)
+bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
 values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
 names(bin1) <- paste0("sp", 1:10)
 set.seed(100)
@@ -40,7 +39,7 @@ range.size <- runif(10, 10000, 100000)
 traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- names(bin1)
 set.seed(100)
-tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+tree <- ape::rtree(n = 10, tip.label = names(bin1))
 spat.alpha(bin1)
 spat.alpha(bin1, traits)
 spat.alpha(bin1, tree)

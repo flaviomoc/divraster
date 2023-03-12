@@ -4,21 +4,23 @@
 \alias{temp.beta.vec}
 \title{Temporal beta diversity calculation for vector}
 \usage{
-temp.beta.vec(x, nspp, spp, tree, resu)
+temp.beta.vec(x, nspp, spp, tree, resu, ...)
 }
 \arguments{
-\item{x}{vector with binary distribution of species}
+\item{x}{A numeric vector with presence-absence data (0 or 1) for a set of species.}
 
-\item{nspp}{species number}
+\item{nspp}{Numeric. Number of species.}
 
-\item{spp}{species name}
+\item{spp}{Character. Species name.}
 
-\item{tree}{species traits or phylogenetic tree}
+\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
 
-\item{resu}{vector to save results}
+\item{resu}{Numeric. A vector to store results.}
+
+\item{...}{Additional arguments to be passed passed down from a calling function.}
 }
 \value{
-vector
+A SpatRaster with beta results.
 }
 \description{
 Temporal beta diversity calculation for vector

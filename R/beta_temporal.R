@@ -1,18 +1,19 @@
 #' Temporal beta diversity calculation for vector
 #'
-#' @param x vector with binary distribution of species
-#' @param nspp species number
-#' @param spp species name
-#' @param tree species traits or phylogenetic tree
-#' @param resu vector to save results
+#' @param x A numeric vector with presence-absence data (0 or 1) for a set of species.
+#' @param nspp Numeric. Number of species.
+#' @param spp Character. Species name.
+#' @param tree It can be a data frame with species traits or a phylogenetic tree.
+#' @param resu Numeric. A vector to store results.
+#' @param ... Additional arguments to be passed passed down from a calling function.
 #'
-#' @return vector
-temp.beta.vec <- function(x, nspp, spp, tree, resu) {
-  if (all(is.na(x))) {
+#' @return A SpatRaster with beta results.
+temp.beta.vec <- function(x, nspp, spp, tree, resu, ...){
+  if (all(is.na(x))){
     resu[] <- NA
-  } else if (sum(x, na.rm = TRUE) == 0) {
+  } else if(sum(x, na.rm = TRUE) == 0){
     resu[] <- 0
-  } else {
+  } else{
     x[is.na(x)] <- 0
     x <- rbind(x[1:nspp], x[nspp + (1:nspp)])
     colnames(x) <- spp
@@ -23,21 +24,19 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu) {
 
 #' Temporal beta diversity calculation for raster
 #'
-#' @param bin1 spatraster
-#' @param bin2 spatraster
-#' @param tree species traits or phylogenetic tree
-#' @param cores parallel calculation
-#' @param filename save file if a name is provided
-#' @param overwrite replace old file
-#' @param ... additional arguments
+#' @param bin1 A SpatRaster with presence-absence data (0 or 1) for a set of species.
+#' @param bin2 A SpatRaster with presence-absence data (0 or 1) for a set of species.
+#' @param tree It can be a data frame with species traits or a phylogenetic tree.
+#' @param filename Character. Save results if a name is provided.
+#' @param cores A positive integer. If cores > 1, a 'parallel' package cluster with that many cores is created and used.
+#' @param ... Additional arguments to be passed passed down from a calling function.
 #'
-#' @return spatraster
+#' @return A SpatRaster with beta results.
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' library(terra)
-#' library(ape)
 #' set.seed(100)
 #' bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
 #' values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
@@ -54,15 +53,13 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu) {
 #' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 #' rownames(traits) <- names(bin1)
 #' set.seed(100)
-#' tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+#' tree <- ape::rtree(n = 10, tip.label = names(bin1))
 #' temp.beta(bin1, bin2)
 #' temp.beta(bin1, bin2, traits)
 #' temp.beta(bin1, bin2, tree)
 #' }
-temp.beta <- function(bin1, bin2, tree,
-                      cores = 1,
-                      filename = NULL,
-                      overwrite = TRUE, ...) {
+temp.beta <- function(bin1, bin2, tree, filename = NULL,
+                      cores = 1, ...){
   # Check if bin2 is NULL or invalid
   stopifnot(!is.null(substitute(bin2)), inherits(bin2, "SpatRaster"))
   # Check if bin1 is NULL or invalid
@@ -78,26 +75,26 @@ temp.beta <- function(bin1, bin2, tree,
   nspp <- terra::nlyr(bin1)
   # Get species names
   spp <- names(bin1)
-  #
+  # Create numeric vector to store results
   resu <- numeric(3)
   # Apply the function to SpatRaster object
-  if (missing(tree)) {
+  if(missing(tree)){
     res <- terra::app(c(bin1, bin2), temp.beta.vec, resu = resu, nspp = nspp, spp = spp, cores = cores, ...)
-  } else {
+  } else{
     res <- terra::app(c(bin1, bin2), temp.beta.vec, resu = resu, tree = tree, nspp = nspp, spp = spp, cores = cores, ...)
   }
   # Define names
   lyrnames <- c("Beta total", "Beta turn", "Beta nest")
-  if (missing(tree)) {
+  if(missing(tree)){
     names(res) <- paste0(lyrnames, ".TD")
-  } else if (inherits(tree, "data.frame")) {
+  } else if(inherits(tree, "data.frame")){
     names(res) <- paste0(lyrnames, ".FD")
-  } else {
+  } else{
     names(res) <- paste0(lyrnames, ".PD")
   }
   # Save output if filename is provided
-  if (!is.null(filename)) {
-    terra::writeRaster(res, filename, overwrite = overwrite, ...)
+  if(!is.null(filename)){
+    terra::writeRaster(res, filename, overwrite = TRUE, ...)
   }
   return(res)
 }

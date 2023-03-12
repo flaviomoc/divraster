@@ -2,30 +2,27 @@
 % Please edit documentation in R/beta_spatial.R
 \name{spat.beta.vec}
 \alias{spat.beta.vec}
-\title{Compute beta diversity on vectors}
+\title{Spatial beta diversity for vector}
 \usage{
-spat.beta.vec(x, tree, global = FALSE, func = "jac", spp, nspp)
+spat.beta.vec(x, tree, global = FALSE, spp, nspp)
 }
 \arguments{
-\item{x}{numeric vector with multiple species and multiple sites}
+\item{x}{A numeric vector with presence-absence data (0 or 1) for a set of species.}
 
-\item{tree}{a data.frame with species traits or a phylogenetic tree}
+\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
 
-\item{global}{default = FALSE to compare dissimilarity between focal cell and its neighboring cells}
+\item{global}{Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of pairwise comparisons of all possible cells combinations.}
 
-\item{func}{dissimilarity index. default = jaccard}
+\item{spp}{Character. Species names.}
 
-\item{spp}{species names}
-
-\item{nspp}{numeric. number of species to transform the vector
-into a matrix with nspp columns#'}
+\item{nspp}{Numeric. Number of species.}
 }
 \value{
-spatraster object
+A SpatRaster with beta results.
 }
 \description{
 This function will compute beta diversity on vectors containing
 multiple species at multiple sites. Species at sites should be
 placed sequentially, so that the vector can be transformed in a
-matrix with species at columns and sites at rows
+matrix with species at columns and sites at rows.
 }

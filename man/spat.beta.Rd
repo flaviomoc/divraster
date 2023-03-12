@@ -2,62 +2,54 @@
 % Please edit documentation in R/beta_spatial.R
 \name{spat.beta}
 \alias{spat.beta}
-\title{Compute beta diversity on spatRast objects}
+\title{Spatial beta diversity for raster}
 \usage{
 spat.beta(
   x,
   tree,
+  filename = NULL,
   global = FALSE,
-  func = "jac",
   fm = NULL,
   d = mean(terra::res(terra::rast(x))) * 2,
   type = "circle",
-  filetype = "GTiff",
-  filename = NULL,
-  overwrite = TRUE,
   na.policy = "omit",
   ...
 )
 }
 \arguments{
-\item{x}{raster brick or raster stack of species presence/absence}
+\item{x}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
 
-\item{tree}{a data.frame with species traits or a phylogenetic tree}
+\item{tree}{A data.frame with species traits or a phylogenetic tree.}
 
-\item{global}{default = FALSE to compare dissimilarity between focal cell and its neighboring cells}
+\item{filename}{Character. Save results if a name is provided.}
 
-\item{func}{dissiminarity index. default = jaccard}
+\item{global}{Logical. default = FALSE to compare dissimilarity between focal cell and its neighboring cells}
 
-\item{fm}{focal matrix. Numeric. Make a focal ("moving window")}
+\item{fm}{Focal matrix. Numeric. Make a focal ("moving window").}
 
-\item{d}{window radius to compute beta diversity metrics}
+\item{d}{Window radius to compute beta diversity.}
 
-\item{type}{window format}
+\item{type}{Character. Window format. Default = "circle".}
 
-\item{filetype}{file format expresses as GDAL driver names. If this
-argument is not supplied, the driver is derived from the filename.}
+\item{na.policy}{Character. Default = "omit". See ?terra::focal3D for details.}
 
-\item{filename}{character save output if a filename is provided}
-
-\item{overwrite}{Logical. Should saved files be overwritten with new values?}
-
-\item{na.policy}{default = omit}
-
-\item{...}{additional arguments}
+\item{...}{Additional arguments to be passed passed down from a calling function.}
 }
 \value{
-spatraster object
+A SpatRaster with beta results.
 }
 \description{
+Compute alpha diversity for taxonomic, functional, and phylogenetic diversity.
+}
+\details{
 This function will compute beta diversity on spatRast objects
-that contain binary (presence/absence) species distribution data
+that contain binary (presence/absence) species distribution data.
 }
 \examples{
 \dontrun{
 library(terra)
-library(ape)
 set.seed(100)
-bin1 <- terra::rast(ncol = 5, nrow = 5, nlyr = 10)
+bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
 values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
 names(bin1) <- paste0("sp", 1:10)
 set.seed(100)
@@ -69,7 +61,7 @@ range.size <- runif(10, 10000, 100000)
 traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
 rownames(traits) <- names(bin1)
 set.seed(100)
-tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+tree <- ape::rtree(n = 10, tip.label = names(bin1))
 spat.beta(bin1)
 spat.beta(bin1, traits)
 spat.beta(bin1, tree)

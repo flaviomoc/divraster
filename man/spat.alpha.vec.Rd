@@ -2,22 +2,22 @@
 % Please edit documentation in R/alpha.R
 \name{spat.alpha.vec}
 \alias{spat.alpha.vec}
-\title{Alpha calculation for a vector}
+\title{Alpha calculation for vector}
 \usage{
 spat.alpha.vec(x, tree, resu, ...)
 }
 \arguments{
-\item{x}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A numeric vector with presence-absence data (0 or 1) for a set of species.}
 
-\item{tree}{It can be a phylo object with phylogenetic tree for a set of species or a data.frame object with species traits.}
+\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
 
-\item{resu}{numeric vector}
+\item{resu}{Numeric. A vector to store results.}
 
-\item{...}{additional arguments}
+\item{...}{Additional arguments to be passed passed down from a calling function.}
 }
 \value{
-A numeric vector with alpha result.
+A SpatRaster with alpha result.
 }
 \description{
-Alpha calculation for a vector
+Alpha calculation for vector
 }
