@@ -23,9 +23,9 @@ spat.beta(
 
 \item{filename}{Character. Save results if a name is provided.}
 
-\item{global}{Logical. default = FALSE to compare dissimilarity between focal cell and its neighboring cells}
+\item{global}{Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of all pairwise comparisons.}
 
-\item{fm}{Focal matrix. Numeric. Make a focal ("moving window").}
+\item{fm}{Numeric. Focal matrix ("moving window").}
 
 \item{d}{Window radius to compute beta diversity.}
 

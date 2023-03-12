@@ -4,14 +4,16 @@
 #' multiple species at multiple sites. Species at sites should be
 #' placed sequentially, so that the vector can be transformed in a
 #' matrix with species at columns and sites at rows.
+#'
 #' @param x A numeric vector with presence-absence data (0 or 1) for a set of species.
 #' @param tree It can be a data frame with species traits or a phylogenetic tree.
-#' @param global Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of pairwise comparisons of all possible cells combinations.
+#' @param global Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of all pairwise comparisons.
 #' @param spp Character. Species names.
 #' @param nspp Numeric. Number of species.
+#' @param ... Additional arguments to be passed passed down from a calling function.
 #'
 #' @return A SpatRaster with beta results.
-spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp){
+spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...){
   x <- matrix(x, ncol = nspp, byrow = F, dimnames = list(NULL, spp))
   x <- subset(x, select = colnames(x) != "lyr1")
   fcel <- ceiling(nrow(x)/2)
@@ -42,8 +44,8 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp){
 #' @param x A SpatRaster with presence-absence data (0 or 1) for a set of species.
 #' @param tree A data.frame with species traits or a phylogenetic tree.
 #' @param filename Character. Save results if a name is provided.
-#' @param global Logical. default = FALSE to compare dissimilarity between focal cell and its neighboring cells
-#' @param fm Focal matrix. Numeric. Make a focal ("moving window").
+#' @param global Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of all pairwise comparisons.
+#' @param fm Numeric. Focal matrix ("moving window").
 #' @param d Window radius to compute beta diversity.
 #' @param type Character. Window format. Default = "circle".
 #' @param na.policy Character. Default = "omit". See ?terra::focal3D for details.
