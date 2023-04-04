@@ -53,9 +53,9 @@ spat.alpha.vec <- function(x, tree, resu, ...){
 #' }
 spat.alpha <- function(bin, tree, cores = 1, filename = NULL, ...){
   # transform data
-  if(!inherits(bin, "SpatRaster")){
-    bin <- terra::rast(bin)
-  }
+  # if(!inherits(bin, "SpatRaster")){
+  #   bin <- terra::rast(bin)
+  # }
   # check if bin is NULL or invalid
   stopifnot(!is.null(substitute(bin)), inherits(bin, "SpatRaster"))
   # check if bin has at least 2 layers

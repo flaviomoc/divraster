@@ -81,9 +81,9 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
                       type = "circle",
                       na.policy = "omit", ...){
   # transform data
-  if(!inherits(x, "SpatRaster")){
-    x <- terra::rast(x)
-  }
+  # if(!inherits(x, "SpatRaster")){
+  #   x <- terra::rast(x)
+  # }
   # create focal matrix
   if(is.null(fm)){
     min.d <- sqrt(prod(terra::res(x))) # mean(res(x)*112)
