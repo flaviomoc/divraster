@@ -1,6 +1,6 @@
 Package: DMSD
 Title: Calculating Diversity Metrics from Spatialized Data
-Version: 0.0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Flávio", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-0308-7151"))

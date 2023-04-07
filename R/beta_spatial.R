@@ -147,7 +147,7 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
                             na.policy = na.policy, ...)
   }
   # define names
-  lyrnames <- c("Beta total", "Beta turn", "Beta nest")
+  lyrnames <- c("Beta total", "Beta repl", "Beta rich")
   if(missing(tree)){
     names(betaR) <- paste0(lyrnames, ".TD")
   } else if(inherits(tree, "data.frame")){

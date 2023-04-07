@@ -84,7 +84,7 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
     res <- terra::app(c(bin1, bin2), temp.beta.vec, resu = resu, tree = tree, nspp = nspp, spp = spp, cores = cores, ...)
   }
   # Define names
-  lyrnames <- c("Beta total", "Beta turn", "Beta nest")
+  lyrnames <- c("Beta total", "Beta repl", "Beta rich")
   if(missing(tree)){
     names(res) <- paste0(lyrnames, ".TD")
   } else if(inherits(tree, "data.frame")){
