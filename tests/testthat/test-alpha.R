@@ -25,7 +25,7 @@ test_that("function spat.alpha works", {
   alpha.pd <- spat.alpha(bin1, tree)
 
   # testing
-  expect_equal(alpha.td@pnt$range_min, 3)
-  expect_equal(round(alpha.fd@pnt$range_min, 2), .77)
-  expect_equal(round(alpha.pd@pnt$range_min, 2), 5.2)
+  expect_equal(alpha.td@ptr$range_min, 3)
+  expect_equal(round(alpha.fd@ptr$range_min, 2), .77)
+  expect_equal(round(alpha.pd@ptr$range_min, 2), 5.2)
 })

@@ -17,5 +17,5 @@ load.data <- function() {
   fut <- terra::rast(system.file("extdata", "fut_frugivor.tif", package = "DMSD"))
   traits <- utils::read.csv(system.file("extdata", "traits_frugivor.csv", package = "DMSD"), sep = ";", row.names = 1)
   tree <- ape::read.tree(system.file("extdata", "tree_frugivor.tre", package = "DMSD"))
-  return(list(reference = ref, fututure = fut, traits = traits, tree = tree))
+  return(list(ref = ref, fut = fut, traits = traits, tree = tree))
 }
