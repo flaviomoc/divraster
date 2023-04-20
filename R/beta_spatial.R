@@ -26,7 +26,7 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...){
   } else if(sum(x, na.rm = T) == 0){
     return(c(Btotal = 0, Brepl = 0, Brich = 0))
   } else{
-    res <- sapply(BAT::beta(x, tree, abund = FALSE),
+    res <- sapply(BAT::beta(x, tree, abund = TRUE),
                   function(x, global){
                     ifelse(global,
                            mean(x), # mean of all possible pairwise combinations
@@ -80,52 +80,56 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
                       d = mean(terra::res(terra::rast(x)))*2,
                       type = "circle",
                       na.policy = "omit", ...){
-  # transform data
-  # if(!inherits(x, "SpatRaster")){
-  #   x <- terra::rast(x)
-  # }
-  # create focal matrix
+  # Check if coordinates are geographic
+  if(!terra::is.lonlat(x)){
+    stop("'x' must has geographic coordinates.")
+  }
+  # Transform RasterStack into SpatRaster
+  if(!inherits(x, "SpatRaster")){
+    x <- terra::rast(x)
+  }
+  # Create focal matrix
   if(is.null(fm)){
     min.d <- sqrt(prod(terra::res(x))) # mean(res(x)*112)
     if(d < min.d){
-      stop(paste("radius too small to build a focal window.
-                 Minimum d should be larger than:", min.d)) # 111.1194*res(x)[2]/(cos(y*(pi/180)))))
+      stop(paste("Radius too small to build a focal window.
+                 Minimum d must be larger than:", min.d)) # 111.1194*res(x)[2]/(cos(y*(pi/180)))))
     }
     fm <- terra::focalMat(x,
                           d, # window size (if not provided create based on distance)
                           type = type,
                           fillNA = FALSE)
   }
-  # transform values to 1 to find exact values
+  # Transform values to 1 to find exact values
   fm[] <- fm/fm
   fm[is.nan(fm)] <- 0 # replace NaN by 0
-  # test even-odd dimensions in window
+  # Test even-odd dimensions in window
   # 'terra::focal3D' only works with odd dimensions
   even <- (c(dim(fm), terra::nlyr(x)) %% 2) == 0
   if(any(even)){
-    # test if fm dims are even
+    # Test if fm dims are even
     if(even[1]){
       fm <- rbind(fm, 0)
     }
     if(even[2]){
       fm <- cbind(fm, 0)
     }
-    # test if number of spp layers is even
+    # Test if number of spp layers is even
     if(even[3]){
-      # add layer to get odd dimensions
+      # Add layer to get odd dimensions
       x <- c(x, terra::app(x, function(x){
         ifelse(all(is.na(x)), NA, 0)
       }))
-      # create array to 3D focal calculations
+      # Create array to 3D focal calculations
       fmA <- replicate(terra::nlyr(x), fm)
-      # set weight 0 for last layer
+      # Set weight 0 for last layer
       fmA[,,terra::nlyr(x)] <- 0
     } else{
-      # create array to 3D focal calculations
+      # Create array to 3D focal calculations
       fmA <- replicate(terra::nlyr(x), fm)
     }
   } else{
-    # create array to 3D focal calculations
+    # Create array to 3D focal calculations
     fmA <- replicate(terra::nlyr(x), fm)
   }
   if(missing(tree)){
@@ -146,8 +150,8 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
                             nspp = terra::nlyr(x),
                             na.policy = na.policy, ...)
   }
-  # define names
-  lyrnames <- c("Beta total", "Beta repl", "Beta rich")
+  # Define names
+  lyrnames <- c("Btotal", "Brepl", "Brich")
   if(missing(tree)){
     names(betaR) <- paste0(lyrnames, ".TD")
   } else if(inherits(tree, "data.frame")){
@@ -155,7 +159,7 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
   } else{
     names(betaR) <- paste0(lyrnames, ".PD")
   }
-  # save the output if filename is provided
+  # Save the output if filename is provided
   if(!is.null(filename)){
     betaR <- terra::writeRaster(betaR, filename, overwrite = TRUE, ...)
   }

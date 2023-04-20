@@ -60,6 +60,10 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...){
 #' }
 temp.beta <- function(bin1, bin2, tree, filename = NULL,
                       cores = 1, ...){
+  # Check if coordinates are geographic
+  if(!terra::is.lonlat(bin1) | !terra::is.lonlat(bin2)){
+    stop("Both rasters must have geographic coordinates.")
+  }
   # Check if bin2 is NULL or invalid
   stopifnot(!is.null(substitute(bin2)), inherits(bin2, "SpatRaster"))
   # Check if bin1 is NULL or invalid
@@ -84,7 +88,7 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
     res <- terra::app(c(bin1, bin2), temp.beta.vec, resu = resu, tree = tree, nspp = nspp, spp = spp, cores = cores, ...)
   }
   # Define names
-  lyrnames <- c("Beta total", "Beta repl", "Beta rich")
+  lyrnames <- c("Btotal", "Brepl", "Brich")
   if(missing(tree)){
     names(res) <- paste0(lyrnames, ".TD")
   } else if(inherits(tree, "data.frame")){

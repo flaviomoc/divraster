@@ -52,23 +52,27 @@ spat.alpha.vec <- function(x, tree, resu, ...){
 #' spat.alpha(bin1, tree)
 #' }
 spat.alpha <- function(bin, tree, cores = 1, filename = NULL, ...){
-  # transform data
-  # if(!inherits(bin, "SpatRaster")){
-  #   bin <- terra::rast(bin)
-  # }
-  # check if bin is NULL or invalid
+  # Check if coordinates are geographic
+  if(!terra::is.lonlat(bin)){
+    stop("'bin' must has geographic coordinates.")
+  }
+  # Transform RasterStack into SpatRaster
+  if(!inherits(bin, "SpatRaster")){
+    bin <- terra::rast(bin)
+  }
+  # Check if bin is NULL or invalid
   stopifnot(!is.null(substitute(bin)), inherits(bin, "SpatRaster"))
-  # check if bin has at least 2 layers
+  # Check if bin has at least 2 layers
   stopifnot(terra::nlyr(bin) >= 2)
-  # create numeric vector to store result
+  # Create numeric vector to store result
   resu <- numeric(1)
-  # apply the function to SpatRaster object
+  # Apply the function to SpatRaster object
   if(missing(tree)){
     res <- terra::app(bin, spat.alpha.vec, resu = resu, cores = cores, ...)
   } else{
     res <- terra::app(bin, spat.alpha.vec, resu = resu, cores = cores, tree = tree, ...)
   }
-  # define names
+  # Define names
   if(missing(tree)){
     names(res) <- "Alpha.TD"
   }
@@ -78,7 +82,7 @@ spat.alpha <- function(bin, tree, cores = 1, filename = NULL, ...){
   else{
     names(res) <- "Alpha.PD"
   }
-  # save the output if filename is provided
+  # Save the output if filename is provided
   if(!is.null(filename)){
     terra::writeRaster(res, filename, overwrite = TRUE)
   }
