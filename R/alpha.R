@@ -61,9 +61,12 @@ spat.alpha <- function(bin, tree, cores = 1, filename = NULL, ...){
     bin <- terra::rast(bin)
   }
   # Check if bin is NULL or invalid
-  stopifnot(!is.null(substitute(bin)), inherits(bin, "SpatRaster"))
-  # Check if bin has at least 2 layers
-  stopifnot(terra::nlyr(bin) >= 2)
+  if(is.null(bin) || !inherits(bin, "SpatRaster")){
+    stop("'bin' must be a SpatRaster.")
+  }
+  if(terra::nlyr(bin) < 2){
+    stop("'bin' must has at least 2 layers.")
+  }
   # Create numeric vector to store result
   resu <- numeric(1)
   # Apply the function to SpatRaster object

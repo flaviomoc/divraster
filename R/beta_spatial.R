@@ -88,6 +88,13 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
   if(!inherits(x, "SpatRaster")){
     x <- terra::rast(x)
   }
+  # Check if x is NULL or invalid
+  if(is.null(x) || !inherits(x, "SpatRaster")){
+    stop("'x' must be a SpatRaster.")
+  }
+  if(terra::nlyr(x) < 2){
+    stop("'x' must has at least 2 layers.")
+  }
   # Create focal matrix
   if(is.null(fm)){
     min.d <- sqrt(prod(terra::res(x))) # mean(res(x)*112)
