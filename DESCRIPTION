@@ -16,7 +16,8 @@ Imports:
     BAT,
     stats,
     terra,
-    utils
+    utils,
+    SESraster
 Suggests: 
     ape,
     knitr,

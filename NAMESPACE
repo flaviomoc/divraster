@@ -3,4 +3,5 @@
 export(load.data)
 export(spat.alpha)
 export(spat.beta)
+export(spat.rand)
 export(temp.beta)
