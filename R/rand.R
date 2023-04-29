@@ -49,19 +49,27 @@ spat.rand <- function(x,
   }
   rand <- list() # to store the rasters in the loop
   if(random == "spat"){
-    rich <- terra::app(x, sum, na.rm = TRUE) # calculate richness
-    fr_prob <- SESraster::fr2prob(x) # calculate probability
+    # rich <- terra::app(x, sum, na.rm = TRUE)
+    # prob <- terra::app(x,
+    #                    function(x){
+    #                      ifelse(is.na(x), 0, 1)
+    #                    })
+    # fr_prob <- SESraster::fr2prob(x)
     for(i in 1:aleats){
       ### shuffle
-      pres.site.null <- SESraster::bootspat_str(x = x, rich = rich,
-                                                fr_prob = fr_prob)
-      ### calculate FD or PD based on 'tree' class
+      ################
+      ### CONFERIR ###
+      ################
+      pres.site.null <- SESraster::bootspat_str(x)
       rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, ...)
     }
     rand <- terra::rast(rand) # to transform a list in raster
   } else if(random != "spat"){
     for(i in 1:aleats){
       ### shuffle
+      ################
+      ### CONFERIR ###
+      ################
       pres.site.null <- SESraster::bootspat_naive(x, random = random)
       ### calculate FD or PD based on 'tree' class
       rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, ...)
@@ -75,6 +83,9 @@ spat.rand <- function(x,
 
   ### FD observed
   {
+    ################
+    ### CONFERIR ###
+    ################
     #x.reord <- x[[rownames(tree)]] # to reorder the stack according to the tree
 
     obs <- DMSD::spat.alpha(x, tree)
