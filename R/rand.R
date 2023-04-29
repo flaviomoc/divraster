@@ -80,16 +80,15 @@ spat.rand <- function(x,
   }
   rand.mean <- terra::mean(rand, na.rm = TRUE) # rand mean
   rand.sd <- terra::stdev(rand, na.rm = TRUE) # rand standard deviation
-
-  ### FD observed
-  {
-    ################
-    ### CONFERIR ###
-    ################
-    #x.reord <- x[[rownames(tree)]] # to reorder the stack according to the tree
-
-    obs <- DMSD::spat.alpha(x, tree)
+  # Reorder raster layers
+  if(inherits(tree, "data.frame")){
+    x.reord <- x[[rownames(tree)]]
   }
+  if(inherits(tree, "phylo")){
+    x.reord <- x[[tree$tip.label]]
+  }
+  ### Observed values
+  obs <- DMSD::spat.alpha(x.reord, tree)
 
   ### Concatenate rasters
   rand <- c(rand.mean, rand.sd, obs)
