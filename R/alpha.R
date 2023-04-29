@@ -33,20 +33,9 @@ spat.alpha.vec <- function(x, tree, resu, ...){
 #' @examples
 #' \dontrun{
 #' library(terra)
-#' set.seed(100)
-#' bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
-#' values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
-#' names(bin1) <- paste0("sp", 1:10)
-#' set.seed(100)
-#' mass <- runif(10, 10, 800)
-#' beak.size <- runif(10, .2, 5)
-#' tail.length <- runif(10, 2, 10)
-#' wing.length <- runif(10, 15, 60)
-#' range.size <- runif(10, 10000, 100000)
-#' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
-#' rownames(traits) <- names(bin1)
-#' set.seed(100)
-#' tree <- ape::rtree(n = 10, tip.label = names(bin1))
+#' bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
+#' traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
+#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
 #' spat.alpha(bin1)
 #' spat.alpha(bin1, traits)
 #' spat.alpha(bin1, tree)
@@ -73,17 +62,21 @@ spat.alpha <- function(bin, tree, cores = 1, filename = NULL, ...){
   if(missing(tree)){
     res <- terra::app(bin, spat.alpha.vec, resu = resu, cores = cores, ...)
   } else{
+    # Check if 'tree' object is valid
+    if(!inherits(tree, c("data.frame", "phylo"))){
+      stop("'tree' must be a data.frame or a phylo object.")
+    }
     res <- terra::app(bin, spat.alpha.vec, resu = resu, cores = cores, tree = tree, ...)
   }
   # Define names
   if(missing(tree)){
-    names(res) <- "Alpha.TD"
+    names(res) <- "Alpha_TD"
   }
   else if(inherits(tree, "data.frame")){
-    names(res) <- "Alpha.FD"
+    names(res) <- "Alpha_FD"
   }
   else{
-    names(res) <- "Alpha.PD"
+    names(res) <- "Alpha_PD"
   }
   # Save the output if filename is provided
   if(!is.null(filename)){

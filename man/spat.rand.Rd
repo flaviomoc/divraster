@@ -2,28 +2,45 @@
 % Please edit documentation in R/rand.R
 \name{spat.rand}
 \alias{spat.rand}
-\title{standardize effect size}
+\title{Standardize Effect Size (SES) for functional and phylogenetic diversity}
 \usage{
-spat.rand(x, tree, aleats, random = "spat", cores = 1, filename = NULL, ...)
+spat.rand(
+  x,
+  tree,
+  aleats,
+  random = c("site", "species", "both", "spat"),
+  cores = 1,
+  filename = NULL,
+  ...
+)
 }
 \arguments{
-\item{x}{SpatRaster}
+\item{x}{SpatRaster. A SpatRaster containing presence-absence data (0 or 1) for a set of species.}
 
-\item{tree}{species traits or phylogenetic tree}
+\item{tree}{a data.frame with species traits or a phylogenetic tree.}
 
-\item{aleats}{number of randomizations}
+\item{aleats}{positive integer. A positive integer indicating how many times the calculation should be repeated.}
 
-\item{random}{randomization method}
+\item{random}{character. A character indicating the type of randomization. The currently available randomization methods are "spat", "site", "species" or "both" (site and species).}
 
-\item{cores}{multi-core processing}
+\item{cores}{positive integer. If cores > 1, a 'parallel' package cluster with that many cores is created and used.}
 
-\item{filename}{output name}
+\item{filename}{character. Output filename.}
 
-\item{...}{additional arguments}
+\item{...}{additional arguments to be passed passed down from a calling function.}
 }
 \value{
-SpatRaster with mean, sd, observed, and ses
+SpatRaster with Mean, SD, Observed, and SES.
 }
 \description{
-standardize effect size
+Calculates the standardized effect size for functional and phylogenetic diversity. See SESraster package for details.
+}
+\examples{
+\dontrun{
+x <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
+traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
+tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
+spat.rand(x, traits, 10, "spat")
+spat.rand(x, tree, 10, "spat")
+}
 }

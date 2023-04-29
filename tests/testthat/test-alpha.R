@@ -1,23 +1,10 @@
 test_that("function spat.alpha works", {
 
-  # creating data
-  library(terra)
-  set.seed(100)
-  bin1 <- terra::rast(ncol = 5, nrow = 5, nlyr = 10)
-  values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
-  names(bin1) <- paste0("sp", 1:10)
-
-  set.seed(100)
-  mass <- runif(10, 10, 800)
-  beak.size <- runif(10, .2, 5)
-  tail.length <- runif(10, 2, 10)
-  wing.length <- runif(10, 15, 60)
-  range.size <- runif(10, 10000, 100000)
-  traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
-  rownames(traits) <- names(bin1)
-
-  set.seed(100)
-  tree <- ape::rtree(n = 10, tip.label = paste0("sp", 1:10))
+  # loading data
+  bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
+  bin2 <- terra::rast(system.file("extdata", "fut.tif", package = "DMSD"))
+  traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
+  tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
 
   # applying the function
   alpha.td <- spat.alpha(bin1)
@@ -25,7 +12,7 @@ test_that("function spat.alpha works", {
   alpha.pd <- spat.alpha(bin1, tree)
 
   # testing
-  expect_equal(alpha.td@ptr$range_min, 3)
-  expect_equal(round(alpha.fd@ptr$range_min, 2), .77)
-  expect_equal(round(alpha.pd@ptr$range_min, 2), 5.2)
+  expect_equal(alpha.td@ptr$range_min, 2)
+  expect_equal(round(alpha.fd@ptr$range_min, 2), .24)
+  expect_equal(round(alpha.pd@ptr$range_min, 2), 3.1)
 })

@@ -57,20 +57,10 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...){
 #' @examples
 #' \dontrun{
 #' library(terra)
-#' set.seed(100)
-#' bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
-#' values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
-#' names(bin1) <- paste0("sp", 1:10)
-#' set.seed(100)
-#' mass <- runif(10, 10, 800)
-#' beak.size <- runif(10, .2, 5)
-#' tail.length <- runif(10, 2, 10)
-#' wing.length <- runif(10, 15, 60)
-#' range.size <- runif(10, 10000, 100000)
-#' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
+#' bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
+#' traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
 #' rownames(traits) <- names(bin1)
-#' set.seed(100)
-#' tree <- ape::rtree(n = 10, tip.label = names(bin1))
+#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
 #' spat.beta(bin1)
 #' spat.beta(bin1, traits)
 #' spat.beta(bin1, tree)
@@ -148,6 +138,10 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
                             nspp = terra::nlyr(x),
                             na.policy = na.policy, ...)
   } else{
+    # Check if 'tree' object is valid
+    if(!inherits(tree, c("data.frame", "phylo"))){
+      stop("'tree' must be a data.frame or a phylo object.")
+    }
     betaR <- terra::focal3D(x,
                             fmA,
                             spat.beta.vec,
@@ -160,11 +154,11 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
   # Define names
   lyrnames <- c("Btotal", "Brepl", "Brich")
   if(missing(tree)){
-    names(betaR) <- paste0(lyrnames, ".TD")
+    names(betaR) <- paste0(lyrnames, "_TD")
   } else if(inherits(tree, "data.frame")){
-    names(betaR) <- paste0(lyrnames, ".FD")
+    names(betaR) <- paste0(lyrnames, "_FD")
   } else{
-    names(betaR) <- paste0(lyrnames, ".PD")
+    names(betaR) <- paste0(lyrnames, "_PD")
   }
   # Save the output if filename is provided
   if(!is.null(filename)){

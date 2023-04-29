@@ -37,23 +37,10 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...){
 #' @examples
 #' \dontrun{
 #' library(terra)
-#' set.seed(100)
-#' bin1 <- rast(ncol = 5, nrow = 5, nlyr = 10)
-#' values(bin1) <- round(runif(ncell(bin1) * nlyr(bin1)))
-#' names(bin1) <- paste0("sp", 1:10)
-#' bin2 <- rast(ncol = 5, nrow = 5, nlyr = 10)
-#' values(bin2) <- round(runif(ncell(bin2) * nlyr(bin2)))
-#' names(bin2) <- names(bin1)
-#' set.seed(100)
-#' mass <- runif(10, 10, 800)
-#' beak.size <- runif(10, .2, 5)
-#' tail.length <- runif(10, 2, 10)
-#' wing.length <- runif(10, 15, 60)
-#' range.size <- runif(10, 10000, 100000)
-#' traits <- data.frame(mass, beak.size, tail.length, wing.length, range.size)
-#' rownames(traits) <- names(bin1)
-#' set.seed(100)
-#' tree <- ape::rtree(n = 10, tip.label = names(bin1))
+#' bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
+#' bin2 <- terra::rast(system.file("extdata", "fut.tif", package = "DMSD"))
+#' traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
+#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
 #' temp.beta(bin1, bin2)
 #' temp.beta(bin1, bin2, traits)
 #' temp.beta(bin1, bin2, tree)
@@ -92,16 +79,20 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
   if(missing(tree)){
     res <- terra::app(c(bin1, bin2), temp.beta.vec, resu = resu, nspp = nspp, spp = spp, cores = cores, ...)
   } else{
+    # Check if 'tree' object is valid
+    if(!inherits(tree, c("data.frame", "phylo"))){
+      stop("'tree' must be a data.frame or a phylo object.")
+    }
     res <- terra::app(c(bin1, bin2), temp.beta.vec, resu = resu, tree = tree, nspp = nspp, spp = spp, cores = cores, ...)
   }
   # Define names
   lyrnames <- c("Btotal", "Brepl", "Brich")
   if(missing(tree)){
-    names(res) <- paste0(lyrnames, ".TD")
+    names(res) <- paste0(lyrnames, "_TD")
   } else if(inherits(tree, "data.frame")){
-    names(res) <- paste0(lyrnames, ".FD")
+    names(res) <- paste0(lyrnames, "_FD")
   } else{
-    names(res) <- paste0(lyrnames, ".PD")
+    names(res) <- paste0(lyrnames, "_PD")
   }
   # Save output if filename is provided
   if(!is.null(filename)){
