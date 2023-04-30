@@ -49,19 +49,19 @@ spat.rand <- function(x,
   }
   rand <- list() # to store the rasters in the loop
   if(random == "spat"){
-    # rich <- terra::app(x, sum, na.rm = TRUE)
-    # prob <- terra::app(x,
-    #                    function(x){
-    #                      ifelse(is.na(x), 0, 1)
-    #                    })
-    # fr_prob <- SESraster::fr2prob(x)
+    rich <- terra::app(x, sum, na.rm = TRUE)
+    prob <- terra::app(x,
+                       function(x){
+                         ifelse(is.na(x), 0, 1)
+                       })
+    fr_prob <- SESraster::fr2prob(x)
     for(i in 1:aleats){
       ### shuffle
       ################
       ### CONFERIR ###
       ################
-      pres.site.null <- SESraster::bootspat_str(x)
-      rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, ...)
+      pres.site.null <- SESraster::bootspat_str(x, rich = rich, prob = prob, fr_prob = fr_prob, cores = cores)
+      rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, cores = cores, ...)
     }
     rand <- terra::rast(rand) # to transform a list in raster
   } else if(random != "spat"){
@@ -70,9 +70,9 @@ spat.rand <- function(x,
       ################
       ### CONFERIR ###
       ################
-      pres.site.null <- SESraster::bootspat_naive(x, random = random)
+      pres.site.null <- SESraster::bootspat_naive(x, random = random, cores = cores)
       ### calculate FD or PD based on 'tree' class
-      rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, ...)
+      rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, cores = cores, ...)
     }
     rand <- terra::rast(rand) # to transform a list in raster
   } else{
@@ -88,7 +88,7 @@ spat.rand <- function(x,
     x.reord <- x[[tree$tip.label]]
   }
   ### Observed values
-  obs <- DMSD::spat.alpha(x.reord, tree)
+  obs <- DMSD::spat.alpha(x.reord, tree, cores = cores)
 
   ### Concatenate rasters
   rand <- c(rand.mean, rand.sd, obs)
