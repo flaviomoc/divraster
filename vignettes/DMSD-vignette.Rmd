@@ -49,12 +49,12 @@ terra::plot(alpha.pd)
 ## Standardize Effect Size
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
 # Functional
-ses.fd <- spat.rand(bin1, traits, 10, "spat")
+ses.fd <- spat.rand(bin1, traits, 10, "site")
 ses.fd
 terra::plot(ses.fd)
 
 # Phylogenetic
-ses.pd <- spat.rand(bin1, tree, 10, "spat")
+ses.pd <- spat.rand(bin1, tree, 10, "site")
 ses.pd
 terra::plot(ses.pd)
 ```
