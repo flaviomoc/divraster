@@ -37,9 +37,9 @@ Calculates the standardized effect size for functional and phylogenetic diversit
 }
 \examples{
 \dontrun{
-x <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
-traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
-tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
+x <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
+tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
 spat.rand(x, traits, 10, "spat")
 spat.rand(x, tree, 10, "spat")
 }

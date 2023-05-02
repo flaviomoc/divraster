@@ -48,10 +48,10 @@ that contain binary (presence/absence) species distribution data.
 \examples{
 \dontrun{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
-traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
+bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
 rownames(traits) <- names(bin1)
-tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
+tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
 spat.beta(bin1)
 spat.beta(bin1, traits)
 spat.beta(bin1, tree)

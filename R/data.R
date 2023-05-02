@@ -13,9 +13,9 @@
 #' data
 #' }
 load.data <- function() {
-  ref <- terra::rast(system.file("extdata", "ref_frugivor.tif", package = "DMSD"))
-  fut <- terra::rast(system.file("extdata", "fut_frugivor.tif", package = "DMSD"))
-  traits <- utils::read.csv(system.file("extdata", "traits_frugivor.csv", package = "DMSD"), sep = ";", row.names = 1)
-  tree <- ape::read.tree(system.file("extdata", "tree_frugivor.tre", package = "DMSD"))
+  ref <- terra::rast(system.file("extdata", "ref_frugivor.tif", package = "divraster"))
+  fut <- terra::rast(system.file("extdata", "fut_frugivor.tif", package = "divraster"))
+  traits <- utils::read.csv(system.file("extdata", "traits_frugivor.csv", package = "divraster"), sep = ";", row.names = 1)
+  tree <- ape::read.tree(system.file("extdata", "tree_frugivor.tre", package = "divraster"))
   return(list(ref = ref, fut = fut, traits = traits, tree = tree))
 }

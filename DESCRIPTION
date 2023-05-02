@@ -1,4 +1,4 @@
-Package: DMSD
+Package: divraster
 Title: Diversity Metrics for Rasterized Data
 Version: 1.0.0
 Authors@R: 
@@ -10,8 +10,8 @@ Authors@R:
            comment = c(ORCID = "0000-0002-0308-7151"))
 Description: It calculates diversity patterns from rasterized data for taxonomic, functional, and phylogenetic dimensions. Beta diversity can be partitioned into replacement and richness differences components.
 License: GPL (>= 3)
-URL: https://github.com/flaviomoc/DMSD
-BugReports: https://github.com/flaviomoc/DMSD/issues
+URL: https://github.com/flaviomoc/divraster
+BugReports: https://github.com/flaviomoc/divraster/issues
 Imports: 
     BAT,
     stats,

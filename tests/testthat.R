@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(DMSD)
+library(divraster)
 
-test_check("DMSD")
+test_check("divraster")

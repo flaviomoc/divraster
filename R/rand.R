@@ -15,9 +15,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' x <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
-#' traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
-#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
+#' x <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+#' traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
+#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
 #' spat.rand(x, traits, 10, "spat")
 #' spat.rand(x, tree, 10, "spat")
 #' }
@@ -61,7 +61,7 @@ spat.rand <- function(x,
       ### CONFERIR ###
       ################
       pres.site.null <- SESraster::bootspat_str(x, rich = rich, prob = prob, fr_prob = fr_prob, cores = cores)
-      rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, cores = cores, ...)
+      rand[[i]] <- divraster::spat.alpha(pres.site.null, tree, cores = cores, ...)
     }
     rand <- terra::rast(rand) # to transform a list in raster
   } else if(random != "spat"){
@@ -72,7 +72,7 @@ spat.rand <- function(x,
       ################
       pres.site.null <- SESraster::bootspat_naive(x, random = random, cores = cores)
       ### calculate FD or PD based on 'tree' class
-      rand[[i]] <- DMSD::spat.alpha(pres.site.null, tree, cores = cores, ...)
+      rand[[i]] <- divraster::spat.alpha(pres.site.null, tree, cores = cores, ...)
     }
     rand <- terra::rast(rand) # to transform a list in raster
   } else{
@@ -88,7 +88,7 @@ spat.rand <- function(x,
     x.reord <- x[[tree$tip.label]]
   }
   ### Observed values
-  obs <- DMSD::spat.alpha(x.reord, tree, cores = cores)
+  obs <- divraster::spat.alpha(x.reord, tree, cores = cores)
 
   ### Concatenate rasters
   rand <- c(rand.mean, rand.sd, obs)

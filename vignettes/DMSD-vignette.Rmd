@@ -1,9 +1,9 @@
 ---
-title: "DMSD Vignette"
+title: "divraster Vignette"
 author: "Flávio Mota"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{DMSD-vignette}
+  %\VignetteIndexEntry{divraster-vignette}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -14,18 +14,18 @@ vignette: >
 library(terra)
 library(BAT)
 library(SESraster)
-library(DMSD)
+library(divraster)
 
 # Load data
 # Presence-absence SpatRaster
-bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
-bin2 <- terra::rast(system.file("extdata", "fut.tif", package = "DMSD"))
+bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+bin2 <- terra::rast(system.file("extdata", "fut.tif", package = "divraster"))
 
 # Species traits
-traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
+traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
 
 # Phylogenetic tree
-tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
+tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
 ```
 
 ## Alpha diversity

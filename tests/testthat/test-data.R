@@ -1,7 +1,7 @@
 test_that("function load.data works", {
 
   # applying the function
-  data <- DMSD::load.data()
+  data <- divraster::load.data()
 
   # testing
   expect_equal(length(data), 4)

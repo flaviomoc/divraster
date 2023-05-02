@@ -33,9 +33,9 @@ spat.alpha.vec <- function(x, tree, resu, ...){
 #' @examples
 #' \dontrun{
 #' library(terra)
-#' bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "DMSD"))
-#' traits <- read.csv(system.file("extdata", "traits.csv", package = "DMSD"), row.names = 1)
-#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "DMSD"))
+#' bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+#' traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
+#' tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
 #' spat.alpha(bin1)
 #' spat.alpha(bin1, traits)
 #' spat.alpha(bin1, tree)
