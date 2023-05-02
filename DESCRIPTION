@@ -1,5 +1,5 @@
 Package: divraster
-Title: Diversity Metrics for Rasterized Data
+Title: Diversity Metrics Calculations for Rasterized Data
 Version: 1.0.0
 Authors@R: 
     person("Neander", "Heming", , "neanderh@yahoo.com.br", role = c("aut", "cre"),
