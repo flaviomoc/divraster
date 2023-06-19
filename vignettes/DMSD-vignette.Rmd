@@ -46,6 +46,13 @@ alpha.pd
 terra::plot(alpha.pd)
 ```
 
+## Average traits
+```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
+avg.traits <- spat.trait(bin1, traits)
+avg.traits
+terra::plot(avg.traits)
+```
+
 ## Standardize Effect Size
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
 # Functional

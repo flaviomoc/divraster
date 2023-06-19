@@ -17,20 +17,24 @@ devtools::install_github("flaviomoc/divraster")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a demonstration of how to solve a standard example:
 
 ``` r
 library(divraster)
 ## basic example code
 # load data
 data <- load.data()
-# taxonomic alpha diversity
+# taxonomic alpha
 spat.alpha(data$ref)
-# ses for phylogenetic alpha diversity
+# phylogenetic alpha
+spat.alpha(data$ref, data$tree)
+# standardize effect size for phylogenetic alpha
 spat.rand(data$ref, data$tree, 3, "site") 
-# taxonomic spatial beta diversity
+# spatial beta for taxonomic
 spat.beta(data$ref)
-# taxonomic temporal beta diversity
+# temporal beta for taxonomic
 temp.beta(data$ref, data$fut)
+# temporal beta for phylogenetic
+temp.beta(data$ref, data$fut, data$tree)
 ```
 
