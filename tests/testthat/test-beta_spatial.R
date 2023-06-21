@@ -9,10 +9,10 @@ test_that("function spat.beta works", {
   beta.td <- spat.beta(bin1, filename = paste0(tempfile(), ".tif"))
   beta.fd <- spat.beta(bin1, traits)
   beta.pd <- spat.beta(bin1, tree)
-  bin.na = bin1
-  bin.na2 = bin1
+  bin.na <- bin1
+  bin.na2 <- bin1
   bin.na2[1:8, ] <- NA
-  bin.crs = bin1
+  bin.crs <- bin1
   bin.na[1] <- NA
   terra::crs(bin.crs) <- "epsg:25831"
 

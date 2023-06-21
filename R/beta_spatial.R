@@ -14,16 +14,16 @@
 #'
 #' @return A SpatRaster with beta results.
 spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...){
-  x <- matrix(x, ncol = nspp, byrow = F, dimnames = list(NULL, spp))
+  x <- matrix(x, ncol = nspp, byrow = FALSE, dimnames = list(NULL, spp))
   x <- subset(x, select = colnames(x) != "lyr1")
   fcel <- ceiling(nrow(x)/2)
   x[] <- x[c(fcel, 1:(fcel - 1), (fcel + 1):nrow(x)), ]
-  x <- x[stats::complete.cases(x) & rowSums(x, na.rm = T) > 0, ] # maybe replace NAs with 0
+  x <- x[stats::complete.cases(x) & rowSums(x, na.rm = TRUE) > 0, ] # maybe replace NAs with 0
   if(all(is.na(x))){
     return(c(Btotal = NA, Brepl = NA, Brich = NA))
   } else if(!inherits(x, "matrix")){
     return(c(Btotal = 0, Brepl = 0, Brich = 0))
-  } else if(sum(x, na.rm = T) == 0){
+  } else if(sum(x, na.rm = TRUE) == 0){
     return(c(Btotal = 0, Brepl = 0, Brich = 0))
   } else{
     res <- sapply(BAT::beta(x, tree, abund = TRUE),

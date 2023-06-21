@@ -5,7 +5,7 @@ test_that("function temp.beta works", {
   bin2 <- terra::rast(system.file("extdata", "fut.tif", package = "divraster"))
   traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
   tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
-  bin.na = bin1
+  bin.na <- bin1
   bin.na[1] <- NA
 
   # applying the function
@@ -14,11 +14,11 @@ test_that("function temp.beta works", {
   beta.pd <- temp.beta(bin1, bin2, tree)
   bin.name <- bin1
   names(bin.name) <- paste0("x", 1:10)
-  bin.crs = bin1
+  bin.crs <- bin1
   terra::crs(bin.crs) <- "epsg:25831"
   bin.lyr <- bin1[[1:5]]
-  bin2.na = bin2
-  bin1.na = bin1
+  bin2.na <- bin2
+  bin1.na <- bin1
   bin2.na[1:7, ] <- NA
   bin1.na[1:7, ] <- NA
 

@@ -2,6 +2,7 @@
 # divraster
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 It calculates diversity patterns from rasterized data for taxonomic, functional, and phylogenetic dimensions. Beta diversity can be partitioned into replacement and richness differences components. It also calculates standardize effect size for functional and phylogenetic alpha diversity.

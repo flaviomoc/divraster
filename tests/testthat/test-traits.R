@@ -6,7 +6,7 @@ test_that("function spat.trait works", {
 
   # applying the function
   res <- spat.trait(bin1, traits, filename = paste0(tempfile(), ".tif"))
-  bin.crs = bin1
+  bin.crs <- bin1
   terra::crs(bin.crs) <- "epsg:25831"
 
   # testing

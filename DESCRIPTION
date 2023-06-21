@@ -2,16 +2,16 @@ Package: divraster
 Title: Diversity Metrics Calculations for Rasterized Data
 Version: 1.0.0
 Maintainer: Flávio M. M. Mota <flaviomoc@gmail.com>
-Authors@R: 
-    person("Neander Marcel", "Heming", , "neanderh@yahoo.com.br",
-    role = c("ctb", "cre"),
-    comment = c(ORCID = "0000-0003-2461-5045"))
+Authors@R: c(
+     person("Flávio M. M.", "Mota", , "flaviomoc@gmail.com", 
+            role = c("aut", "cre", "cph"),
+            comment = c(ORCID = "0000-0002-0308-7151")),
+    person("Neander Marcel", "Heming", , "neanderh@yahoo.com.br", 
+            role = c("aut"),
+            comment = c(ORCID = "0000-0003-2461-5045")),
     person("Gabriela", "Alves-Ferreira", , "gabriela-alves77@hotmail.com",
-    role = c("ctb", "cre"),
-    comment = c(ORCID = "0000-0001-5661-3381"))
-    person("Flávio", "Mota", , "flaviomoc@gmail.com",
-    role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0002-0308-7151"))
+            role = c("aut"),
+            comment = c(ORCID = "0000-0001-5661-3381")))
 Description: It calculates diversity patterns from rasterized data for
     taxonomic, functional, and phylogenetic dimensions. Beta diversity can
     be partitioned into replacement and richness differences components.

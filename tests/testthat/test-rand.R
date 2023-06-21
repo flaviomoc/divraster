@@ -9,7 +9,7 @@ test_that("function spat.rand works", {
   ses.fd <- spat.rand(x, traits, 3, "spat", filename = paste0(tempfile(), ".tif"))
   ses.pd <- spat.rand(x, tree, 3, "spat")
   ses.pd2 <- spat.rand(x, tree, 3, "site")
-  bin.crs = x
+  bin.crs <- x
   terra::crs(bin.crs) <- "epsg:25831"
 
   # testing
