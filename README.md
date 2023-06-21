@@ -11,8 +11,17 @@ It calculates diversity patterns from rasterized data for taxonomic, functional,
 You can install the development version of divraster from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
+require(devtools)
+devtools::load_all()
 devtools::install_github("flaviomoc/divraster")
+```
+
+## SESraster dependency
+
+The divraster function for calculating Standardized Effect Sizes (SES) uses the package SESraster as a dependency, which can be installed with:
+
+``` r
+devtools::install_github("HemingNM/SESraster")
 ```
 
 ## Example
@@ -37,4 +46,3 @@ temp.beta(data$ref, data$fut)
 # temporal beta for phylogenetic
 temp.beta(data$ref, data$fut, data$tree)
 ```
-

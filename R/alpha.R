@@ -41,17 +41,12 @@ spat.alpha.vec <- function(x, tree, resu, ...){
 #' spat.alpha(bin1, tree)
 #' }
 spat.alpha <- function(bin, tree, cores = 1, filename = NULL, ...){
+  if(is.null(bin) || !inherits(bin, "SpatRaster")){
+    stop("'bin' must be a SpatRaster.")
+  }
   # Check if coordinates are geographic
   if(!terra::is.lonlat(bin)){
     stop("'bin' must has geographic coordinates.")
-  }
-  # Transform RasterStack into SpatRaster
-  if(!inherits(bin, "SpatRaster")){
-    bin <- terra::rast(bin)
-  }
-  # Check if bin is NULL or invalid
-  if(is.null(bin) || !inherits(bin, "SpatRaster")){
-    stop("'bin' must be a SpatRaster.")
   }
   if(terra::nlyr(bin) < 2){
     stop("'bin' must has at least 2 layers.")

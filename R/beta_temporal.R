@@ -47,10 +47,6 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...){
 #' }
 temp.beta <- function(bin1, bin2, tree, filename = NULL,
                       cores = 1, ...){
-  # Check if coordinates are geographic
-  if(!terra::is.lonlat(bin1) | !terra::is.lonlat(bin2)){
-    stop("Both rasters must have geographic coordinates.")
-  }
   # Check if rasters are NULL or invalid
   if(is.null(bin1) || !inherits(bin1, "SpatRaster")){
     stop("'bin1' must be a SpatRaster.")
@@ -58,16 +54,16 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
   if(is.null(bin2) || !inherits(bin2, "SpatRaster")){
     stop("'bin2' must be a SpatRaster.")
   }
+  # Check if coordinates are geographic
+  if(!terra::is.lonlat(bin1) | !terra::is.lonlat(bin2)){
+    stop("Both rasters must have geographic coordinates.")
+  }
   if(terra::nlyr(bin1) < 2 | terra::nlyr(bin2) < 2){
     stop("Rasters must have at least 2 layers.")
   }
   # Check if the names of bin1 and bin2 match
   if(!identical(names(bin1), names(bin2))){
     stop("The names of the rasters do not match.")
-  }
-  # Check if bin1 and bin2 have the same number of layers
-  if(terra::nlyr(bin1) != terra::nlyr(bin2)){
-    stop("Rasters must have the same number of layers.")
   }
   # Get number of species
   nspp <- terra::nlyr(bin1)

@@ -27,13 +27,15 @@ spat.rand <- function(x,
                       random = c("site", "species", "both", "spat"),
                       cores = 1,
                       filename = NULL, ...){
+  if(is.null(x) || !inherits(x, "SpatRaster")){
+    stop("'x' must be a SpatRaster.")
+  }
   # Check if coordinates are geographic
   if(!terra::is.lonlat(x)){
     stop("'x' must has geographic coordinates.")
   }
-  # Transform RasterStack into SpatRaster
-  if(!inherits(x, "SpatRaster")){
-    x <- terra::rast(x)
+  if(terra::nlyr(x) < 2){
+    stop("'x' must has at least 2 layers.")
   }
   # Check if random argument is valid
   if(missing(random)){

@@ -4,10 +4,10 @@
 \alias{spat.trait}
 \title{Average trait calculation for raster}
 \usage{
-spat.trait(r, trait, cores = 1, filename = NULL, ...)
+spat.trait(x, trait, cores = 1, filename = NULL, ...)
 }
 \arguments{
-\item{r}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
 
 \item{trait}{A data.frame with species traits.}
 
