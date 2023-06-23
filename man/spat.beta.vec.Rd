@@ -7,17 +7,22 @@
 spat.beta.vec(x, tree, global = FALSE, spp, nspp, ...)
 }
 \arguments{
-\item{x}{A numeric vector with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A numeric vector with presence-absence data (0 or 1)
+for a set of species.}
 
-\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
+\item{tree}{It can be a data frame with species traits or a
+phylogenetic tree.}
 
-\item{global}{Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of all pairwise comparisons.}
+\item{global}{Logical. Mean of pairwise comparisons between
+focal cell and its neighbors (default) or mean of all pairwise
+comparisons.}
 
 \item{spp}{Character. Species names.}
 
 \item{nspp}{Numeric. Number of species.}
 
-\item{...}{Additional arguments to be passed passed down from a calling function.}
+\item{...}{Additional arguments to be passed passed down from a
+calling function.}
 }
 \value{
 A SpatRaster with beta results.

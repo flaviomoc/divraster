@@ -2,15 +2,18 @@
 % Please edit documentation in R/data.R
 \name{load.data}
 \alias{load.data}
-\title{Load data adapted from Mota et al. (2022), Tobias et al. (2022), and Jetz et al. (2014)}
+\title{Load data adapted from Mota et al. (2022), Tobias et al. (2022),
+and Jetz et al. (2014)}
 \usage{
 load.data()
 }
 \value{
-List with climate scenarios, traits, and phylogenetic tree
+List with climate scenarios, traits, and phylogenetic
+tree
 }
 \description{
-Load data adapted from Mota et al. (2022), Tobias et al. (2022), and Jetz et al. (2014)
+Load data adapted from Mota et al. (2022), Tobias et al. (2022),
+and Jetz et al. (2014)
 }
 \examples{
 \dontrun{
@@ -19,9 +22,16 @@ data
 }
 }
 \references{
-Mota, F. M. M. et al. 2022. Climate change is expected to restructure forest frugivorous bird communities in a biodiversity hot-point within the Atlantic Forest. - Diversity and Distributions 28: 2886–2897.
+Mota, F. M. M. et al. 2022. Climate change is
+expected to restructure forest frugivorous bird communities in
+a biodiversity hot-point within the Atlantic Forest. -
+Diversity and Distributions 28: 2886–2897.
 
-Tobias, J. A. et al. 2022. AVONET: morphological, ecological and geographical data for all birds. - Ecology Letters 25: 581–597.
+Tobias, J. A. et al. 2022. AVONET: morphological,
+ecological and geographical data for all birds. -
+Ecology Letters 25: 581–597.
 
-Jetz, W. et al. 2014. Global Distribution and Conservation of Evolutionary Distinctness in Birds. - Current Biology 24: 919–930.
+Jetz, W. et al. 2014. Global Distribution and
+Conservation of Evolutionary Distinctness in Birds. -
+Current Biology 24: 919–930.
 }

@@ -7,17 +7,20 @@
 temp.beta.vec(x, nspp, spp, tree, resu, ...)
 }
 \arguments{
-\item{x}{A numeric vector with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A numeric vector with presence-absence data (0 or 1)
+for a set of species.}
 
 \item{nspp}{Numeric. Number of species.}
 
 \item{spp}{Character. Species name.}
 
-\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
+\item{tree}{It can be a data frame with species traits or a
+phylogenetic tree.}
 
 \item{resu}{Numeric. A vector to store results.}
 
-\item{...}{Additional arguments to be passed passed down from a calling function.}
+\item{...}{Additional arguments to be passed passed down from
+a calling function.}
 }
 \value{
 A SpatRaster with beta results.

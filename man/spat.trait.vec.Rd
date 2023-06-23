@@ -7,11 +7,13 @@
 spat.trait.vec(x, col_trait, ...)
 }
 \arguments{
-\item{x}{A numeric vector with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A numeric vector with presence-absence data (0 or 1)
+for a set of species.}
 
 \item{col_trait}{A numeric vector with trait numbers.}
 
-\item{...}{Additional arguments to be passed passed down from a calling function.}
+\item{...}{Additional arguments to be passed passed down from a
+calling function.}
 }
 \value{
 Vector of average trait.

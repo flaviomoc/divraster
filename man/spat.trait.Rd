@@ -7,15 +7,18 @@
 spat.trait(x, trait, cores = 1, filename = NULL, ...)
 }
 \arguments{
-\item{x}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A SpatRaster with presence-absence data (0 or 1) for a
+set of species.}
 
 \item{trait}{A data.frame with species traits.}
 
-\item{cores}{A positive integer. If cores > 1, a 'parallel' package cluster with that many cores is created and used.}
+\item{cores}{A positive integer. If cores > 1, a 'parallel'
+package cluster with that many cores is created and used.}
 
 \item{filename}{Character. Save results if a name is provided.}
 
-\item{...}{Additional arguments to be passed passed down from a calling function.}
+\item{...}{Additional arguments to be passed passed down from a
+calling function.}
 }
 \value{
 SpatRaster with average traits.
@@ -26,8 +29,10 @@ Compute average for each trait.
 \examples{
 \dontrun{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
-traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
+bin1 <- terra::rast(system.file("extdata", "ref.tif",
+package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv",
+package = "divraster"), row.names = 1)
 spat.trait(bin1, traits)
 }
 }

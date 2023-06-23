@@ -2,27 +2,19 @@
 # divraster
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml)
+
 <!-- badges: end -->
 
-It calculates diversity patterns from rasterized data for taxonomic, functional, and phylogenetic dimensions. Beta diversity can be partitioned into replacement and richness differences components. It also calculates standardize effect size for functional and phylogenetic alpha diversity.
+divraster calculates diversity patterns from raster data for taxonomic, functional, and phylogenetic dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness differences components. divraster also calculates standardize effect size for functional and phylogenetic alpha diversity and the average traits.
 
 ## Installation
 
-You can install the development version of divraster from [GitHub](https://github.com/) with:
+You can install the development version of divraster from [divraster repository](https://github.com/flaviomoc/divraster) in Github with:
 
 ``` r
 require(devtools)
 devtools::load_all()
 devtools::install_github("flaviomoc/divraster")
-```
-
-## SESraster dependency
-
-The divraster function for calculating Standardized Effect Sizes (SES) uses the package SESraster as a dependency, which can be installed with:
-
-``` r
-devtools::install_github("HemingNM/SESraster")
 ```
 
 ## Example
@@ -46,4 +38,8 @@ spat.beta(data$ref)
 temp.beta(data$ref, data$fut)
 # temporal beta for phylogenetic
 temp.beta(data$ref, data$fut, data$tree)
+# temporal beta for functional
+temp.beta(data$ref, data$fut, data$traits)
+# average traits for reference scenario
+spat.trait(data$ref, data$traits)
 ```

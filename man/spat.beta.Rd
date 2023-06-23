@@ -17,13 +17,17 @@ spat.beta(
 )
 }
 \arguments{
-\item{x}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
+\item{x}{A SpatRaster with presence-absence data (0 or 1) for a
+set of species.}
 
-\item{tree}{A data.frame with species traits or a phylogenetic tree.}
+\item{tree}{A data.frame with species traits or a phylogenetic
+tree.}
 
 \item{filename}{Character. Save results if a name is provided.}
 
-\item{global}{Logical. Mean of pairwise comparisons between focal cell and its neighbors (default) or mean of all pairwise comparisons.}
+\item{global}{Logical. Mean of pairwise comparisons between
+focal cell and its neighbors (default) or mean of all pairwise
+comparisons.}
 
 \item{fm}{Numeric. Focal matrix ("moving window").}
 
@@ -31,15 +35,18 @@ spat.beta(
 
 \item{type}{Character. Window format. Default = "circle".}
 
-\item{na.policy}{Character. Default = "omit". See ?terra::focal3D for details.}
+\item{na.policy}{Character. Default = "omit".
+See ?terra::focal3D for details.}
 
-\item{...}{Additional arguments to be passed passed down from a calling function.}
+\item{...}{Additional arguments to be passed passed down from
+a calling function.}
 }
 \value{
 A SpatRaster with beta results.
 }
 \description{
-Compute alpha diversity for taxonomic, functional, and phylogenetic diversity.
+Compute alpha diversity for taxonomic, functional,
+and phylogenetic diversity.
 }
 \details{
 This function will compute beta diversity on spatRast objects
@@ -48,10 +55,13 @@ that contain binary (presence/absence) species distribution data.
 \examples{
 \dontrun{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
-traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
+bin1 <- terra::rast(system.file("extdata", "ref.tif",
+package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv",
+package = "divraster"), row.names = 1)
 rownames(traits) <- names(bin1)
-tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
+tree <- ape::read.tree(system.file("extdata", "tree.tre",
+package = "divraster"))
 spat.beta(bin1)
 spat.beta(bin1, traits)
 spat.beta(bin1, tree)

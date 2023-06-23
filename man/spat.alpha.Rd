@@ -7,28 +7,36 @@
 spat.alpha(bin, tree, cores = 1, filename = NULL, ...)
 }
 \arguments{
-\item{bin}{A SpatRaster with presence-absence data (0 or 1) for a set of species.}
+\item{bin}{A SpatRaster with presence-absence data (0 or 1) for
+a set of species.}
 
-\item{tree}{It can be a data frame with species traits or a phylogenetic tree.}
+\item{tree}{It can be a data frame with species traits or a
+phylogenetic tree.}
 
-\item{cores}{A positive integer. If cores > 1, a 'parallel' package cluster with that many cores is created and used.}
+\item{cores}{A positive integer. If cores > 1, a 'parallel'
+package cluster with that many cores is created and used.}
 
 \item{filename}{Character. Save results if a name is provided.}
 
-\item{...}{Additional arguments to be passed passed down from a calling function.}
+\item{...}{Additional arguments to be passed passed down from a
+calling function.}
 }
 \value{
 A SpatRaster with alpha result.
 }
 \description{
-Compute alpha diversity for taxonomic, functional, and phylogenetic diversity.
+Compute alpha diversity for taxonomic, functional,
+and phylogenetic diversity.
 }
 \examples{
 \dontrun{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
-traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
-tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
+bin1 <- terra::rast(system.file("extdata", "ref.tif",
+package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv",
+package = "divraster"), row.names = 1)
+tree <- ape::read.tree(system.file("extdata", "tree.tre",
+package = "divraster"))
 spat.alpha(bin1)
 spat.alpha(bin1, traits)
 spat.alpha(bin1, tree)
