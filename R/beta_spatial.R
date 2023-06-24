@@ -104,11 +104,12 @@ spat.beta <- function(x, tree, filename = NULL, global = FALSE,
   if (is.null(fm)) {
     min.d <- sqrt(prod(terra::res(x))) # mean(res(x)*112)
     if (d < min.d) {
+      # 111.1194*res(x)[2]/(cos(y*(pi/180)))))
       stop(paste("Radius too small to build a focal window.
-                 Minimum d must be larger than:", min.d)) # 111.1194*res(x)[2]/(cos(y*(pi/180)))))
+                 Minimum d must be larger than:", min.d))
     }
+    # d = window size (if not provided create based on distance)
     fm <- terra::focalMat(x,
-                          # window size (if not provided create based on distance)
                           d,
                           type = type,
                           fillNA = FALSE)

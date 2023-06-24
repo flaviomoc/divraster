@@ -1,8 +1,10 @@
 test_that("function spat.trait works", {
 
   # loading data
-  bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
-  traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
+  bin1 <- terra::rast(system.file("extdata", "ref.tif",
+                                  package = "divraster"))
+  traits <- read.csv(system.file("extdata", "traits.csv",
+                                 package = "divraster"), row.names = 1)
 
   # applying the function
   res <- spat.trait(bin1, traits, filename = paste0(tempfile(), ".tif"))

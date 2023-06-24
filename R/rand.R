@@ -11,7 +11,8 @@
 #' @param aleats positive integer. A positive integer indicating
 #' how many times the calculation should be repeated.
 #' @param random character. A character indicating the type of
-#' randomization. The currently available randomization methods are "spat", "site", "species" or "both" (site and species).
+#' randomization. The currently available randomization methods are "spat",
+#'  "site", "species" or "both" (site and species).
 #' @param cores positive integer. If cores > 1, a 'parallel'
 #' package cluster with that many cores is created and used.
 #' @param filename character. Output filename.

@@ -26,7 +26,8 @@ tree.}
 how many times the calculation should be repeated.}
 
 \item{random}{character. A character indicating the type of
-randomization. The currently available randomization methods are "spat", "site", "species" or "both" (site and species).}
+randomization. The currently available randomization methods are "spat",
+"site", "species" or "both" (site and species).}
 
 \item{cores}{positive integer. If cores > 1, a 'parallel'
 package cluster with that many cores is created and used.}

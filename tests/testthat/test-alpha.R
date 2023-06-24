@@ -1,9 +1,12 @@
 test_that("function spat.alpha works", {
 
   # loading data
-  bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
-  traits <- read.csv(system.file("extdata", "traits.csv", package = "divraster"), row.names = 1)
-  tree <- ape::read.tree(system.file("extdata", "tree.tre", package = "divraster"))
+  bin1 <- terra::rast(system.file("extdata", "ref.tif",
+                                  package = "divraster"))
+  traits <- read.csv(system.file("extdata", "traits.csv",
+                                 package = "divraster"), row.names = 1)
+  tree <- ape::read.tree(system.file("extdata", "tree.tre",
+                                     package = "divraster"))
   bin.crs <- bin1
   terra::crs(bin.crs) <- "epsg:25831"
   bin1.na <- bin1
