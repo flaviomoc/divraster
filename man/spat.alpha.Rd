@@ -29,7 +29,7 @@ Compute alpha diversity for taxonomic, functional,
 and phylogenetic diversity.
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 bin1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))

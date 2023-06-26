@@ -39,7 +39,7 @@ spat.alpha.vec <- function(x, tree, resu, ...) {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))

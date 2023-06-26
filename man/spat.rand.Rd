@@ -26,33 +26,33 @@ tree.}
 how many times the calculation should be repeated.}
 
 \item{random}{character. A character indicating the type of
-randomization. The currently available randomization methods are "spat",
-"site", "species" or "both" (site and species).}
+randomization. The currently available randomization methods
+are "spat", "site", "species" or "both" (site and species).}
 
 \item{cores}{positive integer. If cores > 1, a 'parallel'
 package cluster with that many cores is created and used.}
 
 \item{filename}{character. Output filename.}
 
-\item{...}{additional arguments to be passed passed down from a
-calling function.}
+\item{...}{additional arguments to be passed passed down from
+a calling function.}
 }
 \value{
 SpatRaster with Mean, SD, Observed, and SES.
 }
 \description{
 Calculates the standardized effect size for
-functional and phylogenetic diversity. See SESraster package for details.
+functional and phylogenetic diversity.
+See \code{\link[SESraster]{bootspat_str}} and
+\code{\link[SESraster]{bootspat_naive}}
 }
 \examples{
-\dontrun{
 x <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
 traits <- read.csv(system.file("extdata", "traits.csv",
 package = "divraster"), row.names = 1)
 tree <- ape::read.tree(system.file("extdata", "tree.tre",
 package = "divraster"))
-spat.rand(x, traits, 10, "spat")
-spat.rand(x, tree, 10, "spat")
-}
+spat.rand(x, tree, 3, "site")
+spat.rand(x, traits, 3, "site")
 }

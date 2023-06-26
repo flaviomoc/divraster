@@ -23,7 +23,8 @@ phylogenetic tree.}
 a calling function.}
 }
 \value{
-A SpatRaster with beta results.
+A SpatRaster with beta results (total, replacement,
+and richness differences).
 }
 \description{
 Temporal beta diversity calculation for vector

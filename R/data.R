@@ -17,10 +17,8 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' data <- load.data()
 #' data
-#' }
 load.data <- function() {
   ref <- terra::rast(system.file("extdata",
                                  "ref_frugivor.tif",

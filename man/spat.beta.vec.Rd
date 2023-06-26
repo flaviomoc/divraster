@@ -25,11 +25,9 @@ comparisons.}
 calling function.}
 }
 \value{
-A SpatRaster with beta results.
+A SpatRaster with beta results (total, replacement,
+and richness differences).
 }
 \description{
-This function will compute beta diversity on vectors containing
-multiple species at multiple sites. Species at sites should be
-placed sequentially, so that the vector can be transformed in a
-matrix with species at columns and sites at rows.
+Spatial beta diversity for vector
 }

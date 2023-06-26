@@ -10,7 +10,7 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-5661-3381"))
   )
 Maintainer: Flávio M. M. Mota <flaviomoc@gmail.com>
-Description: The divraster package calculates diversity patterns (alpha and beta) from raster data for taxonomic (TD), functional (FD), and phylogenetic (PD) dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness difference components. It also calculates standardized effect size for FD and PD alpha diversity and the average individual traits across multilayer rasters. The raster's layers represent species, while the cells represent communities.
+Description: Alpha and beta diversity for taxonomic (TD), functional (FD), and phylogenetic (PD) dimensions based on rasters. Spatial and temporal beta diversity can be partitioned into replacement and richness difference components. It also calculates standardized effect size for FD and PD alpha diversity and the average individual traits across multilayer rasters. The layers of the raster represent species, while the cells represent communities. Methods details can be found at Cardoso et al. 2022 <https://CRAN.R-project.org/package=BAT> and Heming et al. 2023 <https://CRAN.R-project.org/package=SESraster>.
 License: GPL (>= 3)
 URL: https://github.com/flaviomoc/divraster
 BugReports: https://github.com/flaviomoc/divraster/issues

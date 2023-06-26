@@ -42,18 +42,14 @@ See ?terra::focal3D for details.}
 a calling function.}
 }
 \value{
-A SpatRaster with beta results.
+A SpatRaster with beta results (total, replacement,
+and richness differences).
 }
 \description{
-Compute alpha diversity for taxonomic, functional,
-and phylogenetic diversity.
-}
-\details{
-This function will compute beta diversity on spatRast objects
-that contain binary (presence/absence) species distribution data.
+Spatial beta diversity for raster
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 bin1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))

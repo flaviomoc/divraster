@@ -25,13 +25,13 @@ package cluster with that many cores is created and used.}
 a calling function.}
 }
 \value{
-A SpatRaster with beta results.
+A SpatRaster with beta results (total, replacement,
+and richness differences).
 }
 \description{
 Temporal beta diversity calculation for raster
 }
 \examples{
-\dontrun{
 library(terra)
 bin1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
@@ -44,5 +44,4 @@ package = "divraster"))
 temp.beta(bin1, bin2)
 temp.beta(bin1, bin2, traits)
 temp.beta(bin1, bin2, tree)
-}
 }

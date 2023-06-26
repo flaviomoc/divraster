@@ -10,7 +10,8 @@
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
 #'
-#' @return A SpatRaster with beta results.
+#' @return A SpatRaster with beta results (total, replacement,
+#' and richness differences).
 temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
   if (all(is.na(x))) {
     resu[] <- NA
@@ -39,11 +40,11 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
 #'
-#' @return A SpatRaster with beta results.
+#' @return A SpatRaster with beta results (total, replacement,
+#' and richness differences).
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' library(terra)
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))
@@ -56,7 +57,6 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' temp.beta(bin1, bin2)
 #' temp.beta(bin1, bin2, traits)
 #' temp.beta(bin1, bin2, tree)
-#' }
 temp.beta <- function(bin1, bin2, tree, filename = NULL,
                       cores = 1, ...) {
   # Check if rasters are NULL or invalid

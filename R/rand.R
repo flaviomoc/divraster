@@ -2,8 +2,11 @@
 #' diversity
 #'
 #' @description Calculates the standardized effect size for
-#' functional and phylogenetic diversity. See SESraster package for details.
-#'
+#' functional and phylogenetic diversity.
+#' See \code{\link[SESraster]{bootspat_str}} and
+#' \code{\link[SESraster]{bootspat_naive}}
+
+
 #' @param x SpatRaster. A SpatRaster containing presence-absence
 #' data (0 or 1) for a set of species.
 #' @param tree a data.frame with species traits or a phylogenetic
@@ -11,28 +14,26 @@
 #' @param aleats positive integer. A positive integer indicating
 #' how many times the calculation should be repeated.
 #' @param random character. A character indicating the type of
-#' randomization. The currently available randomization methods are "spat",
-#'  "site", "species" or "both" (site and species).
+#' randomization. The currently available randomization methods
+#' are "spat", "site", "species" or "both" (site and species).
 #' @param cores positive integer. If cores > 1, a 'parallel'
 #' package cluster with that many cores is created and used.
 #' @param filename character. Output filename.
-#' @param ... additional arguments to be passed passed down from a
-#'  calling function.
+#' @param ... additional arguments to be passed passed down from
+#' a calling function.
 #'
 #' @return SpatRaster with Mean, SD, Observed, and SES.
 #' @export
 #'
 #' @examples
-#' \dontrun{
 #' x <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))
 #' traits <- read.csv(system.file("extdata", "traits.csv",
 #' package = "divraster"), row.names = 1)
 #' tree <- ape::read.tree(system.file("extdata", "tree.tre",
 #' package = "divraster"))
-#' spat.rand(x, traits, 10, "spat")
-#' spat.rand(x, tree, 10, "spat")
-#' }
+#' spat.rand(x, tree, 3, "site")
+#' spat.rand(x, traits, 3, "site")
 spat.rand <- function(x,
                       tree,
                       aleats,

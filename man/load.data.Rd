@@ -16,10 +16,8 @@ Load data adapted from Mota et al. (2022), Tobias et al. (2022),
 and Jetz et al. (2014)
 }
 \examples{
-\dontrun{
 data <- load.data()
 data
-}
 }
 \references{
 Mota, F. M. M. et al. 2022. Climate change is

@@ -1,10 +1,5 @@
 #' Spatial beta diversity for vector
 #'
-#' This function will compute beta diversity on vectors containing
-#' multiple species at multiple sites. Species at sites should be
-#' placed sequentially, so that the vector can be transformed in a
-#' matrix with species at columns and sites at rows.
-#'
 #' @param x A numeric vector with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param tree It can be a data frame with species traits or a
@@ -17,7 +12,8 @@
 #' @param ... Additional arguments to be passed passed down from a
 #' calling function.
 #'
-#' @return A SpatRaster with beta results.
+#' @return A SpatRaster with beta results (total, replacement,
+#' and richness differences).
 spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...) {
   x <- matrix(x, ncol = nspp, byrow = FALSE,
               dimnames = list(NULL, spp))
@@ -47,10 +43,6 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...) {
 
 #' Spatial beta diversity for raster
 #'
-#' This function will compute beta diversity on spatRast objects
-#' that contain binary (presence/absence) species distribution data.
-#' @description Compute alpha diversity for taxonomic, functional,
-#' and phylogenetic diversity.
 #' @param x A SpatRaster with presence-absence data (0 or 1) for a
 #' set of species.
 #' @param tree A data.frame with species traits or a phylogenetic
@@ -67,11 +59,12 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...) {
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
 #'
-#' @return A SpatRaster with beta results.
+#' @return A SpatRaster with beta results (total, replacement,
+#' and richness differences).
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))

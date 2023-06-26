@@ -27,12 +27,10 @@ SpatRaster with average traits.
 Compute average for each trait.
 }
 \examples{
-\dontrun{
 library(terra)
 bin1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
 traits <- read.csv(system.file("extdata", "traits.csv",
 package = "divraster"), row.names = 1)
 spat.trait(bin1, traits)
-}
 }
