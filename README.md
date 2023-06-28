@@ -1,9 +1,12 @@
 
 # divraster
 
+Viu os badges q coloquei no readme?
 <!-- badges: start -->
-
-[![R-CMD-check](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml)
+[![CRAN-status](https://www.r-pkg.org/badges/version/divraster)](https://cran.r-project.org/package=divraster)
+[![R-CMD-check](https://github.com/flaviomoc/divraster/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/flaviomoc/divraster/actions/workflows/R-CMD-check.yaml)
+[![](http://cranlogs.r-pkg.org/badges/grand-total/divraster?color=green)](https://cran.r-project.org/package=divraster)
+[![](http://cranlogs.r-pkg.org/badges/divraster?color=green)](https://cran.r-project.org/package=divraster)
 <!-- badges: end -->
 
 divraster calculates diversity patterns from raster data for taxonomic, functional, and phylogenetic dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness differences components. divraster also calculates standardize effect size for functional and phylogenetic alpha diversity and the average traits.
