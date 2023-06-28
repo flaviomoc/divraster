@@ -1,5 +1,5 @@
 ---
-title: "divraster Vignette"
+title: "divraster-vignette"
 author: "Flávio Mota"
 output: rmarkdown::html_vignette
 vignette: >

@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/flaviomoc/DMSD/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 divraster calculates diversity patterns from raster data for taxonomic, functional, and phylogenetic dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness differences components. divraster also calculates standardize effect size for functional and phylogenetic alpha diversity and the average traits.
