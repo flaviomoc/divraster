@@ -1,5 +1,9 @@
 #' Alpha calculation for vector
 #'
+#' @description Calculates alpha diversity for taxonomic (TD),
+#' functional (FD), and phylogenetic (PD) dimensions.
+#' Adapted from \code{\link[BAT]{alpha}}
+#'
 #' @param x A numeric vector with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param tree It can be a data frame with species traits or a

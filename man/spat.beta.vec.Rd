@@ -29,5 +29,8 @@ A SpatRaster with beta results (total, replacement,
 and richness differences).
 }
 \description{
-Spatial beta diversity for vector
+Calculates spatial beta diversity for
+taxonomic (TD), functional (FD), and phylogenetic (PD)
+dimensions.
+See \code{\link[BAT]{beta}}
 }

@@ -22,5 +22,7 @@ a calling function.}
 A SpatRaster with alpha result.
 }
 \description{
-Alpha calculation for vector
+Calculates alpha diversity for taxonomic (TD),
+functional (FD), and phylogenetic (PD) dimensions.
+See \code{\link[BAT]{alpha}}
 }

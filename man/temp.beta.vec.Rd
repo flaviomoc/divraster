@@ -27,5 +27,8 @@ A SpatRaster with beta results (total, replacement,
 and richness differences).
 }
 \description{
-Temporal beta diversity calculation for vector
+Calculates temporal beta diversity for
+taxonomic (TD), functional (FD), and phylogenetic (PD)
+dimensions.
+See \code{\link[BAT]{beta}}
 }

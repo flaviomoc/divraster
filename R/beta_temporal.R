@@ -1,5 +1,9 @@
 #' Temporal beta diversity calculation for vector
 #'
+#' @description Calculates temporal beta diversity for
+#' taxonomic (TD), functional (FD), and phylogenetic (PD)
+#' dimensions. Adapted from \code{\link[BAT]{beta}}
+#'
 #' @param x A numeric vector with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param nspp Numeric. Number of species.
