@@ -31,6 +31,5 @@ and richness differences).
 \description{
 Calculates spatial beta diversity for
 taxonomic (TD), functional (FD), and phylogenetic (PD)
-dimensions.
-See \code{\link[BAT]{beta}}
+dimensions. Adapted from \code{\link[BAT]{beta}}
 }

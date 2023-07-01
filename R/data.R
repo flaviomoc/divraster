@@ -1,3 +1,7 @@
+packageStartupMessage("Thank you for using divraster!")
+packageStartupMessage("To acknowledge our work, please cite the package:")
+packageStartupMessage(paste0("Mota et al. (2023). divraster: Diversity Metrics Calculations for Rasterized Data. R package version 1.0.2. https://cran.r-project.org/package=divraster"))
+
 #' Load data adapted from Mota et al. (2022), Tobias et al. (2022),
 #'  and Jetz et al. (2014)
 #'

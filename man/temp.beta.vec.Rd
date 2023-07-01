@@ -29,6 +29,5 @@ and richness differences).
 \description{
 Calculates temporal beta diversity for
 taxonomic (TD), functional (FD), and phylogenetic (PD)
-dimensions.
-See \code{\link[BAT]{beta}}
+dimensions. Adapted from \code{\link[BAT]{beta}}
 }

@@ -24,5 +24,5 @@ A SpatRaster with alpha result.
 \description{
 Calculates alpha diversity for taxonomic (TD),
 functional (FD), and phylogenetic (PD) dimensions.
-See \code{\link[BAT]{alpha}}
+Adapted from \code{\link[BAT]{alpha}}
 }
