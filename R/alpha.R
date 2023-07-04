@@ -1,9 +1,5 @@
 #' Alpha calculation for vector
 #'
-#' @description Calculates alpha diversity for taxonomic (TD),
-#' functional (FD), and phylogenetic (PD) dimensions.
-#' Adapted from \code{\link[BAT]{alpha}}
-#'
 #' @param x A numeric vector with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param tree It can be a data frame with species traits or a
@@ -11,6 +7,36 @@
 #' @param resu Numeric. A vector to store results.
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
+#'
+#' @return A vector with alpha result.
+#'
+spat.alpha.vec <- function(x, tree, resu, ...) {
+  if (all(is.na(x))) {
+    resu[] <- NA
+  } else if (sum(x, na.rm = TRUE) == 0) {
+    resu[] <- 0
+  } else {
+    x[is.na(x)] <- 0
+    resu <- BAT::alpha(x, tree)
+  }
+  return(resu)
+}
+
+#' Alpha calculation for raster
+#'
+#' @description Calculates alpha diversity for taxonomic (TD),
+#' functional (FD), and phylogenetic (PD) dimensions.
+#' Adapted from \code{\link[BAT]{alpha}}
+#'
+#' @param bin A SpatRaster with presence-absence data (0 or 1) for
+#' a set of species.
+#' @param tree It can be a data frame with species traits or a
+#' phylogenetic tree.
+#' @param cores A positive integer. If cores > 1, a 'parallel'
+#' package cluster with that many cores is created and used.
+#' @param filename Character. Save results if a name is provided.
+#' @param ... Additional arguments to be passed passed down from a
+#' calling function.
 #'
 #' @details Alpha calculations use a tree-based approach for TD,
 #' FD, and PD (Cardoso et al. 2014). In the FD calculation, a
@@ -48,34 +74,6 @@
 #' Maximising phylogenetic diversity in the selection of
 #' networks of conservation areas. - Biological Conservation
 #' 105: 103–111.
-#'
-#' @return A SpatRaster with alpha result.
-#'
-spat.alpha.vec <- function(x, tree, resu, ...) {
-  if (all(is.na(x))) {
-    resu[] <- NA
-  } else if (sum(x, na.rm = TRUE) == 0) {
-    resu[] <- 0
-  } else {
-    x[is.na(x)] <- 0
-    resu <- BAT::alpha(x, tree)
-  }
-  return(resu)
-}
-
-#' Alpha calculation for raster
-#'
-#' @description Compute alpha diversity for taxonomic, functional,
-#' and phylogenetic diversity.
-#' @param bin A SpatRaster with presence-absence data (0 or 1) for
-#' a set of species.
-#' @param tree It can be a data frame with species traits or a
-#' phylogenetic tree.
-#' @param cores A positive integer. If cores > 1, a 'parallel'
-#' package cluster with that many cores is created and used.
-#' @param filename Character. Save results if a name is provided.
-#' @param ... Additional arguments to be passed passed down from a
-#' calling function.
 #'
 #' @return A SpatRaster with alpha result.
 #' @export

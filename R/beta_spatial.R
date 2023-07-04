@@ -1,9 +1,5 @@
 #' Spatial beta diversity for vector
 #'
-#' @description Calculates spatial beta diversity for
-#' taxonomic (TD), functional (FD), and phylogenetic (PD)
-#' dimensions. Adapted from \code{\link[BAT]{beta}}
-#'
 #' @param x A numeric vector with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param tree It can be a data frame with species traits or a
@@ -16,26 +12,9 @@
 #' @param ... Additional arguments to be passed passed down from a
 #' calling function.
 #'
-#' @details The TD beta diversity partitioning framework we used
-#' was developed by Podani and Schmera (2011) and Carvalho et al.
-#' (2012) and expanded to PD and FD by Cardoso et al. (2014).
-#'
-#' @references Cardoso, P. et al. 2014. Partitioning taxon,
-#' phylogenetic and functional beta diversity into replacement
-#' and richness difference components. - Journal of Biogeography
-#' 41: 749–761.
-#'
-#' @references Carvalho, J. C. et al. 2012. Determining the
-#' relative roles of species replacement and species richness
-#' differences in generating beta-diversity patterns. - Global
-#' Ecology and Biogeography 21: 760–771.
-#'
-#' @references Podani, J. and Schmera, D. 2011. A new conceptual
-#' and methodological framework for exploring and explaining
-#' pattern in presence - absence data. - Oikos 120: 1625–1638.
-#'
-#' @return A SpatRaster with beta results (total, replacement,
+#' @return A vector with beta results (total, replacement,
 #' and richness differences).
+#'
 spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...) {
   x <- matrix(x, ncol = nspp, byrow = FALSE,
               dimnames = list(NULL, spp))
@@ -65,6 +44,10 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...) {
 
 #' Spatial beta diversity for raster
 #'
+#' @description Calculates spatial beta diversity for
+#' taxonomic (TD), functional (FD), and phylogenetic (PD)
+#' dimensions. Adapted from \code{\link[BAT]{beta}}
+#'
 #' @param x A SpatRaster with presence-absence data (0 or 1) for a
 #' set of species.
 #' @param tree A data.frame with species traits or a phylogenetic
@@ -80,6 +63,24 @@ spat.beta.vec <- function(x, tree, global = FALSE, spp, nspp, ...) {
 #' See ?terra::focal3D for details.
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
+#'
+#' @details The TD beta diversity partitioning framework we used
+#' was developed by Podani and Schmera (2011) and Carvalho et al.
+#' (2012) and expanded to PD and FD by Cardoso et al. (2014).
+#'
+#' @references Cardoso, P. et al. 2014. Partitioning taxon,
+#' phylogenetic and functional beta diversity into replacement
+#' and richness difference components. - Journal of Biogeography
+#' 41: 749–761.
+#'
+#' @references Carvalho, J. C. et al. 2012. Determining the
+#' relative roles of species replacement and species richness
+#' differences in generating beta-diversity patterns. - Global
+#' Ecology and Biogeography 21: 760–771.
+#'
+#' @references Podani, J. and Schmera, D. 2011. A new conceptual
+#' and methodological framework for exploring and explaining
+#' pattern in presence - absence data. - Oikos 120: 1625–1638.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
 #' and richness differences).

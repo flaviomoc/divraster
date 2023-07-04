@@ -1,9 +1,5 @@
 #' Temporal beta diversity calculation for vector
 #'
-#' @description Calculates temporal beta diversity for
-#' taxonomic (TD), functional (FD), and phylogenetic (PD)
-#' dimensions. Adapted from \code{\link[BAT]{beta}}
-#'
 #' @param x A numeric vector with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param nspp Numeric. Number of species.
@@ -11,6 +7,41 @@
 #' @param tree It can be a data frame with species traits or a
 #' phylogenetic tree.
 #' @param resu Numeric. A vector to store results.
+#' @param ... Additional arguments to be passed passed down from
+#' a calling function.
+#'
+#' @return A vector with beta results (total, replacement,
+#' and richness differences).
+#'
+temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
+  if (all(is.na(x))) {
+    resu[] <- NA
+  } else if (sum(x, na.rm = TRUE) == 0) {
+    resu[] <- 0
+  } else {
+    x[is.na(x)] <- 0
+    x <- rbind(x[1:nspp], x[nspp + (1:nspp)])
+    colnames(x) <- spp
+    resu[] <- unlist(BAT::beta(x, tree, abund = FALSE))
+  }
+  return(resu)
+}
+
+#' Temporal beta diversity calculation for raster
+#'
+#' @description Calculates temporal beta diversity for
+#' taxonomic (TD), functional (FD), and phylogenetic (PD)
+#' dimensions. Adapted from \code{\link[BAT]{beta}}
+#'
+#' @param bin1 A SpatRaster with presence-absence data (0 or 1)
+#' for a set of species.
+#' @param bin2 A SpatRaster with presence-absence data (0 or 1)
+#' for a set of species.
+#' @param tree It can be a data frame with species traits or a
+#' phylogenetic tree.
+#' @param filename Character. Save results if a name is provided.
+#' @param cores A positive integer. If cores > 1, a 'parallel'
+#' package cluster with that many cores is created and used.
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
 #'
@@ -31,37 +62,6 @@
 #' @references Podani, J. and Schmera, D. 2011. A new conceptual
 #' and methodological framework for exploring and explaining
 #' pattern in presence - absence data. - Oikos 120: 1625–1638.
-#'
-#' @return A SpatRaster with beta results (total, replacement,
-#' and richness differences).
-#'
-temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
-  if (all(is.na(x))) {
-    resu[] <- NA
-  } else if (sum(x, na.rm = TRUE) == 0) {
-    resu[] <- 0
-  } else {
-    x[is.na(x)] <- 0
-    x <- rbind(x[1:nspp], x[nspp + (1:nspp)])
-    colnames(x) <- spp
-    resu[] <- unlist(BAT::beta(x, tree, abund = FALSE))
-  }
-  return(resu)
-}
-
-#' Temporal beta diversity calculation for raster
-#'
-#' @param bin1 A SpatRaster with presence-absence data (0 or 1)
-#' for a set of species.
-#' @param bin2 A SpatRaster with presence-absence data (0 or 1)
-#' for a set of species.
-#' @param tree It can be a data frame with species traits or a
-#' phylogenetic tree.
-#' @param filename Character. Save results if a name is provided.
-#' @param cores A positive integer. If cores > 1, a 'parallel'
-#' package cluster with that many cores is created and used.
-#' @param ... Additional arguments to be passed passed down from
-#' a calling function.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
 #' and richness differences).
