@@ -14,9 +14,8 @@
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
 #'
-#' @details
-#' The TD beta diversity partitioning framework we used was
-#' developed by Podani and Schmera (2011) and Carvalho et al.
+#' @details The TD beta diversity partitioning framework we used
+#' was developed by Podani and Schmera (2011) and Carvalho et al.
 #' (2012) and expanded to PD and FD by Cardoso et al. (2014).
 #'
 #' @references Cardoso, P. et al. 2014. Partitioning taxon,

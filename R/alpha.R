@@ -12,11 +12,10 @@
 #' @param ... Additional arguments to be passed passed down from
 #' a calling function.
 #'
-#' @details
-#' Alpha calculations use a tree-based approach for TD, FD, and
-#' PD (Cardoso et al. 2014). In the FD calculation, a species
-#' traits matrix is transformed into a distance matrix and
-#' clustered to create a regional dendrogram (i.e. a
+#' @details Alpha calculations use a tree-based approach for TD,
+#' FD, and PD (Cardoso et al. 2014). In the FD calculation, a
+#' species traits matrix is transformed into a distance matrix
+#' and clustered to create a regional dendrogram (i.e. a
 #' dendrogram with all species in the raster stack),
 #' from which the total branch length is calculated. When
 #' computing FD for each community (i.e. raster cell), the

@@ -2,8 +2,7 @@
 % Please edit documentation in R/rand.R
 \name{spat.rand}
 \alias{spat.rand}
-\title{Standardize Effect Size (SES) for functional and phylogenetic
-diversity}
+\title{Standardize Effect Size (SES) for raster}
 \usage{
 spat.rand(
   x,
@@ -42,7 +41,7 @@ SpatRaster with Mean, SD, Observed, and SES.
 }
 \description{
 Calculates the standardized effect size for
-functional and phylogenetic diversity.
+functional and phylogenetic alpha diversity.
 See \code{\link[SESraster]{bootspat_str}} and
 \code{\link[SESraster]{bootspat_naive}}
 }

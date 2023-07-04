@@ -34,8 +34,8 @@ taxonomic (TD), functional (FD), and phylogenetic (PD)
 dimensions. Adapted from \code{\link[BAT]{beta}}
 }
 \details{
-The TD beta diversity partitioning framework we used was
-developed by Podani and Schmera (2011) and Carvalho et al.
+The TD beta diversity partitioning framework we used
+was developed by Podani and Schmera (2011) and Carvalho et al.
 (2012) and expanded to PD and FD by Cardoso et al. (2014).
 }
 \references{

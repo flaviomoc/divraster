@@ -27,10 +27,10 @@ functional (FD), and phylogenetic (PD) dimensions.
 Adapted from \code{\link[BAT]{alpha}}
 }
 \details{
-Alpha calculations use a tree-based approach for TD, FD, and
-PD (Cardoso et al. 2014). In the FD calculation, a species
-traits matrix is transformed into a distance matrix and
-clustered to create a regional dendrogram (i.e. a
+Alpha calculations use a tree-based approach for TD,
+FD, and PD (Cardoso et al. 2014). In the FD calculation, a
+species traits matrix is transformed into a distance matrix
+and clustered to create a regional dendrogram (i.e. a
 dendrogram with all species in the raster stack),
 from which the total branch length is calculated. When
 computing FD for each community (i.e. raster cell), the
