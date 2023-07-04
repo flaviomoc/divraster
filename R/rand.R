@@ -1,12 +1,10 @@
-#' Standardize Effect Size (SES) for functional and phylogenetic
-#' diversity
+#' Standardize Effect Size (SES) for raster
 #'
 #' @description Calculates the standardized effect size for
-#' functional and phylogenetic diversity.
+#' functional and phylogenetic alpha diversity.
 #' See \code{\link[SESraster]{bootspat_str}} and
 #' \code{\link[SESraster]{bootspat_naive}}
-
-
+#'
 #' @param x SpatRaster. A SpatRaster containing presence-absence
 #' data (0 or 1) for a set of species.
 #' @param tree a data.frame with species traits or a phylogenetic
@@ -34,6 +32,7 @@
 #' package = "divraster"))
 #' spat.rand(x, tree, 3, "site")
 #' spat.rand(x, traits, 3, "site")
+#'
 spat.rand <- function(x,
                       tree,
                       aleats,
