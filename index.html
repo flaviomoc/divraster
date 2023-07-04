@@ -86,35 +86,51 @@
 </h2>
 <p>You can install the development version of divraster from <a href="https://github.com/flaviomoc/divraster" class="external-link">divraster repository</a> in Github with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"flaviomoc/divraster"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"flaviomoc/divraster"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+<h2 id="load-data">Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
 </h2>
-<p>This is a demonstration of how to solve a standard example:</p>
+<p>You can use a <code>divraster</code> function to load the data with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/flaviomoc/divraster" class="external-link">divraster</a></span><span class="op">)</span></span>
-<span><span class="co">## basic example code</span></span>
-<span><span class="co"># load data</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load.data.html">load.data</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co"># taxonomic alpha</span></span>
-<span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span><span class="op">)</span></span>
-<span><span class="co"># phylogenetic alpha</span></span>
-<span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span></span>
-<span><span class="co"># standardize effect size for phylogenetic alpha</span></span>
-<span><span class="fu"><a href="reference/spat.rand.html">spat.rand</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span>, <span class="fl">3</span>, <span class="st">"site"</span><span class="op">)</span> </span>
-<span><span class="co"># spatial beta for taxonomic</span></span>
-<span><span class="fu"><a href="reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span><span class="op">)</span></span>
-<span><span class="co"># temporal beta for taxonomic</span></span>
-<span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span><span class="op">)</span></span>
-<span><span class="co"># temporal beta for phylogenetic</span></span>
-<span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span></span>
-<span><span class="co"># temporal beta for functional</span></span>
-<span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span>, <span class="va">data</span><span class="op">$</span><span class="va">traits</span><span class="op">)</span></span>
-<span><span class="co"># average traits for reference scenario</span></span>
-<span><span class="fu"><a href="reference/spat.trait.html">spat.trait</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">traits</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load.data.html">load.data</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="calculating-alpha-diversity">Calculating alpha diversity<a class="anchor" aria-label="anchor" href="#calculating-alpha-diversity"></a>
+</h2>
+<p>To calculate alpha diversity for taxonomic, functional, and phylogenetic dimensions we need the following objects: multilayer SpatRaster, data.frame, and phylo.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># TD</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># FD</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># PD</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="calculating-temporal-beta-diversity">Calculating temporal beta diversity<a class="anchor" aria-label="anchor" href="#calculating-temporal-beta-diversity"></a>
+</h2>
+<p>To calculate temporal beta diversity and its components (i.e. replacement and richness differences) for taxonomic, functional, and phylogenetic dimensions we need the following objects: 2 multilayer SpatRaster, data.frame, and phylo.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># TD</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># FD</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span>, <span class="va">data</span><span class="op">$</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># PD</span></span>
+<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="other-examples">Other examples<a class="anchor" aria-label="anchor" href="#other-examples"></a>
+</h2>
+<p>A vignette with other examples can be found loading:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"divraster"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
