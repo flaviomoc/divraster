@@ -19,49 +19,8 @@ phylogenetic tree.}
 a calling function.}
 }
 \value{
-A SpatRaster with alpha result.
+A vector with alpha result.
 }
 \description{
-Calculates alpha diversity for taxonomic (TD),
-functional (FD), and phylogenetic (PD) dimensions.
-Adapted from \code{\link[BAT]{alpha}}
-}
-\details{
-Alpha calculations use a tree-based approach for TD,
-FD, and PD (Cardoso et al. 2014). In the FD calculation, a
-species traits matrix is transformed into a distance matrix
-and clustered to create a regional dendrogram (i.e. a
-dendrogram with all species in the raster stack),
-from which the total branch length is calculated. When
-computing FD for each community (i.e. raster cell), the
-regional dendrogram is subsetted to create a local dendrogram
-that includes only the species present in the local community.
-The branch lengths connecting these species are then summed to
-represent the functional relationships of the locally present
-species (Petchey and Gaston, 2002, 2006). Similarly, in PD,
-the cumulative branch lengths connecting species within a
-community indicate their shared phylogenetic relationships
-(Faith, 1992). Alpha TD can also be visualized using a tree
-diagram, where each species is directly connected to the root
-by an edge of unit length, reflecting the number of different
-taxa in the community (i.e. species richness) since all taxa
-are at the same level (Cardoso et al. 2014).
-}
-\references{
-Cardoso, P. et al. 2014. Partitioning taxon,
-phylogenetic and functional beta diversity into replacement
-and richness difference components. - Journal of Biogeography
-41: 749–761.
-
-Faith, D. P. 1992. Conservation evaluation and
-phylogenetic diversity. - Biological Conservation 61: 1–10.
-
-Petchey, O. L. and Gaston, K. J. 2002.
-Functional diversity (FD), species richness and community
-composition. - Ecology Letters 5: 402–411.
-
-Rodrigues, A. S. L. and Gaston, K. J. 2002.
-Maximising phylogenetic diversity in the selection of
-networks of conservation areas. - Biological Conservation
-105: 103–111.
+Alpha calculation for vector
 }

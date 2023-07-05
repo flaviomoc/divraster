@@ -18,14 +18,14 @@ test_that("function spat.alpha works", {
   alpha.pd <- spat.alpha(bin1, tree)
 
   # testing
-  expect_true(spat.alpha(bin1.na)@ptr$hasValues)
+  expect_true(terra::hasValues(spat.alpha(bin1.na)))
   expect_error(spat.alpha(bin.crs))
   expect_error(spat.alpha(bin1[[1]]))
   expect_error(spat.alpha(bin = traits))
   expect_true(class(bin1) == "SpatRaster", "TRUE")
   expect_true(class(tree) == "phylo", "TRUE")
   expect_equal(dim(traits), c(10, 2))
-  expect_equal(alpha.td@ptr$range_min, 2)
-  expect_equal(round(alpha.fd@ptr$range_min, 2), .24)
-  expect_equal(round(alpha.pd@ptr$range_min, 2), 3.1)
+  expect_equal(terra::minmax(alpha.td)[1], 2)
+  expect_equal(round(terra::minmax(alpha.fd)[1], 2), .24)
+  expect_equal(round(terra::minmax(alpha.pd)[1], 2), 3.1)
 })

@@ -16,6 +16,6 @@ test_that("function spat.trait works", {
   expect_error(spat.trait(traits))
   expect_error(spat.trait(bin1[[1]], traits))
   expect_true(class(bin1) == "SpatRaster", "TRUE")
-  expect_equal(round(res[[1]]@ptr$range_min, 2), 1.31)
-  expect_equal(round(res[[2]]@ptr$range_max, 2), 45.85)
+  expect_equal(round(terra::minmax(res[[1]])[1], 2), 1.31)
+  expect_equal(round(terra::minmax(res[[2]])[2], 2), 45.85)
 })

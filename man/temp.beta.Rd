@@ -29,7 +29,14 @@ A SpatRaster with beta results (total, replacement,
 and richness differences).
 }
 \description{
-Temporal beta diversity calculation for raster
+Calculates temporal beta diversity for
+taxonomic (TD), functional (FD), and phylogenetic (PD)
+dimensions. Adapted from \code{\link[BAT]{beta}}
+}
+\details{
+The TD beta diversity partitioning framework we used
+was developed by Podani and Schmera (2011) and Carvalho et al.
+(2012) and expanded to PD and FD by Cardoso et al. (2014).
 }
 \examples{
 library(terra)
@@ -44,4 +51,19 @@ package = "divraster"))
 temp.beta(bin1, bin2)
 temp.beta(bin1, bin2, traits)
 temp.beta(bin1, bin2, tree)
+}
+\references{
+Cardoso, P. et al. 2014. Partitioning taxon,
+phylogenetic and functional beta diversity into replacement
+and richness difference components. - Journal of Biogeography
+41: 749–761.
+
+Carvalho, J. C. et al. 2012. Determining the
+relative roles of species replacement and species richness
+differences in generating beta-diversity patterns. - Global
+Ecology and Biogeography 21: 760–771.
+
+Podani, J. and Schmera, D. 2011. A new conceptual
+and methodological framework for exploring and explaining
+pattern in presence - absence data. - Oikos 120: 1625–1638.
 }
