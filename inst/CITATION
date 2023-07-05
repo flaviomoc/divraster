@@ -1,0 +1,30 @@
+citHeader("Thank you for using divraster! Please cite also BAT package and the related articles in your publications:")
+
+bibentry(
+  bibtype  = "Misc",
+  title    = "{divraster}: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters",
+  author   = c("F. M. M. Mota", "N. M. Heming", "G. Alves-Ferreira"),
+  year     = "2023",
+  note     = "R package version 1.0.3",
+  url      = "https://CRAN.R-project.org/package=divraster"
+)
+
+bibentry(
+  bibtype  = "Misc",
+  title    = "{BAT}: Biodiversity Assessment Tools",
+  author   = c("P. Cardoso", "S. Mammola", "F. Rigal", "J. Carvalho"),
+  year     = "2022",
+  note     = "R package version 2.9.2",
+  url      = "https://CRAN.R-project.org/package=BAT"
+)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "BAT -- Biodiversity Assessment Tools, an R package for the measurement and estimation of alpha and beta taxon, phylogenetic and functional diversity",
+  author   = c("P. Cardoso", "F. Rigal", "J. Carvalho"),
+  journal  = "Methods in Ecology and Evolution",
+  year     = "2015",
+  volume   = "6",
+  pages    = "232--236",
+  doi      = "10.1111/2041-210X.12310"
+)

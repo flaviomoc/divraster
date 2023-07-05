@@ -2,7 +2,7 @@
 % Please edit documentation in R/rand.R
 \name{spat.rand}
 \alias{spat.rand}
-\title{Standardize Effect Size (SES) for raster}
+\title{Standardized Effect Size (SES) for raster}
 \usage{
 spat.rand(
   x,
