@@ -27,7 +27,7 @@ devtools::install_github("flaviomoc/divraster", build_vignettes = TRUE)
 
 ## Load data
 
-You can use a `divraster` function to load the data:
+You can use a `divraster` function to load an example dataset:
 
 ``` r
 library(divraster)
