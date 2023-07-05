@@ -8,20 +8,26 @@
 [![](http://cranlogs.r-pkg.org/badges/divraster?color=green)](https://cran.r-project.org/package=divraster)
 <!-- badges: end -->
 
-divraster calculates diversity patterns from raster data for taxonomic, functional, and phylogenetic dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness differences components. divraster also calculates standardize effect size for functional and phylogenetic alpha diversity and the average traits
+Alpha and beta calculations using rasters for taxonomic (TD), functional (FD), and phylogenetic (PD) dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness difference components. Functions to calculate standardized effect size for functional and phylogenetic alpha diversity and the average traits are available.
 
 ## Installation
 
-You can install the development version of divraster from [divraster repository](https://github.com/flaviomoc/divraster) in Github with:
+To install the package, run the following code:
 
 ``` r
-# install.packages("devtools")
+install.packages("divraster")
+```
+
+The development version of `divraster` can be installed from Github:
+
+``` r
+# install.packages(devtools)
 devtools::install_github("flaviomoc/divraster", build_vignettes = TRUE)
 ```
 
 ## Load data
 
-You can use a `divraster` function to load the data with:
+You can use a `divraster` function to load the data:
 
 ``` r
 library(divraster)
@@ -30,7 +36,7 @@ data <- load.data()
 
 ## Calculating alpha diversity
 
-To calculate alpha diversity for taxonomic, functional, and phylogenetic dimensions we need the following objects: multilayer SpatRaster, data.frame, and phylo.
+To calculate alpha diversity for TD, FD, and PD we need the following objects: a multilayer SpatRaster, data.frame, and phylo.
 
 ``` r
 # TD
@@ -45,7 +51,7 @@ terra::plot(spat.alpha(data$ref, data$tree))
 
 ## Calculating temporal beta diversity
 
-To calculate temporal beta diversity and its components (i.e. replacement and richness differences) for taxonomic, functional, and phylogenetic dimensions we need the following objects: 2 multilayer SpatRaster, data.frame, and phylo.
+To calculate temporal beta diversity and its components (i.e. replacement and richness differences) for TD, FD, and PD we need the following objects: two multilayer SpatRaster (e.g. reference and future climate scenarios), data.frame, and phylo.
 
 ``` r
 # TD

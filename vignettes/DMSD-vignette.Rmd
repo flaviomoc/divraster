@@ -92,7 +92,7 @@ avg.traits1
 terra::plot(avg.traits1, main = names(avg.traits1))
 ```
 
-# Standardize Effect Size
+# Standardized Effect Size (SES)
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
 # Functional
 ses.fd <- divraster::spat.rand(bin1, traits, 3, "site")

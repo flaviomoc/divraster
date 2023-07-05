@@ -1,4 +1,4 @@
-#' Standardize Effect Size (SES) for raster
+#' Standardized Effect Size (SES) for raster
 #'
 #' @description Calculates the standardized effect size for
 #' functional and phylogenetic alpha diversity.
