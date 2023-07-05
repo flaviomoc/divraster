@@ -248,7 +248,7 @@ PD alpha diversity.</p>
 <p><img src="DMSD-vignette_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
-<h2 id="standardize-effect-size">Standardize Effect Size<a class="anchor" aria-label="anchor" href="#standardize-effect-size"></a>
+<h2 id="standardized-effect-size-ses">Standardized Effect Size (SES)<a class="anchor" aria-label="anchor" href="#standardized-effect-size-ses"></a>
 </h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Functional</span></span>
@@ -261,8 +261,8 @@ PD alpha diversity.</p>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :  Mean_FD,       SD_FD, Observed_FD,     SES_FD </span></span>
-<span><span class="co">#&gt; min values  : 3.821754, 0.003744266,    3.723151, -20.533224 </span></span>
-<span><span class="co">#&gt; max values  : 4.430112, 0.205337429,    4.378846,   5.818051</span></span>
+<span><span class="co">#&gt; min values  : 3.770778, 0.004647072,    3.723151, -11.899939 </span></span>
+<span><span class="co">#&gt; max values  : 4.434146, 0.167311427,    4.378846,   9.700024</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.fd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.fd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DMSD-vignette_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -276,9 +276,9 @@ PD alpha diversity.</p>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Mean_PD,      SD_PD, Observed_PD,    SES_PD </span></span>
-<span><span class="co">#&gt; min values  : 1660.298,  0.4455307,    1623.451, -22.37598 </span></span>
-<span><span class="co">#&gt; max values  : 1872.912, 81.0086773,    1880.676,  18.18074</span></span>
+<span><span class="co">#&gt; names       :  Mean_PD,     SD_PD, Observed_PD,    SES_PD </span></span>
+<span><span class="co">#&gt; min values  : 1638.646,  1.630924,    1623.451, -7.343682 </span></span>
+<span><span class="co">#&gt; max values  : 1874.456, 62.828678,    1880.676,  8.159818</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.pd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.pd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DMSD-vignette_files/figure-html/unnamed-chunk-6-2.png" width="480" style="display: block; margin: auto;"></p>
 </div>
