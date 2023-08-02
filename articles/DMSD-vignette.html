@@ -252,7 +252,10 @@ PD alpha diversity.</p>
 </h2>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Functional</span></span>
-<span><span class="va">ses.fd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.rand.html">spat.rand</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span>, <span class="fl">3</span>, <span class="st">"site"</span><span class="op">)</span></span>
+<span><span class="va">ses.fd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.rand.html">spat.rand</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bin1</span>, </span>
+<span>                               tree <span class="op">=</span> <span class="va">traits</span>, </span>
+<span>                               aleats <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>                               random <span class="op">=</span> <span class="st">"site"</span><span class="op">)</span></span>
 <span><span class="va">ses.fd</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
 <span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
@@ -260,15 +263,18 @@ PD alpha diversity.</p>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Mean_FD,      SD_FD, Observed_FD,    SES_FD </span></span>
-<span><span class="co">#&gt; min values  : 3.851190, 0.00274642,    3.723151, -28.04964 </span></span>
-<span><span class="co">#&gt; max values  : 4.429341, 0.13498764,    4.378846,  11.14279</span></span>
+<span><span class="co">#&gt; names       :  Mean_FD,       SD_FD, Observed_FD,    SES_FD </span></span>
+<span><span class="co">#&gt; min values  : 3.637499, 0.001459354,    3.723151, -27.84105 </span></span>
+<span><span class="co">#&gt; max values  : 4.433342, 0.174668185,    4.378846,  24.06222</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.fd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.fd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DMSD-vignette_files/figure-html/unnamed-chunk-6-1.png" width="480" style="display: block; margin: auto;"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Phylogenetic</span></span>
-<span><span class="va">ses.pd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.rand.html">spat.rand</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">tree</span>, <span class="fl">3</span>, <span class="st">"site"</span><span class="op">)</span></span>
+<span><span class="va">ses.pd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.rand.html">spat.rand</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bin1</span>, </span>
+<span>                               tree <span class="op">=</span> <span class="va">tree</span>, </span>
+<span>                               aleats <span class="op">=</span> <span class="fl">3</span>, </span>
+<span>                               random <span class="op">=</span> <span class="st">"site"</span><span class="op">)</span></span>
 <span><span class="va">ses.pd</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
 <span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
@@ -276,9 +282,9 @@ PD alpha diversity.</p>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Mean_PD,      SD_PD, Observed_PD,   SES_PD </span></span>
-<span><span class="co">#&gt; min values  : 1641.455,  0.7642228,    1623.451, -13.7298 </span></span>
-<span><span class="co">#&gt; max values  : 1877.746, 51.4401423,    1880.676,  19.3918</span></span>
+<span><span class="co">#&gt; names       :  Mean_PD,      SD_PD, Observed_PD,    SES_PD </span></span>
+<span><span class="co">#&gt; min values  : 1671.965,  0.6922889,    1623.451, -4.694523 </span></span>
+<span><span class="co">#&gt; max values  : 1877.311, 56.7025063,    1880.676,  5.531330</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.pd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.pd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="DMSD-vignette_files/figure-html/unnamed-chunk-6-2.png" width="480" style="display: block; margin: auto;"></p>
 </div>

@@ -63,7 +63,7 @@ dimensions. Adapted from <code><a href="https://rdrr.io/pkg/BAT/man/beta.html" c
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">temp.beta</span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">tree</span>, filename <span class="op">=</span> <span class="cn">NULL</span>, cores <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">temp.beta</span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">tree</span>, filename <span class="op">=</span> <span class="st">""</span>, cores <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -127,7 +127,8 @@ pattern in presence - absence data. - Oikos 120: 1625–1638.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bin1</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"ref.tif"</span>,</span></span>
 <span class="r-in"><span>package <span class="op">=</span> <span class="st">"divraster"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">bin2</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"fut.tif"</span>,</span></span>
@@ -166,6 +167,7 @@ pattern in presence - absence data. - Oikos 120: 1625–1638.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names       : Btotal_PD,  Brepl_PD,    Brich_PD </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.1525273, 0.0000000, 0.004401637 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.8223597, 0.7143422, 0.496646645 </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

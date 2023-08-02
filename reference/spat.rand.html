@@ -72,7 +72,7 @@ See <code><a href="https://hemingnm.github.io/SESraster/reference/bootspat_str.h
 <span>  <span class="va">aleats</span>,</span>
 <span>  random <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site"</span>, <span class="st">"species"</span>, <span class="st">"both"</span>, <span class="st">"spat"</span><span class="op">)</span>,</span>
 <span>  cores <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  filename <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  filename <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -136,9 +136,9 @@ a calling function.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :   Mean_PD,     SD_PD, Observed_PD,     SES_PD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :  3.587081, 0.0169720,    3.359948, -15.114472 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 10.100485, 0.9328035,   10.571964,   8.938911 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :  Mean_PD,      SD_PD, Observed_PD,     SES_PD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 3.486302, 0.03329104,    3.359948, -22.195678 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 9.805097, 1.25420882,   10.571964,   5.490784 </span>
 <span class="r-in"><span><span class="fu">spat.rand</span><span class="op">(</span><span class="va">x</span>, <span class="va">traits</span>, <span class="fl">3</span>, <span class="st">"site"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span>
@@ -146,9 +146,9 @@ a calling function.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :   Mean_FD,      SD_FD, Observed_FD,     SES_FD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3296794, 0.02085668,   0.2374052, -10.989298 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1.2256592, 0.25501741,   1.2493508,   6.108327 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :  Mean_FD,       SD_FD, Observed_FD,    SES_FD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.318625, 0.008827977,   0.2374052, -5.558563 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1.190827, 0.295085849,   1.2493508, 10.622070 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
