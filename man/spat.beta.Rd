@@ -7,7 +7,7 @@
 spat.beta(
   x,
   tree,
-  filename = NULL,
+  filename = "",
   global = FALSE,
   fm = NULL,
   d = mean(terra::res(terra::rast(x))) * 2,

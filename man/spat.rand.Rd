@@ -10,7 +10,7 @@ spat.rand(
   aleats,
   random = c("site", "species", "both", "spat"),
   cores = 1,
-  filename = NULL,
+  filename = "",
   ...
 )
 }

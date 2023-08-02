@@ -94,49 +94,64 @@ spat.alpha.vec <- function(x, tree, resu, ...) {
 spat.alpha <- function(bin,
                        tree,
                        cores = 1,
-                       filename = NULL, ...) {
+                       filename = "", ...) {
+  # Check if 'bin' is a valid SpatRaster object
   if (is.null(bin) || !inherits(bin, "SpatRaster")) {
     stop("'bin' must be a SpatRaster.")
   }
-  # Check if coordinates are geographic
+  # Check if 'bin' has geographic coordinates
   if (!terra::is.lonlat(bin)) {
-    stop("'bin' must has geographic coordinates.")
+    stop("'bin' must have geographic coordinates.")
   }
+  # Check if 'bin' has at least 2 layers
   if (terra::nlyr(bin) < 2) {
-    stop("'bin' must has at least 2 layers.")
+    stop("'bin' must have at least 2 layers.")
   }
   # Create numeric vector to store result
   resu <- numeric(1)
+
   # Apply the function to SpatRaster object
   if (missing(tree)) {
+    # If 'tree' is missing, apply 'spat.alpha.vec' to 'bin'
+    # without considering any tree
     res <- terra::app(bin,
                       spat.alpha.vec,
                       resu = resu,
                       cores = cores, ...)
   } else {
-    # Check if 'tree' object is valid
+    # Check if 'tree' object is valid (either a data.frame or
+    # a phylo object)
     if (!inherits(tree, c("data.frame", "phylo"))) {
       stop("'tree' must be a data.frame or a phylo object.")
     }
+    # Apply 'spat.alpha.vec' to 'bin' with the provided 'tree'
     res <- terra::app(bin,
                       spat.alpha.vec,
                       resu = resu,
                       cores = cores,
                       tree = tree, ...)
   }
-  # Define names
+
+  # Define names for the output based on the type of 'tree'
+  # If 'tree' is missing, set the output name to "Alpha_TD"
   if (missing(tree)) {
     names(res) <- "Alpha_TD"
-  }
-  else if (inherits(tree, "data.frame")) {
+    # If 'tree' is a data.frame, set the output name to
+    # "Alpha_FD"
+  } else if (inherits(tree, "data.frame")) {
     names(res) <- "Alpha_FD"
-  }
-  else {
+    # If 'tree' is not a data.frame, set the output name to
+    # "Alpha_PD"
+  } else {
     names(res) <- "Alpha_PD"
   }
-  # Save the output if filename is provided
-  if (!is.null(filename)) {
-    terra::writeRaster(res, filename, overwrite = TRUE)
+
+  # Save the output to a file if 'filename' is provided
+  if (filename != "") {
+    terra::writeRaster(res,
+                       filename = filename,
+                       overwrite = TRUE)
   }
+  # Return the SpatRaster with alpha diversity result
   return(res)
 }

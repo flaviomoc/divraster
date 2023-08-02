@@ -37,7 +37,7 @@ spat.trait.vec <- function(x, col_trait, ...) {
 spat.trait <- function(x,
                        trait,
                        cores = 1,
-                       filename = NULL, ...) {
+                       filename = "", ...) {
   # Check if x is NULL or invalid
   if (is.null(x) || !inherits(x, "SpatRaster")) {
     stop("'x' must be a SpatRaster.")
@@ -71,9 +71,9 @@ spat.trait <- function(x,
   # Transform list into SpatRaster
   res <- terra::rast(res)
   # Save the output if filename is provided
-  if (!is.null(filename)) {
+  if (filename != "") {
     terra::writeRaster(res,
-                       filename,
+                       filename = filename,
                        overwrite = TRUE, ...)
   }
   return(res)

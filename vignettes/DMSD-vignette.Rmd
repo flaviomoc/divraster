@@ -95,12 +95,18 @@ terra::plot(avg.traits1, main = names(avg.traits1))
 # Standardized Effect Size (SES)
 ```{r, fig.height = 4, fig.width = 5, fig.align = 'center',}
 # Functional
-ses.fd <- divraster::spat.rand(bin1, traits, 3, "site")
+ses.fd <- divraster::spat.rand(x = bin1, 
+                               tree = traits, 
+                               aleats = 3, 
+                               random = "site")
 ses.fd
 terra::plot(ses.fd, main = names(ses.fd))
 
 # Phylogenetic
-ses.pd <- divraster::spat.rand(bin1, tree, 3, "site")
+ses.pd <- divraster::spat.rand(x = bin1, 
+                               tree = tree, 
+                               aleats = 3, 
+                               random = "site")
 ses.pd
 terra::plot(ses.pd, main = names(ses.pd))
 ```

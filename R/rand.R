@@ -38,107 +38,137 @@ spat.rand <- function(x,
                       aleats,
                       random = c("site", "species", "both", "spat"),
                       cores = 1,
-                      filename = NULL, ...) {
+                      filename = "", ...) {
+
+  # Check if 'x' is NULL or invalid (not SpatRaster)
   if (is.null(x) || !inherits(x, "SpatRaster")) {
     stop("'x' must be a SpatRaster.")
   }
+
   # Check if coordinates are geographic
   if (!terra::is.lonlat(x)) {
-    stop("'x' must has geographic coordinates.")
+    stop("'x' must have geographic coordinates.")
   }
+
+  # Check if the raster has at least 2 layers
   if (terra::nlyr(x) < 2) {
-    stop("'x' must has at least 2 layers.")
+    stop("'x' must have at least 2 layers.")
   }
-  # Check if random argument is valid
-  if (missing(random)) {
-    stop("The randomization method must be provide: 'site',
+
+  # Check if the 'random' argument is valid
+  if (missing(random) || !(random %in% c("site", "species",
+                                         "both", "spat"))) {
+    stop("The randomization method must be provided: 'site',
          'species', 'both', or 'spat'.")
   }
-  # Check if aleats argument is valid
+
+  # Check if the 'aleats' argument is valid
   if (missing(aleats)) {
-    stop("The number of randomizations must be provide.")
+    stop("The number of randomizations must be provided.")
   }
-  # Check if 'tree' object is valid
+
+  # Check if the 'tree' object is valid (either a data.frame
+  # or a phylo object)
   if (!inherits(tree, c("data.frame", "phylo"))) {
     stop("'tree' must be a data.frame or a phylo object.")
   }
-  rand <- list() # to store the rasters in the loop
+
+  rand <- list()  # to store the rasters in the loop
+
+  # Perform randomization analysis based on the chosen method
   if (random == "spat") {
+    # Calculate the richness of each cell
     rich <- terra::app(x, sum, na.rm = TRUE)
-    prob <- terra::app(x,
-                       function(x) {
-                         ifelse(is.na(x), 0, 1)
-                       })
+    # Create a binary raster indicating presence/absence
+    prob <- terra::app(x, function(x) {
+      ifelse(is.na(x), 0, 1)
+    })
+    # Convert the binary raster to probability using the
+    # SESraster package
     fr_prob <- SESraster::fr2prob(x)
     for (i in 1:aleats) {
-      ### shuffle
+      # Shuffle the data using 'bootspat_str' method from
+      # SESraster package
       pres.site.null <- SESraster::bootspat_str(x,
                                                 rich = rich,
                                                 prob = prob,
                                                 fr_prob = fr_prob,
                                                 cores = cores)
+      # Calculate alpha diversity (spat.alpha) for the
+      # shuffled data
       rand[[i]] <- divraster::spat.alpha(pres.site.null,
                                          tree,
                                          cores = cores, ...)
     }
-    rand <- terra::rast(rand) # to transform a list in raster
+    # Convert the list to a raster object
+    rand <- terra::rast(rand)
   } else if (random != "spat") {
     for (i in 1:aleats) {
-      ### shuffle
+      # Shuffle the data using 'bootspat_naive' method from
+      # SESraster package
       pres.site.null <- SESraster::bootspat_naive(x,
                                                   random = random,
                                                   cores = cores)
-      ### calculate FD or PD based on 'tree' class
+      # Calculate alpha diversity (spat.alpha) for the
+      # shuffled data
       rand[[i]] <- divraster::spat.alpha(pres.site.null,
                                          tree,
                                          cores = cores, ...)
     }
-    rand <- terra::rast(rand) # to transform a list in raster
+    # Convert the list to a raster object
+    rand <- terra::rast(rand)
   } else {
-    stop("The randomization method must be one of the following:
-         'spat', 'site', 'species', 'both'.")
+    stop("The randomization method must be one of the
+         following: 'spat', 'site', 'species', 'both'.")
   }
-  # rand mean
+
+  # Calculate mean and standard deviation of the randomized
+  # alpha diversity
   rand.mean <- terra::mean(rand, na.rm = TRUE)
-  # rand standard deviation
   rand.sd <- terra::stdev(rand, na.rm = TRUE)
-  # Reorder raster layers
+
+  # Reorder raster layers based on the 'tree' class
+  # (data.frame or phylo)
   if (inherits(tree, "data.frame")) {
     x.reord <- x[[rownames(tree)]]
   }
   if (inherits(tree, "phylo")) {
     x.reord <- x[[tree$tip.label]]
   }
-  ### Observed values
-  obs <- divraster::spat.alpha(x.reord,
-                               tree,
-                               cores = cores)
 
-  ### Concatenate rasters
+  # Calculate observed alpha diversity (spat.alpha) for the
+  # original data
+  obs <- divraster::spat.alpha(x.reord, tree, cores = cores)
+
+  # Concatenate rasters (observed alpha diversity, mean of
+  # randozimation, and standard deviation of randomization)
   rand <- c(rand.mean, rand.sd, obs)
 
-  ## Calculating the standard effect size (SES)
+  # Calculate the Standardized Effect Size (SES)
   ses <- function(x) {
-    (x[1] - x[2])/x[3]
+    (x[1] - x[2]) / x[3]
   }
-  ses <- terra::app(c(obs, rand.mean, rand.sd),
-                    ses)
+  ses <- terra::app(c(obs, rand.mean, rand.sd), ses)
   names(ses) <- "SES"
 
+  # Combine the results into a single SpatRaster
   out <- c(rand, ses)
 
-  # Define names
+  # Define names for the output based on the type of 'tree'
   lyrnames <- c("Mean", "SD", "Observed", "SES")
   if (inherits(tree, "data.frame")) {
     names(out) <- paste0(lyrnames, "_FD")
   } else {
     names(out) <- paste0(lyrnames, "_PD")
   }
-  # to save the rasters when the path is provide
-  if (!is.null(filename)) {
-    out <- terra::writeRaster(out,
-                              filename,
-                              overwrite = TRUE, ...)
+
+  # Save the output if 'filename' is provided
+  if (filename != "") {
+    terra::writeRaster(out,
+                       filename = filename,
+                       overwrite = TRUE, ...)
   }
+
+  # Return a SpatRaster with alpha and SES results
   return(out)
 }

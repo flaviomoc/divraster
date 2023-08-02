@@ -4,7 +4,7 @@
 \alias{temp.beta}
 \title{Temporal beta diversity calculation for raster}
 \usage{
-temp.beta(bin1, bin2, tree, filename = NULL, cores = 1, ...)
+temp.beta(bin1, bin2, tree, filename = "", cores = 1, ...)
 }
 \arguments{
 \item{bin1}{A SpatRaster with presence-absence data (0 or 1)
@@ -39,6 +39,7 @@ was developed by Podani and Schmera (2011) and Carvalho et al.
 (2012) and expanded to PD and FD by Cardoso et al. (2014).
 }
 \examples{
+\donttest{
 library(terra)
 bin1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
@@ -51,6 +52,7 @@ package = "divraster"))
 temp.beta(bin1, bin2)
 temp.beta(bin1, bin2, traits)
 temp.beta(bin1, bin2, tree)
+}
 }
 \references{
 Cardoso, P. et al. 2014. Partitioning taxon,

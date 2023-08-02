@@ -14,17 +14,28 @@
 #' and richness differences).
 #'
 temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
+  # Check if 'x' contains only NA values and return NA values for
+  # the result vector
   if (all(is.na(x))) {
     resu[] <- NA
-  } else if (sum(x, na.rm = TRUE) == 0) {
+  }
+  # Check if 'x' contains all zeros (no presence) and return zero
+  # values for the result vector
+  else if (sum(x, na.rm = TRUE) == 0) {
     resu[] <- 0
-  } else {
+  }
+  else {
+    # Replace NA values in 'x' with 0
     x[is.na(x)] <- 0
+    # Create a new matrix by stacking 'x' on top of itself to compare
+    # two time points (before and after treatment)
     x <- rbind(x[1:nspp], x[nspp + (1:nspp)])
-    colnames(x) <- spp
+    colnames(x) <- spp  # Set column names using species names
+    # Calculate beta diversity using BAT::beta function with
+    # 'abund = FALSE' and store the result in 'resu'
     resu[] <- unlist(BAT::beta(x, tree, abund = FALSE))
   }
-  return(resu)
+  return(resu)  # Return the result vector 'resu'
 }
 
 #' Temporal beta diversity calculation for raster
@@ -68,6 +79,7 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' library(terra)
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))
@@ -80,33 +92,46 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' temp.beta(bin1, bin2)
 #' temp.beta(bin1, bin2, traits)
 #' temp.beta(bin1, bin2, tree)
-temp.beta <- function(bin1, bin2, tree, filename = NULL,
+#' }
+temp.beta <- function(bin1,
+                      bin2,
+                      tree,
+                      filename = "",
                       cores = 1, ...) {
-  # Check if rasters are NULL or invalid
+  # Check if 'bin1' and 'bin2' are NULL or invalid (not SpatRaster)
   if (is.null(bin1) || !inherits(bin1, "SpatRaster")) {
     stop("'bin1' must be a SpatRaster.")
   }
   if (is.null(bin2) || !inherits(bin2, "SpatRaster")) {
     stop("'bin2' must be a SpatRaster.")
   }
-  # Check if coordinates are geographic
+
+  # Check if coordinates of both rasters are geographic
   if (!terra::is.lonlat(bin1) | !terra::is.lonlat(bin2)) {
     stop("Both rasters must have geographic coordinates.")
   }
+
+  # Check if both rasters have at least 2 layers
   if (terra::nlyr(bin1) < 2 | terra::nlyr(bin2) < 2) {
-    stop("Rasters must have at least 2 layers.")
+    stop("Both rasters must have at least 2 layers.")
   }
+
   # Check if the names of bin1 and bin2 match
   if (!identical(names(bin1), names(bin2))) {
     stop("The names of the rasters do not match.")
   }
+
   # Get number of species
   nspp <- terra::nlyr(bin1)
+
   # Get species names
   spp <- names(bin1)
-  # Create numeric vector to store results
+
+  # Create a numeric vector to store results for Btotal, Brepl,
+  # and Brich
   resu <- numeric(3)
-  # Apply the function to SpatRaster object
+
+  # Apply the function to the SpatRaster objects 'bin1' and 'bin2'
   if (missing(tree)) {
     res <- terra::app(c(bin1, bin2),
                       temp.beta.vec,
@@ -115,7 +140,8 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
                       spp = spp,
                       cores = cores, ...)
   } else {
-    # Check if 'tree' object is valid
+    # Check if 'tree' object is valid (either a data.frame or a
+    # phylo object)
     if (!inherits(tree, c("data.frame", "phylo"))) {
       stop("'tree' must be a data.frame or a phylo object.")
     }
@@ -127,7 +153,8 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
                       spp = spp,
                       cores = cores, ...)
   }
-  # Define names
+
+  # Define names for the output based on the type of 'tree'
   lyrnames <- c("Btotal", "Brepl", "Brich")
   if (missing(tree)) {
     names(res) <- paste0(lyrnames, "_TD")
@@ -136,9 +163,14 @@ temp.beta <- function(bin1, bin2, tree, filename = NULL,
   } else {
     names(res) <- paste0(lyrnames, "_PD")
   }
-  # Save output if filename is provided
-  if (!is.null(filename)) {
-    terra::writeRaster(res, filename, overwrite = TRUE, ...)
+
+  # Save the output to a file if 'filename' is provided
+  if (filename != "") {
+    terra::writeRaster(res,
+                       filename = filename,
+                       overwrite = TRUE, ...)
   }
+
+  # Return the numeric vector with beta diversity values
   return(res)
 }

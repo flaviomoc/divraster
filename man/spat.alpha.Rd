@@ -4,7 +4,7 @@
 \alias{spat.alpha}
 \title{Alpha calculation for raster}
 \usage{
-spat.alpha(bin, tree, cores = 1, filename = NULL, ...)
+spat.alpha(bin, tree, cores = 1, filename = "", ...)
 }
 \arguments{
 \item{bin}{A SpatRaster with presence-absence data (0 or 1) for
