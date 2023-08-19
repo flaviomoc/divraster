@@ -1,0 +1,223 @@
+---
+title: "divraster-vignette"
+author: "Flávio M. M. Mota, Neander M. Heming, and Gabriela Alves-Ferreira"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{divraster-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  warning = FALSE, 
+  message = FALSE
+)
+```
+
+- [1 Introduction](#intro)
+- [2 Alpha diversity](#alpha)
+  - [2.1 Alpha examples](#alpha-ex)
+    - [2.1.1 Alpha TD](#alpha-td)
+    - [2.1.2 Alpha FD](#alpha-fd)
+    - [2.1.3 Alpha PD](#alpha-pd)
+- [3 Standardized effect size (SES)](#ses)
+  - [3.1 SES examples](#ses-ex)
+    - [3.1.1 SES FD](#ses-fd)
+    - [3.1.2 SES PD](#ses-pd)
+- [4 Beta diversity](#beta)
+  - [4.1 Beta examples](#betaspat-ex)
+    - [4.1.1 Beta spatial TD](#betaspat-td)
+    - [4.1.2 Beta spatial FD](#betaspat-fd)
+    - [4.1.3 Beta spatial PD](#betaspat-pd)
+    - [4.1.4 Beta temporal TD](#betatemp-td)
+    - [4.1.5 Beta temporal FD](#betatemp-fd)
+    - [4.1.6 Beta temporal PD](#betatemp-pd)
+- [5 Traits average](#traits-avg)
+  - [5.1 Traits average examples](#traits-ex)
+
+## 1 Introduction {#intro}
+
+Macroecological studies have been increasingly utilized in the context of climate change, necessitating the use of tools to analyze large datasets. To examine and comprehend the intricate mechanisms that underlie species distributions and the structure of biological communities, a diverse array of metrics has been developed. These metrics encompass alpha and beta diversity patterns across taxonomic (TD), functional (FD), and phylogenetic (PD) dimensions. The package `divraster` addresses a current gap in this field by offering functions to calculate diversity metrics directly from rasters, eliminating the need for matrix transformations. This capability is especially valuable when dealing with extensive datasets, as matrices often impose memory constraints.
+
+## 2 Alpha calculations {#alpha}
+
+Alpha diversity calculations use a tree-based approach for taxonomic (TD), functional (FD), and phylogenetic (PD) diversity. In the FD calculation, a species traits matrix is converted into a distance matrix and clustered to produce a regional dendrogram (i.e. a dendrogram with all species in the raster stack) from which the total branch length is calculated. When calculating FD for each community (i.e. raster cell), the regional dendrogram is subsetted into a local dendrogram containing only the species present on the local community, and only the branch lengths connecting them are summed to represent the functional relationships of the species locally present. Similarly, in PD, the sum of branch lengths connecting species within a community represents their shared phylogenetic relationships. Alpha TD can also be visualized using a tree diagram, where each species is directly connected to the root by an edge of unit length, reflecting the number of different taxa in the community (i.e. species richness) since all taxa are at the same level.
+
+## 2.1 Alpha examples {#alpha-ex}
+## 2.1.1 Alpha TD {#alpha-td}
+```{r, fig.height = 4, fig.width = 4, fig.align = 'center',}
+# Loading data
+# Presence-absence SpatRaster
+bin1 <- terra::rast(system.file("extdata", 
+                                "ref_frugivor.tif", 
+                                package = "divraster"))
+bin2 <- terra::rast(system.file("extdata",
+                                "fut_frugivor.tif",
+                                package = "divraster"))
+
+# Change extension to process faster
+terra::ext(bin1)
+e <- c(-41, -39, -15, -13)
+bin1 <- terra::crop(bin1, e)
+bin2 <- terra::crop(bin2, e)
+
+# Species traits
+traits <- read.csv(system.file("extdata", 
+                               "traits_frugivor.csv", 
+                               package = "divraster"), 
+                   sep = ";", 
+                   row.names = 1)
+
+# Phylogenetic tree
+tree <- ape::read.tree(system.file("extdata", 
+                                   "tree_frugivor.tre", 
+                                   package = "divraster"))
+
+# Alpha TD calculation for scenario 1
+alpha.td <- divraster::spat.alpha(bin1)
+alpha.td
+terra::plot(alpha.td, main = paste0(names(alpha.td), "_sce1"))
+
+# Alpha TD calculation for scenario 2
+alpha.td2 <- divraster::spat.alpha(bin2)
+alpha.td2
+terra::plot(alpha.td2, main = paste0(names(alpha.td2), "_sce2"))
+
+# Difference in Alpha TD between scenarios
+alpha.td2-alpha.td
+terra::plot(alpha.td2-alpha.td, main = "Delta Alpha TD")
+```
+The alpha taxonomic diversity in the first scenario ranges from 0 to 67, and in the second scenario, it ranges from 0 to 65, with higher values concentrated towards the north in both cases. When comparing the two scenarios, subtracting the second from the first reveals greater species losses (n = 18) towards the south.
+
+## 2.1.2 Alpha FD {#alpha-fd}
+```{r, fig.height = 4, fig.width = 4, fig.align = 'center',}
+alpha.fd <- divraster::spat.alpha(bin1, traits)
+alpha.fd
+terra::plot(alpha.fd, main = names(alpha.fd))
+```
+The alpha functional diversity for the first scenario ranges from 3.7 to 4.4, with higher values concentrated towards the north, indicating greater functional diversity.
+
+## 2.1.3 Alpha PD {#alpha-pd}
+```{r, fig.height = 4, fig.width = 4, fig.align = 'center',}
+# Alpha PD calculation
+alpha.pd <- divraster::spat.alpha(bin1, tree)
+alpha.pd
+terra::plot(alpha.pd, main = names(alpha.pd))
+```
+The alpha phylogenetic diversity for the first scenario ranges from 1524 to 1860, with higher values concentrated towards the north, indicating greater phylogenetic diversity.
+
+## 3 Standardized effect size (SES) {#ses}
+
+SES is often used in ecological studies to measure the magnitude of difference between observed and randomized patterns generated by null models, expressed in standard deviation units. We calculate SES using the `SESraster` package, which currently offers six community randomization methods. The basic randomization methods include: keeping the richness constant and randomizing the position of the species within each raster cell (site), keeping range size constant and randomizing the position of species presences in space (species), and randomizing by both site and species simultaneously (both). A positive SES indicates that the observed functional/phylogenetic diversity is higher than expected solely based on species richness (taxonomic diversity), whereas a negative SES indicates the opposite.
+
+## 3.1 SES examples {#ses-ex}
+## 3.1.1 SES FD {#ses-fd}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# SES FD calculation
+ses.fd <- divraster::spat.rand(x = bin1, 
+                               tree = traits, 
+                               aleats = 3, 
+                               random = "site")
+ses.fd
+terra::plot(ses.fd, main = names(ses.fd))
+```
+The SES indicates that the majority of the areas have values close to 0, suggesting that functional diversity does not significantly differ from the expected change. However, one community is projected to be functionally dispersed (SES_FD = 31), while another community is projected to be functionally clustered (SES_FD = -39). This indicates an increase and decrease in functional diversity within these communities from scenarios 1 to 2, respectively.
+
+## 3.1.2 SES PD {#ses-pd}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# SES PD calculation
+ses.pd <- divraster::spat.rand(x = bin1, 
+                               tree = tree, 
+                               aleats = 3, 
+                               random = "site")
+ses.pd
+terra::plot(ses.pd, main = names(ses.pd))
+```
+Similarly, the SES for phylogenetic diversity does not differ from what is expected by chance, with most communities presenting values close to 0. However, one community is projected to be phylogenetically dispersed (SES_PD = 10), while another community is projected to be phylogenetically clustered (SES_FD = -15). This indicates an increase and decrease in phylogenetic diversity within these communities from scenarios 1 to 2, respectively.
+
+## 4 Beta diversity {#beta}
+
+Beta diversity captures variations in species composition between different communities. When examining a community in comparison to its neighboring ones, it is referred to as spatial beta diversity. On the other hand, when assessing changes within the same community over different time periods, it is termed temporal beta diversity. Beta diversity can further be partitioned into two components: "replacement" and "richness differences". The former accounts for the substitution of one species with another, while the latter encompasses discrepancies in the total number of species (e.g. species gain or loss). Moreover, the concept of beta diversity extends to functional (FD) and phylogenetic diversity (PD), using the same framework as taxonomic diversity (TD). In the context of TD, higher beta diversity represents higher dissimilarities in species composition between communities. In contrast, for FD, it indicates higher dissimilarities in functional traits, and for PD, it reflects higher dissimilarities in phylogenetic relationships of species between communities.
+
+## 4.1 Beta examples {#betaspat-ex}
+## 4.1.1 Beta spatial TD {#betaspat-td}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# Beta spatial TD calculation
+beta.td <- divraster::spat.beta(bin1)
+beta.td
+terra::plot(beta.td, main = names(beta.td))
+```
+Spatial beta diversity for TD indicates a slight change in species composition towards the south, as evidenced by the small values of Btotal (~0.1). The predominant component contributing to this change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of species.
+
+## 4.1.2 Beta spatial FD {#betaspat-fd}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# Beta spatial FD calculation
+beta.fd <- divraster::spat.beta(bin1, traits)
+beta.fd
+terra::plot(beta.fd, main = names(beta.fd))
+```
+Similarly, spatial beta diversity for FD indicates a slight change in functional traits composition towards the south, as evidenced by the small values of Btotal (~0.08). The predominant component contributing to this little change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of functional traits.
+
+## 4.1.3 Beta spatial PD {#betaspat-pd}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# Beta spatial PD calculation
+beta.pd <- divraster::spat.beta(bin1, tree)
+beta.pd
+terra::plot(beta.pd, main = names(beta.pd))
+```
+The spatial beta diversity for PD indicates a slight change in the evolutionary history of communities towards the south. However this change is even lower compared to TD and FD, as evidenced by the smallest values of Btotal (~0.06). The predominant component contributing to this little change is also the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are due to the loss or gain of evolutionary history.
+
+## 4.1.4 Beta temporal TD {#betatemp-td}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# Beta temporal TD calculation
+betatemp.td <- divraster::temp.beta(bin1, bin2)
+betatemp.td
+terra::plot(betatemp.td, main = names(betatemp.td))
+```
+The temporal beta diversity for TD indicates that future communities are expected to experience changes in their species composition, predominantly towards the south, with Btotal reaching approximately 0.3. The predominance of the Brich component suggests that these dissimilarities are attributed to gains or losses of species.
+
+## 4.1.5 Beta temporal FD {#betatemp-fd}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# Beta temporal FD calculation
+betatemp.fd <- divraster::temp.beta(bin1, bin2, traits)
+betatemp.fd
+terra::plot(betatemp.fd, main = names(betatemp.fd))
+```
+The temporal beta diversity for FD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.17. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of functional traits.
+
+## 4.1.6 Beta temporal PD {#betatemp-pd}
+```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
+# Beta temporal PD calculation
+betatemp.pd <- divraster::temp.beta(bin1, bin2, tree)
+betatemp.pd
+terra::plot(betatemp.pd, main = names(betatemp.pd))
+```
+Likewise, the temporal beta diversity for PD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.18. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of evolutionary history.
+
+## 5 Traits average {#traits-avg}
+
+Calculating the average traits of species for each climate scenario enables the evaluation of species traits that contribute the most to the loss of suitable habitat. Unlike functional diversity, which combines functional traits into an index, this approach provides direct insight into spatial variations in average traits. This information can complement the data necessary for delineating conservation priority areas, as shifts in average traits—whether increasing or decreasing—indicate the potential loss of species with specific features. This is of particular significance given that functional traits are closely tied to the ecological services provided by species.
+
+## 5.1 Traits average examples {#traits-ex}
+```{r, fig.height = 4, fig.width = 4, fig.align = 'center',}
+# Average traits calculation
+# Scenario 1
+avg.traits1 <- divraster::spat.trait(bin1, traits)
+avg.traits1[[4]]
+terra::plot(avg.traits1[[4]], main = paste0(names(avg.traits1[[4]]), "_sce1"))
+
+# Scenario 2
+avg.traits2 <- divraster::spat.trait(bin2, traits)
+avg.traits2[[4]]
+terra::plot(avg.traits2[[4]], main = paste0(names(avg.traits2[[4]]), "_sce2"))
+
+# Percentage of change
+change.traits <- (avg.traits2 - avg.traits1) / avg.traits1 * 100
+change.traits[[4]]
+terra::plot(change.traits[[4]], main = paste0(names(change.traits[[4]]), "_%"))
+```
+The average beak depth in the first scenario ranges from 8.5 to 9.6, while in the second scenario, it ranges from 8.8 to 9.9. Beak depth increased by 13.5% in the southern region but decreased by 4.5% in the central region. The earlier analysis indicated a prevalence of species loss, implying that the rise in average beak depth in the second scenario can be attributed to the decline of species with smaller beak depths. Conversely, the reduction in beak size can be attributed to the decline of species with larger beak depths.
