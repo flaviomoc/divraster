@@ -10,64 +10,37 @@
 
 Alpha and beta calculations using rasters for taxonomic (TD), functional (FD), and phylogenetic (PD) dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness difference components. Functions to calculate standardized effect size for functional and phylogenetic alpha diversity and the average traits are available.
 
-## Installation
+### Installation
 
-To install the package, run the following code:
+The CRAN version of `divraster` can be installed using:
 
 ``` r
 install.packages("divraster")
 ```
 
-The development version of `divraster` can be installed from Github:
+The development version of `divraster` can be installed from Github using:
 
 ``` r
-# install.packages(devtools)
-devtools::install_github("flaviomoc/divraster", build_vignettes = TRUE)
+devtools::install_github("flaviomoc/divraster")
 ```
 
-## Load data
+### `divraster` basics
 
-You can use a `divraster` function to load an example dataset:
+Basic information about `divraster` can be found at the [package's webpage](https://flaviomoc.github.io/divraster) or in the vignette:
 
 ``` r
-library(divraster)
-data <- load.data()
+vignette("divraster-vignette")
 ```
 
-## Calculating alpha diversity
+### Citation
 
-To calculate alpha diversity for TD, FD, and PD we need the following objects: a multilayer SpatRaster, data.frame, and phylo.
+- If you use this R package, please cite in your publications:
 
-``` r
-# TD
-terra::plot(spat.alpha(data$ref))
+Mota FMM, Heming NM, Alves-Ferreira G (2023). divraster: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters. <https://CRAN.R-project.org/package=divraster>.
 
-# FD
-terra::plot(spat.alpha(data$ref, data$traits))
+- For more information:
+citation("divraster")
 
-# PD
-terra::plot(spat.alpha(data$ref, data$tree))
-```
+### Issues
 
-## Calculating temporal beta diversity
-
-To calculate temporal beta diversity and its components (i.e. replacement and richness differences) for TD, FD, and PD we need the following objects: two multilayer SpatRaster (e.g. reference and future climate scenarios), data.frame, and phylo.
-
-``` r
-# TD
-terra::plot(temp.beta(data$ref, data$fut))
-
-# FD
-terra::plot(temp.beta(data$ref, data$fut, data$traits))
-
-# PD
-terra::plot(temp.beta(data$ref, data$fut, data$tree))
-```
-
-## Other examples
-
-A vignette with other examples can be found loading:
-
-``` r
-browseVignettes("divraster")
-```
+If you have any question or find any bug, let us know through the topic [Issues](https://github.com/flaviomoc/divraster/issues).
