@@ -81,59 +81,39 @@
 <!-- badges: start -->
 
 <p>Alpha and beta calculations using rasters for taxonomic (TD), functional (FD), and phylogenetic (PD) dimensions. Spatial and temporal beta diversity can be partitioned into replacement and richness difference components. Functions to calculate standardized effect size for functional and phylogenetic alpha diversity and the average traits are available.</p>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>To install the package, run the following code:</p>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<p>The CRAN version of <code>divraster</code> can be installed using:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"divraster"</span><span class="op">)</span></span></code></pre></div>
-<p>The development version of <code>divraster</code> can be installed from Github:</p>
+<p>The development version of <code>divraster</code> can be installed from Github using:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages(devtools)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"flaviomoc/divraster"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"flaviomoc/divraster"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="load-data">Load data<a class="anchor" aria-label="anchor" href="#load-data"></a>
-</h2>
-<p>You can use a <code>divraster</code> function to load an example dataset:</p>
+<div class="section level3">
+<h3 id="divraster-basics">
+<code>divraster</code> basics<a class="anchor" aria-label="anchor" href="#divraster-basics"></a>
+</h3>
+<p>Basic information about <code>divraster</code> can be found at the <a href="https://flaviomoc.github.io/divraster">package’s webpage</a> or in the vignette:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/flaviomoc/divraster" class="external-link">divraster</a></span><span class="op">)</span></span>
-<span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/load.data.html">load.data</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/vignette.html" class="external-link">vignette</a></span><span class="op">(</span><span class="st">"divraster-vignette"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="calculating-alpha-diversity">Calculating alpha diversity<a class="anchor" aria-label="anchor" href="#calculating-alpha-diversity"></a>
-</h2>
-<p>To calculate alpha diversity for TD, FD, and PD we need the following objects: a multilayer SpatRaster, data.frame, and phylo.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># TD</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># FD</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># PD</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h3>
+<ul>
+<li>If you use this R package, please cite in your publications:</li>
+</ul>
+<p>Mota FMM, Heming NM, Alves-Ferreira G (2023). divraster: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters. <a href="https://CRAN.R-project.org/package=divraster" class="external-link uri">https://CRAN.R-project.org/package=divraster</a>.</p>
+<ul>
+<li>For more information: citation(“divraster”)</li>
+</ul>
 </div>
-<div class="section level2">
-<h2 id="calculating-temporal-beta-diversity">Calculating temporal beta diversity<a class="anchor" aria-label="anchor" href="#calculating-temporal-beta-diversity"></a>
-</h2>
-<p>To calculate temporal beta diversity and its components (i.e. replacement and richness differences) for TD, FD, and PD we need the following objects: two multilayer SpatRaster (e.g. reference and future climate scenarios), data.frame, and phylo.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># TD</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># FD</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span>, <span class="va">data</span><span class="op">$</span><span class="va">traits</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># PD</span></span>
-<span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">ref</span>, <span class="va">data</span><span class="op">$</span><span class="va">fut</span>, <span class="va">data</span><span class="op">$</span><span class="va">tree</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="other-examples">Other examples<a class="anchor" aria-label="anchor" href="#other-examples"></a>
-</h2>
-<p>A vignette with other examples can be found loading:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/browseVignettes.html" class="external-link">browseVignettes</a></span><span class="op">(</span><span class="st">"divraster"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="issues">Issues<a class="anchor" aria-label="anchor" href="#issues"></a>
+</h3>
+<p>If you have any question or find any bug, let us know through the topic <a href="https://github.com/flaviomoc/divraster/issues" class="external-link">Issues</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
