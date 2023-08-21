@@ -26,7 +26,7 @@ devtools::install_github("flaviomoc/divraster")
 
 ### `divraster` basics
 
-Basic information about `divraster` can be found at the [package's webpage](https://flaviomoc.github.io/divraster) or in the vignette:
+Basic information about `divraster` can be found at the [package's webpage](https://flaviomoc.github.io/divraster/) or in the vignette:
 
 ``` r
 vignette("divraster-vignette")
