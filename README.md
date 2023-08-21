@@ -39,7 +39,10 @@ vignette("divraster-vignette")
 Mota FMM, Heming NM, Alves-Ferreira G (2023). divraster: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters. <https://CRAN.R-project.org/package=divraster>.
 
 - For more information:
+
+``` r
 citation("divraster")
+```
 
 ### Issues
 
