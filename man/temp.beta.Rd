@@ -26,7 +26,7 @@ a calling function.}
 }
 \value{
 A SpatRaster with beta results (total, replacement,
-and richness differences).
+richness difference, and ratio).
 }
 \description{
 Calculates temporal beta diversity for

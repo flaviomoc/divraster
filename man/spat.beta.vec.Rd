@@ -26,7 +26,7 @@ calling function.}
 }
 \value{
 A vector with beta results (total, replacement,
-and richness differences).
+richness difference, and ratio).
 }
 \description{
 Spatial beta diversity for vector

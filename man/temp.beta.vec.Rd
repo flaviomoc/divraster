@@ -24,7 +24,7 @@ a calling function.}
 }
 \value{
 A vector with beta results (total, replacement,
-and richness differences).
+richness difference, and ratio).
 }
 \description{
 Temporal beta diversity calculation for vector

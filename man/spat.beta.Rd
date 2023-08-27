@@ -43,7 +43,7 @@ a calling function.}
 }
 \value{
 A SpatRaster with beta results (total, replacement,
-and richness differences).
+richness difference, and ratio).
 }
 \description{
 Calculates spatial beta diversity for

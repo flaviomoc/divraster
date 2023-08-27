@@ -13,7 +13,7 @@
 #' calling function.
 #'
 #' @return A vector with beta results (total, replacement,
-#' and richness differences).
+#' richness difference, and ratio).
 #'
 spat.beta.vec <- function(x,
                           tree,
@@ -117,7 +117,7 @@ spat.beta.vec <- function(x,
 #' Conservation 17: 57–63.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
-#' and richness differences).
+#' richness difference, and ratio).
 #' @export
 #'
 #' @examples

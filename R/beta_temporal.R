@@ -11,7 +11,7 @@
 #' a calling function.
 #'
 #' @return A vector with beta results (total, replacement,
-#' and richness differences).
+#' richness difference, and ratio).
 #'
 temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
   # Check if 'x' contains only NA values and return NA values for
@@ -82,7 +82,7 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' Conservation 17: 57–63.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
-#' and richness differences).
+#' richness difference, and ratio).
 #' @export
 #'
 #' @examples
@@ -135,7 +135,7 @@ temp.beta <- function(bin1,
   spp <- names(bin1)
 
   # Create a numeric vector to store results for Btotal, Brepl,
-  # and Brich
+  # Brich,and Bratio
   resu <- numeric(4)
 
   # Apply the function to the SpatRaster objects 'bin1' and 'bin2'
