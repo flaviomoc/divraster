@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Flávio M. M.
 Mota, Neander M. Heming, and Gabriela Alves-Ferreira</h4>
             
-            <h4 data-toc-skip class="date">2023-08-25</h4>
+            <h4 data-toc-skip class="date">2023-08-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flaviomoc/divraster/blob/HEAD/vignettes/divraster-vignette.Rmd" class="external-link"><code>vignettes/divraster-vignette.Rmd</code></a></small>
       <div class="d-none name"><code>divraster-vignette.Rmd</code></div>
@@ -342,9 +342,9 @@ a negative SES indicates the opposite.</p>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Mean_FD,       SD_FD, Observed_FD,     SES_FD </span></span>
-<span><span class="co">#&gt; min values  : 3.771885, 0.003211363,    3.723151, -17.575216 </span></span>
-<span><span class="co">#&gt; max values  : 4.435286, 0.172341533,    4.378846,   2.132086</span></span>
+<span><span class="co">#&gt; names       :  Mean_FD,      SD_FD, Observed_FD,     SES_FD </span></span>
+<span><span class="co">#&gt; min values  : 3.711893, 0.00422739,    3.723151, -14.245310 </span></span>
+<span><span class="co">#&gt; max values  : 4.437038, 0.24105966,    4.378846,   7.858066</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.fd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.fd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;">
 The SES indicates that the majority of the areas have values close to 0,
@@ -372,8 +372,8 @@ from scenarios 1 to 2, respectively.</p>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
 <span><span class="co">#&gt; names       :  Mean_PD,     SD_PD, Observed_PD,    SES_PD </span></span>
-<span><span class="co">#&gt; min values  : 1645.989,  1.244739,    1623.451, -4.357277 </span></span>
-<span><span class="co">#&gt; max values  : 1877.987, 73.910359,    1880.676, 10.178462</span></span>
+<span><span class="co">#&gt; min values  : 1644.367,  1.261352,    1623.451, -11.87299 </span></span>
+<span><span class="co">#&gt; max values  : 1875.490, 60.743869,    1880.676,  38.64686</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.pd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.pd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;">
 Similarly, the SES for phylogenetic diversity does not differ from what
@@ -395,14 +395,18 @@ different time periods, it is termed temporal beta diversity. Beta
 diversity can further be partitioned into two components: “replacement”
 and “richness differences”. The former accounts for the substitution of
 one species with another, while the latter encompasses discrepancies in
-the total number of species (e.g. species gain or loss). Moreover, the
-concept of beta diversity extends to functional (FD) and phylogenetic
-diversity (PD), using the same framework as taxonomic diversity (TD). In
-the context of TD, higher beta diversity represents higher
-dissimilarities in species composition between communities. In contrast,
-for FD, it indicates higher dissimilarities in functional traits, and
-for PD, it reflects higher dissimilarities in phylogenetic relationships
-of species between communities.</p>
+the total number of species (e.g. species gain or loss). In addition,
+since Btotal represents the sum of Brepl and Brich components, the
+proportion of Brepl/Btotal (Bratio) can be calculated, with values close
+to 0 indicating the predominance of Brich and values close to 1
+indicating the predominance of Brepl. Moreover, the concept of beta
+diversity extends to functional (FD) and phylogenetic diversity (PD),
+using the same framework as taxonomic diversity (TD). In the context of
+TD, higher beta diversity represents higher dissimilarities in species
+composition between communities. In contrast, for FD, it indicates
+higher dissimilarities in functional traits, and for PD, it reflects
+higher dissimilarities in phylogenetic relationships of species between
+communities.</p>
 </div>
 <div class="section level2">
 <h2 id="betaspat-ex">4.1 Beta examples<a class="anchor" aria-label="anchor" href="#betaspat-ex"></a>
@@ -416,14 +420,14 @@ of species between communities.</p>
 <span><span class="va">beta.td</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span></span>
 <span><span class="va">beta.td</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 16, 16, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :   Btotal_TD,   Brepl_TD,    Brich_TD </span></span>
-<span><span class="co">#&gt; min values  : 0.006060606, 0.00000000, 0.004264392 </span></span>
-<span><span class="co">#&gt; max values  : 0.109409606, 0.03638009, 0.103181683</span></span>
+<span><span class="co">#&gt; names       :   Btotal_TD,   Brepl_TD,    Brich_TD, Bratio_TD </span></span>
+<span><span class="co">#&gt; min values  : 0.006060606, 0.00000000, 0.004264392, 0.0000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.109409606, 0.03638009, 0.103181683, 0.7259259</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">beta.td</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">beta.td</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;">
 Spatial beta diversity for TD indicates a slight change in species
@@ -431,7 +435,8 @@ composition towards the south, as evidenced by the small values of
 Btotal (~0.1). The predominant component contributing to this change is
 the richness difference (Brich), suggesting that dissimilarities between
 each community (i.e. pixel) and its neighbors are primarily due to the
-loss or gain of species.</p>
+loss or gain of species. The Bratio also indicates the predominance of
+Birch component in most communities.</p>
 </div>
 <div class="section level2">
 <h2 id="betaspat-fd">4.1.2 Beta spatial FD<a class="anchor" aria-label="anchor" href="#betaspat-fd"></a>
@@ -441,14 +446,14 @@ loss or gain of species.</p>
 <span><span class="va">beta.fd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span><span class="op">)</span></span>
 <span><span class="va">beta.fd</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 16, 16, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :    Btotal_FD,   Brepl_FD,     Brich_FD </span></span>
-<span><span class="co">#&gt; min values  : 0.0004245858, 0.00000000, 0.0004245858 </span></span>
-<span><span class="co">#&gt; max values  : 0.0793045655, 0.01846139, 0.0793045655</span></span>
+<span><span class="co">#&gt; names       :    Btotal_FD,   Brepl_FD,     Brich_FD, Bratio_FD </span></span>
+<span><span class="co">#&gt; min values  : 0.0004245858, 0.00000000, 0.0004245858,  0.000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.0793045655, 0.01846139, 0.0793045655,  0.756675</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">beta.fd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">beta.fd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;">
 Similarly, spatial beta diversity for FD indicates a slight change in
@@ -456,8 +461,9 @@ functional traits composition towards the south, as evidenced by the
 small values of Btotal (~0.08). The predominant component contributing
 to this little change is the richness difference (Brich), suggesting
 that dissimilarities between each community (i.e. pixel) and its
-neighbors are primarily due to the loss or gain of functional
-traits.</p>
+neighbors are primarily due to the loss or gain of functional traits.
+The Bratio also indicates the predominance of Birch component in most
+communities.</p>
 </div>
 <div class="section level2">
 <h2 id="betaspat-pd">4.1.3 Beta spatial PD<a class="anchor" aria-label="anchor" href="#betaspat-pd"></a>
@@ -467,14 +473,14 @@ traits.</p>
 <span><span class="va">beta.pd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="va">beta.pd</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 16, 16, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :   Btotal_PD,    Brepl_PD,    Brich_PD </span></span>
-<span><span class="co">#&gt; min values  : 0.002851805, 0.000000000, 0.001618621 </span></span>
-<span><span class="co">#&gt; max values  : 0.059656685, 0.008026876, 0.059656685</span></span>
+<span><span class="co">#&gt; names       :   Btotal_PD,    Brepl_PD,    Brich_PD, Bratio_PD </span></span>
+<span><span class="co">#&gt; min values  : 0.002851805, 0.000000000, 0.001618621, 0.0000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.059656685, 0.008026876, 0.059656685, 0.8250616</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">beta.pd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">beta.pd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;">
 The spatial beta diversity for PD indicates a slight change in the
@@ -483,7 +489,8 @@ change is even lower compared to TD and FD, as evidenced by the smallest
 values of Btotal (~0.06). The predominant component contributing to this
 little change is also the richness difference (Brich), suggesting that
 dissimilarities between each community (i.e. pixel) and its neighbors
-are due to the loss or gain of evolutionary history.</p>
+are due to the loss or gain of evolutionary history. The Bratio also
+indicates the predominance of Birch component in most communities.</p>
 </div>
 <div class="section level2">
 <h2 id="betatemp-td">4.1.4 Beta temporal TD<a class="anchor" aria-label="anchor" href="#betatemp-td"></a>
@@ -493,21 +500,23 @@ are due to the loss or gain of evolutionary history.</p>
 <span><span class="va">betatemp.td</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span><span class="op">)</span></span>
 <span><span class="va">betatemp.td</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 16, 16, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Btotal_TD,   Brepl_TD,   Brich_TD </span></span>
-<span><span class="co">#&gt; min values  : 0.02985075, 0.00000000, 0.02985075 </span></span>
-<span><span class="co">#&gt; max values  : 0.31578947, 0.09836066, 0.31578947</span></span>
+<span><span class="co">#&gt; names       :  Btotal_TD,   Brepl_TD,   Brich_TD, Bratio_TD </span></span>
+<span><span class="co">#&gt; min values  : 0.02985075, 0.00000000, 0.02985075, 0.0000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.31578947, 0.09836066, 0.31578947, 0.6666667</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">betatemp.td</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">betatemp.td</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;">
 The temporal beta diversity for TD indicates that future communities are
 expected to experience changes in their species composition,
 predominantly towards the south, with Btotal reaching approximately 0.3.
 The predominance of the Brich component suggests that these
-dissimilarities are attributed to gains or losses of species.</p>
+dissimilarities are attributed to gains or losses of species. The Bratio
+also indicates the predominance of Birch component in most
+communities.</p>
 </div>
 <div class="section level2">
 <h2 id="betatemp-fd">4.1.5 Beta temporal FD<a class="anchor" aria-label="anchor" href="#betatemp-fd"></a>
@@ -517,21 +526,22 @@ dissimilarities are attributed to gains or losses of species.</p>
 <span><span class="va">betatemp.fd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">traits</span><span class="op">)</span></span>
 <span><span class="va">betatemp.fd</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 16, 16, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Btotal_FD,   Brepl_FD,   Brich_FD </span></span>
-<span><span class="co">#&gt; min values  : 0.01733908, 0.00000000, 0.01012696 </span></span>
-<span><span class="co">#&gt; max values  : 0.17031569, 0.03741327, 0.17031569</span></span>
+<span><span class="co">#&gt; names       :  Btotal_FD,   Brepl_FD,   Brich_FD, Bratio_FD </span></span>
+<span><span class="co">#&gt; min values  : 0.01733908, 0.00000000, 0.01012696, 0.0000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.17031569, 0.03741327, 0.17031569, 0.6872465</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">betatemp.fd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">betatemp.fd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;">
 The temporal beta diversity for FD indicates a less pronounced pattern
 compared to TD, with smaller values of Btotal, reaching a maximum of
 only 0.17. The Brich component is also predominant, suggesting that the
 small dissimilarities can be attributed to gains or losses of functional
-traits.</p>
+traits. The Bratio also indicates the predominance of Birch component in
+most communities.</p>
 </div>
 <div class="section level2">
 <h2 id="betatemp-pd">4.1.6 Beta temporal PD<a class="anchor" aria-label="anchor" href="#betatemp-pd"></a>
@@ -541,21 +551,22 @@ traits.</p>
 <span><span class="va">betatemp.pd</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="va">betatemp.pd</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 16, 16, 3  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; dimensions  : 16, 16, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       : Btotal_PD,  Brepl_PD,    Brich_PD </span></span>
-<span><span class="co">#&gt; min values  : 0.0120217, 0.0000000, 0.009533166 </span></span>
-<span><span class="co">#&gt; max values  : 0.1792291, 0.0394096, 0.179229119</span></span>
+<span><span class="co">#&gt; names       : Btotal_PD,  Brepl_PD,    Brich_PD, Bratio_PD </span></span>
+<span><span class="co">#&gt; min values  : 0.0120217, 0.0000000, 0.009533166, 0.0000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.1792291, 0.0394096, 0.179229119, 0.7759122</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">betatemp.pd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">betatemp.pd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-12-1.png" width="576" style="display: block; margin: auto;">
 Likewise, the temporal beta diversity for PD indicates a less pronounced
 pattern compared to TD, with smaller values of Btotal, reaching a
 maximum of only 0.18. The Brich component is also predominant,
 suggesting that the small dissimilarities can be attributed to gains or
-losses of evolutionary history.</p>
+losses of evolutionary history. The Bratio also indicates the
+predominance of Birch component in most communities.</p>
 </div>
 <div class="section level2">
 <h2 id="traits-avg">5 Traits average<a class="anchor" aria-label="anchor" href="#traits-avg"></a>
