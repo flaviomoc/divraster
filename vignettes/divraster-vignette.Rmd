@@ -141,7 +141,7 @@ Similarly, the SES for phylogenetic diversity does not differ from what is expec
 
 ## 4 Beta diversity {#beta}
 
-Beta diversity captures variations in species composition between different communities. When examining a community in comparison to its neighboring ones, it is referred to as spatial beta diversity. On the other hand, when assessing changes within the same community over different time periods, it is termed temporal beta diversity. Beta diversity can further be partitioned into two components: "replacement" and "richness differences". The former accounts for the substitution of one species with another, while the latter encompasses discrepancies in the total number of species (e.g. species gain or loss). Moreover, the concept of beta diversity extends to functional (FD) and phylogenetic diversity (PD), using the same framework as taxonomic diversity (TD). In the context of TD, higher beta diversity represents higher dissimilarities in species composition between communities. In contrast, for FD, it indicates higher dissimilarities in functional traits, and for PD, it reflects higher dissimilarities in phylogenetic relationships of species between communities.
+Beta diversity captures variations in species composition between different communities. When examining a community in comparison to its neighboring ones, it is referred to as spatial beta diversity. On the other hand, when assessing changes within the same community over different time periods, it is termed temporal beta diversity. Beta diversity can further be partitioned into two components: "replacement" and "richness differences". The former accounts for the substitution of one species with another, while the latter encompasses discrepancies in the total number of species (e.g. species gain or loss). In addition, since Btotal represents the sum of Brepl and Brich components, the proportion of Brepl/Btotal (Bratio) can be calculated, with values close to 0 indicating the predominance of Brich and values close to 1 indicating the predominance of Brepl. Moreover, the concept of beta diversity extends to functional (FD) and phylogenetic diversity (PD), using the same framework as taxonomic diversity (TD). In the context of TD, higher beta diversity represents higher dissimilarities in species composition between communities. In contrast, for FD, it indicates higher dissimilarities in functional traits, and for PD, it reflects higher dissimilarities in phylogenetic relationships of species between communities.
 
 ## 4.1 Beta examples {#betaspat-ex}
 ## 4.1.1 Beta spatial TD {#betaspat-td}
@@ -151,7 +151,7 @@ beta.td <- divraster::spat.beta(bin1)
 beta.td
 terra::plot(beta.td, main = names(beta.td))
 ```
-Spatial beta diversity for TD indicates a slight change in species composition towards the south, as evidenced by the small values of Btotal (~0.1). The predominant component contributing to this change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of species.
+Spatial beta diversity for TD indicates a slight change in species composition towards the south, as evidenced by the small values of Btotal (~0.1). The predominant component contributing to this change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of species. The Bratio also indicates the predominance of Birch component in most communities.
 
 ## 4.1.2 Beta spatial FD {#betaspat-fd}
 ```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
@@ -160,7 +160,7 @@ beta.fd <- divraster::spat.beta(bin1, traits)
 beta.fd
 terra::plot(beta.fd, main = names(beta.fd))
 ```
-Similarly, spatial beta diversity for FD indicates a slight change in functional traits composition towards the south, as evidenced by the small values of Btotal (~0.08). The predominant component contributing to this little change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of functional traits.
+Similarly, spatial beta diversity for FD indicates a slight change in functional traits composition towards the south, as evidenced by the small values of Btotal (~0.08). The predominant component contributing to this little change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of functional traits. The Bratio also indicates the predominance of Birch component in most communities.
 
 ## 4.1.3 Beta spatial PD {#betaspat-pd}
 ```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
@@ -169,7 +169,7 @@ beta.pd <- divraster::spat.beta(bin1, tree)
 beta.pd
 terra::plot(beta.pd, main = names(beta.pd))
 ```
-The spatial beta diversity for PD indicates a slight change in the evolutionary history of communities towards the south. However this change is even lower compared to TD and FD, as evidenced by the smallest values of Btotal (~0.06). The predominant component contributing to this little change is also the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are due to the loss or gain of evolutionary history.
+The spatial beta diversity for PD indicates a slight change in the evolutionary history of communities towards the south. However this change is even lower compared to TD and FD, as evidenced by the smallest values of Btotal (~0.06). The predominant component contributing to this little change is also the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are due to the loss or gain of evolutionary history. The Bratio also indicates the predominance of Birch component in most communities.
 
 ## 4.1.4 Beta temporal TD {#betatemp-td}
 ```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
@@ -178,7 +178,7 @@ betatemp.td <- divraster::temp.beta(bin1, bin2)
 betatemp.td
 terra::plot(betatemp.td, main = names(betatemp.td))
 ```
-The temporal beta diversity for TD indicates that future communities are expected to experience changes in their species composition, predominantly towards the south, with Btotal reaching approximately 0.3. The predominance of the Brich component suggests that these dissimilarities are attributed to gains or losses of species.
+The temporal beta diversity for TD indicates that future communities are expected to experience changes in their species composition, predominantly towards the south, with Btotal reaching approximately 0.3. The predominance of the Brich component suggests that these dissimilarities are attributed to gains or losses of species. The Bratio also indicates the predominance of Birch component in most communities.
 
 ## 4.1.5 Beta temporal FD {#betatemp-fd}
 ```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
@@ -187,7 +187,7 @@ betatemp.fd <- divraster::temp.beta(bin1, bin2, traits)
 betatemp.fd
 terra::plot(betatemp.fd, main = names(betatemp.fd))
 ```
-The temporal beta diversity for FD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.17. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of functional traits.
+The temporal beta diversity for FD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.17. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of functional traits. The Bratio also indicates the predominance of Birch component in most communities.
 
 ## 4.1.6 Beta temporal PD {#betatemp-pd}
 ```{r, fig.height = 5, fig.width = 6, fig.align = 'center',}
@@ -196,7 +196,7 @@ betatemp.pd <- divraster::temp.beta(bin1, bin2, tree)
 betatemp.pd
 terra::plot(betatemp.pd, main = names(betatemp.pd))
 ```
-Likewise, the temporal beta diversity for PD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.18. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of evolutionary history.
+Likewise, the temporal beta diversity for PD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.18. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of evolutionary history. The Bratio also indicates the predominance of Birch component in most communities.
 
 ## 5 Traits average {#traits-avg}
 

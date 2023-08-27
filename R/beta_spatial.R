@@ -41,17 +41,17 @@ spat.beta.vec <- function(x,
   # Check if 'x' contains only NA values and return NA values for
   # all beta diversity components
   if (all(is.na(x))) {
-    return(c(Btotal = NA, Brepl = NA, Brich = NA))
+    return(c(Btotal = NA, Brepl = NA, Brich = NA, Bratio = NA))
   }
   # Check if 'x' is not a matrix and return zero values for all beta
   # diversity components
   else if (!inherits(x, "matrix")) {
-    return(c(Btotal = 0, Brepl = 0, Brich = 0))
+    return(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0))
   }
   # Check if 'x' contains all zeros (no presence) and return zero
   # values for all beta diversity components
   else if (sum(x, na.rm = TRUE) == 0) {
-    return(c(Btotal = 0, Brepl = 0, Brich = 0))
+    return(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0))
   }
   # Calculate beta diversity using BAT::beta function and return
   # the result
@@ -65,6 +65,8 @@ spat.beta.vec <- function(x,
                            # Calculate mean of focal against all
                            mean(as.matrix(x)[-1, 1]))
                   }, global)
+    # Calculate beta ratio (Brepl / Btotal) and store it
+    res[4] <- res[2] / res[1] # See Hidasi-Neto et al. (2019)
     return(res)
   }
 }
@@ -108,6 +110,11 @@ spat.beta.vec <- function(x,
 #' @references Podani, J. and Schmera, D. 2011. A new conceptual
 #' and methodological framework for exploring and explaining
 #' pattern in presence - absence data. - Oikos 120: 1625–1638.
+#'
+#' @references Hidasi-Neto, J. et al. 2019. Climate change will
+#' drive mammal species loss and biotic homogenization in the
+#' Cerrado Biodiversity Hotspot. - Perspectives in Ecology and
+#' Conservation 17: 57–63.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
 #' and richness differences).
@@ -225,7 +232,7 @@ spat.beta <- function(x, tree, filename = "", global = FALSE,
   }
 
   # Define names for the output based on the type of 'tree'
-  lyrnames <- c("Btotal", "Brepl", "Brich")
+  lyrnames <- c("Btotal", "Brepl", "Brich", "Bratio")
   if (missing(tree)) {
     names(betaR) <- paste0(lyrnames, "_TD")
   } else if (inherits(tree, "data.frame")) {

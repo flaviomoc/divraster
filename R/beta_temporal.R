@@ -34,6 +34,8 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
     # Calculate beta diversity using BAT::beta function with
     # 'abund = FALSE' and store the result in 'resu'
     resu[] <- unlist(BAT::beta(x, tree, abund = FALSE))
+    # Calculate beta ratio (Brepl / Btotal) and store it
+    resu[4] <- resu[2] / resu[1] # See Hidasi-Neto et al. (2019)
   }
   return(resu)  # Return the result vector 'resu'
 }
@@ -73,6 +75,11 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' @references Podani, J. and Schmera, D. 2011. A new conceptual
 #' and methodological framework for exploring and explaining
 #' pattern in presence - absence data. - Oikos 120: 1625–1638.
+#'
+#' @references Hidasi-Neto, J. et al. 2019. Climate change will
+#' drive mammal species loss and biotic homogenization in the
+#' Cerrado Biodiversity Hotspot. - Perspectives in Ecology and
+#' Conservation 17: 57–63.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
 #' and richness differences).
@@ -129,7 +136,7 @@ temp.beta <- function(bin1,
 
   # Create a numeric vector to store results for Btotal, Brepl,
   # and Brich
-  resu <- numeric(3)
+  resu <- numeric(4)
 
   # Apply the function to the SpatRaster objects 'bin1' and 'bin2'
   if (missing(tree)) {
@@ -155,7 +162,7 @@ temp.beta <- function(bin1,
   }
 
   # Define names for the output based on the type of 'tree'
-  lyrnames <- c("Btotal", "Brepl", "Brich")
+  lyrnames <- c("Btotal", "Brepl", "Brich", "Bratio")
   if (missing(tree)) {
     names(res) <- paste0(lyrnames, "_TD")
   } else if (inherits(tree, "data.frame")) {
@@ -171,6 +178,6 @@ temp.beta <- function(bin1,
                        overwrite = TRUE, ...)
   }
 
-  # Return the numeric vector with beta diversity values
+  # Return beta diversity values
   return(res)
 }

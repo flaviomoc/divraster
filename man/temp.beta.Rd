@@ -68,4 +68,9 @@ Ecology and Biogeography 21: 760–771.
 Podani, J. and Schmera, D. 2011. A new conceptual
 and methodological framework for exploring and explaining
 pattern in presence - absence data. - Oikos 120: 1625–1638.
+
+Hidasi-Neto, J. et al. 2019. Climate change will
+drive mammal species loss and biotic homogenization in the
+Cerrado Biodiversity Hotspot. - Perspectives in Ecology and
+Conservation 17: 57–63.
 }
