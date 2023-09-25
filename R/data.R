@@ -1,7 +1,7 @@
 .onAttach <- function(libname, pkgname) {
 packageStartupMessage("Thank you for using divraster!")
 packageStartupMessage("To acknowledge our work, please cite the package:")
-packageStartupMessage(paste0("Mota, F. M. M., Heming, N. M., and Alves-Ferreira, G. (2023). divraster: Diversity Metrics Calculations for Rasterized Data. https://cran.r-project.org/package=divraster"))
+packageStartupMessage(paste0("Mota, F. M. M., Alves-Ferreira, G., Talora, D. C., and Heming, N. M. (2023). divraster: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters. - Ecography, e06905."))
 }
 #' Load data adapted from Mota et al. (2022), Tobias et al. (2022),
 #'  and Jetz et al. (2014)
