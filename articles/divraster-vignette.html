@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">divraster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Flávio M. M.
 Mota, Neander M. Heming, and Gabriela Alves-Ferreira</h4>
             
-            <h4 data-toc-skip class="date">2023-09-25</h4>
+            <h4 data-toc-skip class="date">2023-09-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flaviomoc/divraster/blob/HEAD/vignettes/divraster-vignette.Rmd" class="external-link"><code>vignettes/divraster-vignette.Rmd</code></a></small>
       <div class="d-none name"><code>divraster-vignette.Rmd</code></div>
@@ -342,9 +342,9 @@ a negative SES indicates the opposite.</p>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Mean_FD,      SD_FD, Observed_FD,     SES_FD </span></span>
-<span><span class="co">#&gt; min values  : 3.721791, 0.00185477,    3.723151, -52.362657 </span></span>
-<span><span class="co">#&gt; max values  : 4.429139, 0.17143984,    4.378846,   4.125291</span></span>
+<span><span class="co">#&gt; names       :  Mean_FD,        SD_FD, Observed_FD,     SES_FD </span></span>
+<span><span class="co">#&gt; min values  : 3.659285, 0.0009320305,    3.723151, -54.675418 </span></span>
+<span><span class="co">#&gt; max values  : 4.432802, 0.2284685759,    4.378846,   6.109261</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.fd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.fd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;">
 The SES indicates that the majority of the areas have values close to 0,
@@ -371,9 +371,9 @@ from scenarios 1 to 2, respectively.</p>
 <span><span class="co">#&gt; extent      : -41, -39, -15, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Mean_PD,     SD_PD, Observed_PD,     SES_PD </span></span>
-<span><span class="co">#&gt; min values  : 1596.150,  1.590066,    1623.451, -15.643428 </span></span>
-<span><span class="co">#&gt; max values  : 1877.115, 54.501712,    1880.676,   5.269196</span></span>
+<span><span class="co">#&gt; names       :  Mean_PD,     SD_PD, Observed_PD,    SES_PD </span></span>
+<span><span class="co">#&gt; min values  : 1609.112,  2.119676,    1623.451, -6.699807 </span></span>
+<span><span class="co">#&gt; max values  : 1875.029, 78.664888,    1880.676,  7.729729</span></span>
 <span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">ses.pd</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">ses.pd</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="divraster-vignette_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;">
 Similarly, the SES for phylogenetic diversity does not differ from what
