@@ -22,20 +22,27 @@
 #' package = "divraster"))
 #' inputs_chk(bin1, bin2, tree)
 inputs_chk <- function(bin1, bin2, tree) {
-  success_message <- "Awesome! All objects are compatible with the package."  # Initialize success message
+  success_message <- "Awesome! All objects are compatible with
+  the package."  # Initialize success message
 
-  # Check if 'bin1' is a valid SpatRaster object with geographic coordinates and at least 2 layers
-  if (is.null(bin1) || !inherits(bin1, "SpatRaster") || !terra::is.lonlat(bin1) || terra::nlyr(bin1) < 2) {
-    stop("'bin1' must be a valid SpatRaster with geographic coordinates and at least 2 layers.")
+  # Check if 'bin1' is a valid SpatRaster object with geographic
+  # coordinates and at least 2 layers
+  if (is.null(bin1) || !inherits(bin1, "SpatRaster") ||
+      !terra::is.lonlat(bin1) || terra::nlyr(bin1) < 2) {
+    stop("'bin1' must be a valid SpatRaster with geographic
+         coordinates and at least 2 layers.")
   }
 
   # Check if 'tree' is missing
   if (missing(tree)) {
     # Check if 'bin2' is provided
     if (!missing(bin2)) {
-      # Check if 'bin2' is a valid SpatRaster object with geographic coordinates and at least 2 layers
-      if (is.null(bin2) || !inherits(bin2, "SpatRaster") || !terra::is.lonlat(bin2) || terra::nlyr(bin2) < 2) {
-        stop("'bin2' must be a valid SpatRaster with geographic coordinates and at least 2 layers.")
+      # Check if 'bin2' is a valid SpatRaster object with
+      # geographic coordinates and at least 2 layers
+      if (is.null(bin2) || !inherits(bin2, "SpatRaster") ||
+          !terra::is.lonlat(bin2) || terra::nlyr(bin2) < 2) {
+        stop("'bin2' must be a valid SpatRaster with geographic
+             coordinates and at least 2 layers.")
       }
 
       # Check if species names in 'bin1' and 'bin2' match
@@ -64,19 +71,26 @@ inputs_chk <- function(bin1, bin2, tree) {
         }
       }
     } else {
-      # Check if 'bin2' is a valid SpatRaster object with geographic coordinates and at least 2 layers
-      if (is.null(bin2) || !inherits(bin2, "SpatRaster") || !terra::is.lonlat(bin2) || terra::nlyr(bin2) < 2) {
-        stop("'bin2' must be a valid SpatRaster with geographic coordinates and at least 2 layers.")
+      # Check if 'bin2' is a valid SpatRaster object with
+      # geographic coordinates and at least 2 layers
+      if (is.null(bin2) || !inherits(bin2, "SpatRaster") ||
+          !terra::is.lonlat(bin2) || terra::nlyr(bin2) < 2) {
+        stop("'bin2' must be a valid SpatRaster with geographic
+             coordinates and at least 2 layers.")
       }
 
       # Check if species names in 'bin1', 'bin2', and 'tree' match
       if (inherits(tree, "phylo")) {
-        if (!identical(sort(names(bin1)), sort(names(bin2))) || !identical(sort(tree[[4]]), sort(names(bin1)))) {
-          stop("Species names in 'bin1', 'bin2', and 'tree' must match.")
+        if (!identical(sort(names(bin1)), sort(names(bin2))) ||
+            !identical(sort(tree[[4]]), sort(names(bin1)))) {
+          stop("Species names in 'bin1', 'bin2', and 'tree' must
+               match.")
         }
       } else if (inherits(tree, "data.frame")) {
-        if (!identical(sort(names(bin1)), sort(names(bin2))) || !identical(sort(rownames(tree)), sort(names(bin1)))) {
-          stop("Species names in 'bin1', 'bin2', and 'tree' must match.")
+        if (!identical(sort(names(bin1)), sort(names(bin2))) ||
+            !identical(sort(rownames(tree)), sort(names(bin1)))) {
+          stop("Species names in 'bin1', 'bin2', and 'tree'
+               must match.")
         }
       }
     }

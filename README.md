@@ -36,7 +36,7 @@ vignette("divraster-vignette")
 
 - If you use this R package, please cite in your publications:
 
-Mota FMM, Alves-Ferreira G, Talora DC, Heming NM (2023). divraster: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters. -- Ecography, e06905. <https://doi.org/10.1111/ecog.06905>
+Mota FMM, Alves-Ferreira G, Talora DC, Heming NM (2023). divraster: an R package to calculate taxonomic, functional and phylogenetic diversity from rasters. -- Ecography, e06905.
 
 - For more information:
 

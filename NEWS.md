@@ -1,7 +1,6 @@
 # divraster 1.0.4
 
-* New initial test added to ensure species names match.
-[#3](https://github.com/flaviomoc/divraster/issues/3).
+* New function added for initial testing [#3](https://github.com/flaviomoc/divraster/issues/3).
 * Minor corrections in function tests to align with BAT update.
 * Citation updated.
 
