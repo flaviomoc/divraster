@@ -28,12 +28,14 @@ spat.trait.vec <- function(x, col_trait, ...) {
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' library(terra)
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))
 #' traits <- read.csv(system.file("extdata", "traits.csv",
 #' package = "divraster"), row.names = 1)
 #' spat.trait(bin1, traits)
+#' }
 spat.trait <- function(x,
                        trait,
                        cores = 1,

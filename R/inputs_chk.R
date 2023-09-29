@@ -11,6 +11,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' library(terra)
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))
@@ -21,6 +22,7 @@
 #' tree <- ape::read.tree(system.file("extdata", "tree.tre",
 #' package = "divraster"))
 #' inputs_chk(bin1, bin2, tree)
+#' }
 inputs_chk <- function(bin1, bin2, tree) {
   success_message <- "Awesome! All objects are compatible with
   the package."  # Initialize success message

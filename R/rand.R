@@ -24,6 +24,7 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' x <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))
 #' traits <- read.csv(system.file("extdata", "traits.csv",
@@ -32,7 +33,7 @@
 #' package = "divraster"))
 #' spat.rand(x, tree, 3, "site")
 #' spat.rand(x, traits, 3, "site")
-#'
+#' }
 spat.rand <- function(x,
                       tree,
                       aleats,

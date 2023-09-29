@@ -23,6 +23,7 @@ A message.
 Check if objects are valid
 }
 \examples{
+\donttest{
 library(terra)
 bin1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
@@ -33,4 +34,5 @@ package = "divraster"), row.names = 1)
 tree <- ape::read.tree(system.file("extdata", "tree.tre",
 package = "divraster"))
 inputs_chk(bin1, bin2, tree)
+}
 }

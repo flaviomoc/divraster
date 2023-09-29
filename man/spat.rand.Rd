@@ -46,6 +46,7 @@ See \code{\link[SESraster]{bootspat_str}} and
 \code{\link[SESraster]{bootspat_naive}}
 }
 \examples{
+\donttest{
 x <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
 traits <- read.csv(system.file("extdata", "traits.csv",
@@ -54,5 +55,5 @@ tree <- ape::read.tree(system.file("extdata", "tree.tre",
 package = "divraster"))
 spat.rand(x, tree, 3, "site")
 spat.rand(x, traits, 3, "site")
-
+}
 }
