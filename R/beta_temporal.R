@@ -103,28 +103,8 @@ temp.beta <- function(bin1,
                       tree,
                       filename = "",
                       cores = 1, ...) {
-  # Check if 'bin1' and 'bin2' are NULL or invalid (not SpatRaster)
-  if (is.null(bin1) || !inherits(bin1, "SpatRaster")) {
-    stop("'bin1' must be a SpatRaster.")
-  }
-  if (is.null(bin2) || !inherits(bin2, "SpatRaster")) {
-    stop("'bin2' must be a SpatRaster.")
-  }
-
-  # Check if coordinates of both rasters are geographic
-  if (!terra::is.lonlat(bin1) | !terra::is.lonlat(bin2)) {
-    stop("Both rasters must have geographic coordinates.")
-  }
-
-  # Check if both rasters have at least 2 layers
-  if (terra::nlyr(bin1) < 2 | terra::nlyr(bin2) < 2) {
-    stop("Both rasters must have at least 2 layers.")
-  }
-
-  # Check if the names of bin1 and bin2 match
-  if (!identical(names(bin1), names(bin2))) {
-    stop("The names of the rasters do not match.")
-  }
+  # Initial tests
+  inputs_chk(bin1 = bin1, bin2 = bin2, tree = tree)
 
   # Get number of species
   nspp <- terra::nlyr(bin1)
@@ -145,25 +125,6 @@ temp.beta <- function(bin1,
                       spp = spp,
                       cores = cores, ...)
   } else {
-    # Check if 'tree' object is valid (either a data.frame or a
-    # phylo object)
-    if (!inherits(tree, c("data.frame", "phylo"))) {
-      stop("'tree' must be a data.frame or a phylo object.")
-    }
-
-    # Check if species names in 'bin1' and 'tree' objects match
-    if (inherits(tree, "data.frame")) {
-      if (!identical(sort(names(bin1)), sort(rownames(tree)))) {
-        stop("Species names in 'bin1' and 'tree' objects must
-             match!")
-      }
-    }
-    else {
-      if (!identical(sort(names(bin1)), sort(tree[[4]]))) {
-        stop("Species names in 'bin1' and 'tree' objects must
-             match!")
-      }
-    }
 
     res <- terra::app(c(bin1, bin2),
                       temp.beta.vec,

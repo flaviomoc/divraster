@@ -142,20 +142,8 @@ spat.beta <- function(x, tree, filename = "", global = FALSE,
                       type = "circle",
                       na.policy = "omit", ...) {
 
-  # Check if 'x' is NULL or invalid (not a SpatRaster)
-  if (is.null(x) || !inherits(x, "SpatRaster")) {
-    stop("'x' must be a SpatRaster.")
-  }
-
-  # Check if coordinates are geographic
-  if (!terra::is.lonlat(x)) {
-    stop("'x' must have geographic coordinates.")
-  }
-
-  # Check if 'x' has at least 2 layers
-  if (terra::nlyr(x) < 2) {
-    stop("'x' must have at least 2 layers.")
-  }
+  # Initial tests
+  inputs_chk(bin1 = x, tree = tree)
 
   # Create focal matrix
   if (is.null(fm)) {
@@ -218,11 +206,7 @@ spat.beta <- function(x, tree, filename = "", global = FALSE,
                             nspp = terra::nlyr(x),
                             na.policy = na.policy, ...)
   } else {
-    # Check if 'tree' object is valid (either a data.frame
-    # or a phylo object)
-    if (!inherits(tree, c("data.frame", "phylo"))) {
-      stop("'tree' must be a data.frame or a phylo object.")
-    }
+
     betaR <- terra::focal3D(x,
                             fmA,
                             spat.beta.vec,

@@ -40,20 +40,8 @@ spat.rand <- function(x,
                       cores = 1,
                       filename = "", ...) {
 
-  # Check if 'x' is NULL or invalid (not SpatRaster)
-  if (is.null(x) || !inherits(x, "SpatRaster")) {
-    stop("'x' must be a SpatRaster.")
-  }
-
-  # Check if coordinates are geographic
-  if (!terra::is.lonlat(x)) {
-    stop("'x' must have geographic coordinates.")
-  }
-
-  # Check if the raster has at least 2 layers
-  if (terra::nlyr(x) < 2) {
-    stop("'x' must have at least 2 layers.")
-  }
+  # Initial tests
+  inputs_chk(bin1 = x, tree = tree)
 
   # Check if the 'random' argument is valid
   if (missing(random) || !(random %in% c("site", "species",
@@ -65,26 +53,6 @@ spat.rand <- function(x,
   # Check if the 'aleats' argument is valid
   if (missing(aleats)) {
     stop("The number of randomizations must be provided.")
-  }
-
-  # Check if the 'tree' object is valid (either a data.frame
-  # or a phylo object)
-  if (!inherits(tree, c("data.frame", "phylo"))) {
-    stop("'tree' must be a data.frame or a phylo object.")
-  }
-
-  # Check if species names in 'x' and 'tree' objects match
-  if (inherits(tree, "data.frame")) {
-    if (!identical(sort(names(x)), sort(rownames(tree)))) {
-      stop("Species names in 'x' and 'tree' objects must
-             match!")
-    }
-  }
-  else {
-    if (!identical(sort(names(x)), sort(tree[[4]]))) {
-      stop("Species names in 'x' and 'tree' objects must
-             match!")
-    }
   }
 
   rand <- list()  # to store the rasters in the loop

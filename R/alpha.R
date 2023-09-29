@@ -95,18 +95,10 @@ spat.alpha <- function(bin,
                        tree,
                        cores = 1,
                        filename = "", ...) {
-  # Check if 'bin' is a valid SpatRaster object
-  if (is.null(bin) || !inherits(bin, "SpatRaster")) {
-    stop("'bin' must be a SpatRaster.")
-  }
-  # Check if 'bin' has geographic coordinates
-  if (!terra::is.lonlat(bin)) {
-    stop("'bin' must have geographic coordinates.")
-  }
-  # Check if 'bin' has at least 2 layers
-  if (terra::nlyr(bin) < 2) {
-    stop("'bin' must have at least 2 layers.")
-  }
+
+  # Initial tests
+  inputs_chk(bin1 = bin, tree = tree)
+
   # Create numeric vector to store result
   resu <- numeric(1)
 
@@ -119,26 +111,6 @@ spat.alpha <- function(bin,
                       resu = resu,
                       cores = cores, ...)
   } else {
-    # Check if 'tree' object is valid (either a data.frame or
-    # a phylo object)
-    if (!inherits(tree, c("data.frame", "phylo"))) {
-      stop("'tree' must be a data.frame or a phylo object.")
-    }
-
-    # Check if species names in 'bin' and 'tree' objects match
-    if (inherits(tree, "data.frame")) {
-      if (!identical(sort(names(bin)), sort(rownames(tree)))) {
-        stop("Species names in 'bin' and 'tree' objects must
-             match!")
-      }
-    }
-    else {
-      if (!identical(sort(names(bin)), sort(tree[[4]]))) {
-        stop("Species names in 'bin' and 'tree' objects must
-             match!")
-      }
-    }
-
     # Apply 'spat.alpha.vec' to 'bin' with the provided 'tree'
     res <- terra::app(bin,
                       spat.alpha.vec,

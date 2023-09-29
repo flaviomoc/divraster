@@ -38,23 +38,8 @@ spat.trait <- function(x,
                        trait,
                        cores = 1,
                        filename = "", ...) {
-  # Check if x is NULL or invalid
-  if (is.null(x) || !inherits(x, "SpatRaster")) {
-    stop("'x' must be a SpatRaster.")
-  }
-  # Check if coordinates are geographic
-  if (!terra::is.lonlat(x)) {
-    stop("'x' must has geographic coordinates.")
-  }
-  if(terra::nlyr(x) < 2) {
-    stop("'x' must has at least 2 layers.")
-  }
-
-  # Check if species names in 'x' and 'trait' objects match
-  if (!identical(sort(names(x)), sort(rownames(trait)))) {
-    stop("Species names in 'x' and 'trait' objects must
-             match!")
-  }
+  # Initial tests
+  inputs_chk(bin1 = x, tree = trait)
 
   # Select numeric traits only
   trait <- trait[, sapply(trait, is.numeric)]
