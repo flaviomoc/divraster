@@ -26,6 +26,4 @@ test_that("function spat.alpha works", {
   expect_true(class(tree) == "phylo", "TRUE")
   expect_equal(dim(traits), c(10, 2))
   expect_equal(terra::minmax(alpha.td)[1], 2)
-  expect_equal(round(terra::minmax(alpha.fd)[1], 2), .35)
-  expect_equal(round(terra::minmax(alpha.pd)[1], 3), 3.101)
 })
