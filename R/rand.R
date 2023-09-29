@@ -73,6 +73,20 @@ spat.rand <- function(x,
     stop("'tree' must be a data.frame or a phylo object.")
   }
 
+  # Check if species names in 'x' and 'tree' objects match
+  if (inherits(tree, "data.frame")) {
+    if (!identical(sort(names(x)), sort(rownames(tree)))) {
+      stop("Species names in 'x' and 'tree' objects must
+             match!")
+    }
+  }
+  else {
+    if (!identical(sort(names(x)), sort(tree[[4]]))) {
+      stop("Species names in 'x' and 'tree' objects must
+             match!")
+    }
+  }
+
   rand <- list()  # to store the rasters in the loop
 
   # Perform randomization analysis based on the chosen method

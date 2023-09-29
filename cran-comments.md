@@ -1,6 +1,6 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 notes
 
 ## Maintainer comments
 Main changes are listed below and in the NEWS file:
@@ -18,3 +18,5 @@ Main changes are listed below and in the NEWS file:
 * The description of the functions has been improved.
 
 * Vignette was remodeled to better exemplify the `divraster` functionalities.
+
+* Tests and citation have been updated.

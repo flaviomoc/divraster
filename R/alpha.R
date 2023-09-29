@@ -124,6 +124,21 @@ spat.alpha <- function(bin,
     if (!inherits(tree, c("data.frame", "phylo"))) {
       stop("'tree' must be a data.frame or a phylo object.")
     }
+
+    # Check if species names in 'bin' and 'tree' objects match
+    if (inherits(tree, "data.frame")) {
+      if (!identical(sort(names(bin)), sort(rownames(tree)))) {
+        stop("Species names in 'bin' and 'tree' objects must
+             match!")
+      }
+    }
+    else {
+      if (!identical(sort(names(bin)), sort(tree[[4]]))) {
+        stop("Species names in 'bin' and 'tree' objects must
+             match!")
+      }
+    }
+
     # Apply 'spat.alpha.vec' to 'bin' with the provided 'tree'
     res <- terra::app(bin,
                       spat.alpha.vec,

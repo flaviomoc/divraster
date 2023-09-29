@@ -34,8 +34,6 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
     # Calculate beta diversity using BAT::beta function with
     # 'abund = FALSE' and store the result in 'resu'
     resu[] <- unlist(BAT::beta(x, tree, abund = FALSE))
-    # Calculate beta ratio (Brepl / Btotal) and store it
-    resu[4] <- resu[2] / resu[1] # See Hidasi-Neto et al. (2019)
   }
   return(resu)  # Return the result vector 'resu'
 }
@@ -135,8 +133,8 @@ temp.beta <- function(bin1,
   spp <- names(bin1)
 
   # Create a numeric vector to store results for Btotal, Brepl,
-  # Brich,and Bratio
-  resu <- numeric(4)
+  # Brich
+  resu <- numeric(3)
 
   # Apply the function to the SpatRaster objects 'bin1' and 'bin2'
   if (missing(tree)) {
@@ -152,6 +150,21 @@ temp.beta <- function(bin1,
     if (!inherits(tree, c("data.frame", "phylo"))) {
       stop("'tree' must be a data.frame or a phylo object.")
     }
+
+    # Check if species names in 'bin1' and 'tree' objects match
+    if (inherits(tree, "data.frame")) {
+      if (!identical(sort(names(bin1)), sort(rownames(tree)))) {
+        stop("Species names in 'bin1' and 'tree' objects must
+             match!")
+      }
+    }
+    else {
+      if (!identical(sort(names(bin1)), sort(tree[[4]]))) {
+        stop("Species names in 'bin1' and 'tree' objects must
+             match!")
+      }
+    }
+
     res <- terra::app(c(bin1, bin2),
                       temp.beta.vec,
                       resu = resu,
@@ -160,6 +173,9 @@ temp.beta <- function(bin1,
                       spp = spp,
                       cores = cores, ...)
   }
+  # Calculate beta ratio (Brepl / Btotal) and store it
+  # See Hidasi-Neto et al. (2019)
+  res <- c(res, res[[2]]/res[[1]])
 
   # Define names for the output based on the type of 'tree'
   lyrnames <- c("Btotal", "Brepl", "Brich", "Bratio")

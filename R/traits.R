@@ -49,6 +49,13 @@ spat.trait <- function(x,
   if(terra::nlyr(x) < 2) {
     stop("'x' must has at least 2 layers.")
   }
+
+  # Check if species names in 'x' and 'trait' objects match
+  if (!identical(sort(names(x)), sort(rownames(trait)))) {
+    stop("Species names in 'x' and 'trait' objects must
+             match!")
+  }
+
   # Select numeric traits only
   trait <- trait[, sapply(trait, is.numeric)]
   # Create list to store result
