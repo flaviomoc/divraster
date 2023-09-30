@@ -123,7 +123,8 @@ a calling function.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"ref.tif"</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"ref.tif"</span>,</span></span>
 <span class="r-in"><span>package <span class="op">=</span> <span class="st">"divraster"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"traits.csv"</span>,</span></span>
 <span class="r-in"><span>package <span class="op">=</span> <span class="st">"divraster"</span><span class="op">)</span>, row.names <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
@@ -137,8 +138,8 @@ a calling function.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names       :  Mean_PD,      SD_PD, Observed_PD,    SES_PD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 4.081687, 0.03098683,    3.359948, -6.840114 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 9.964966, 0.95133636,   10.571964, 16.351913 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :  3.37144, 0.05587961,    3.359948, -4.057662 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 10.15591, 1.05520110,   10.571964, 19.365642 </span>
 <span class="r-in"><span><span class="fu">spat.rand</span><span class="op">(</span><span class="va">x</span>, <span class="va">traits</span>, <span class="fl">3</span>, <span class="st">"site"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span>
@@ -147,9 +148,9 @@ a calling function.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names       :   Mean_FD,      SD_FD, Observed_FD,     SES_FD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3879783, 0.01938789,   0.2374052, -11.595595 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1.2943365, 0.25172113,   1.2493508,   3.833018 </span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3717851, 0.01138261,   0.2374052, -10.249221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1.2006560, 0.24505129,   1.2493508,   8.114878 </span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
