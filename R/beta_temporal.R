@@ -47,9 +47,11 @@ temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
 #' @param bin1 A SpatRaster with presence-absence data (0 or 1)
 #' for a set of species.
 #' @param bin2 A SpatRaster with presence-absence data (0 or 1)
-#' for a set of species.
-#' @param tree It can be a data frame with species traits or a
-#' phylogenetic tree.
+#' for a set of species. Species names in 'bin2' and 'bin1' must
+#' match!
+#' @param tree It can be a 'data.frame' with species traits or a
+#' 'phylo' with a rooted phylogenetic tree. Species names in 'tree',
+#' 'bin1', and 'bin2' must match!
 #' @param filename Character. Save results if a name is provided.
 #' @param cores A positive integer. If cores > 1, a 'parallel'
 #' package cluster with that many cores is created and used.

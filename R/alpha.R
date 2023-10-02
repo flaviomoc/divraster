@@ -30,8 +30,9 @@ spat.alpha.vec <- function(x, tree, resu, ...) {
 #'
 #' @param bin A SpatRaster with presence-absence data (0 or 1) for
 #' a set of species.
-#' @param tree It can be a data frame with species traits or a
-#' phylogenetic tree.
+#' @param tree It can be a 'data.frame' with species traits or a
+#' 'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+#' and 'bin' must match!
 #' @param cores A positive integer. If cores > 1, a 'parallel'
 #' package cluster with that many cores is created and used.
 #' @param filename Character. Save results if a name is provided.

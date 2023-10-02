@@ -18,8 +18,9 @@ spat.rand(
 \item{x}{SpatRaster. A SpatRaster containing presence-absence
 data (0 or 1) for a set of species.}
 
-\item{tree}{a data.frame with species traits or a phylogenetic
-tree.}
+\item{tree}{It can be a 'data.frame' with species traits or a
+'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+and 'x' must match!}
 
 \item{aleats}{positive integer. A positive integer indicating
 how many times the calculation should be repeated.}

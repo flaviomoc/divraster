@@ -75,13 +75,13 @@ spat.beta.vec <- function(x,
 #'
 #' @description Calculates spatial beta diversity for
 #' taxonomic (TD), functional (FD), and phylogenetic (PD)
-#' dimensions. Adapted from \code{\link[BAT]{beta}}. Species
-#' names in 'x' and 'tree' objects must match!
+#' dimensions. Adapted from \code{\link[BAT]{beta}}.
 #'
 #' @param x A SpatRaster with presence-absence data (0 or 1) for a
 #' set of species.
-#' @param tree A data.frame with species traits or a phylogenetic
-#' tree.
+#' @param tree It can be a 'data.frame' with species traits or a
+#' 'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+#' and 'x' must match!
 #' @param filename Character. Save results if a name is provided.
 #' @param global Logical. Mean of pairwise comparisons between
 #' focal cell and its neighbors (default) or mean of all pairwise
@@ -97,7 +97,6 @@ spat.beta.vec <- function(x,
 #' @details The TD beta diversity partitioning framework we used
 #' was developed by Podani and Schmera (2011) and Carvalho et al.
 #' (2012) and expanded to PD and FD by Cardoso et al. (2014).
-#' Species names in 'x' and 'tree' objects must match!.
 #'
 #' @references Cardoso, P. et al. 2014. Partitioning taxon,
 #' phylogenetic and functional beta diversity into replacement

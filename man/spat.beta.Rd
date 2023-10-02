@@ -20,8 +20,9 @@ spat.beta(
 \item{x}{A SpatRaster with presence-absence data (0 or 1) for a
 set of species.}
 
-\item{tree}{A data.frame with species traits or a phylogenetic
-tree.}
+\item{tree}{It can be a 'data.frame' with species traits or a
+'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+and 'x' must match!}
 
 \item{filename}{Character. Save results if a name is provided.}
 
@@ -48,14 +49,12 @@ richness difference, and ratio).
 \description{
 Calculates spatial beta diversity for
 taxonomic (TD), functional (FD), and phylogenetic (PD)
-dimensions. Adapted from \code{\link[BAT]{beta}}. Species
-names in 'x' and 'tree' objects must match!
+dimensions. Adapted from \code{\link[BAT]{beta}}.
 }
 \details{
 The TD beta diversity partitioning framework we used
 was developed by Podani and Schmera (2011) and Carvalho et al.
 (2012) and expanded to PD and FD by Cardoso et al. (2014).
-Species names in 'x' and 'tree' objects must match!.
 }
 \examples{
 \donttest{

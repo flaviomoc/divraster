@@ -10,7 +10,8 @@ spat.trait(x, trait, cores = 1, filename = "", ...)
 \item{x}{A SpatRaster with presence-absence data (0 or 1) for a
 set of species.}
 
-\item{trait}{A data.frame with species traits.}
+\item{trait}{A 'data.frame' with species traits. Rownames must
+have species names that match with 'x'!}
 
 \item{cores}{A positive integer. If cores > 1, a 'parallel'
 package cluster with that many cores is created and used.}

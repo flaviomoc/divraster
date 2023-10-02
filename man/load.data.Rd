@@ -8,8 +8,10 @@ and Jetz et al. (2014)}
 load.data()
 }
 \value{
-List with climate scenarios, traits, and phylogenetic
-tree
+A list with binary maps of species for the reference
+and future climate scenarios, species traits, and a rooted
+phylogenetic tree for the species. The species names across
+these objects must match!
 }
 \description{
 Load data adapted from Mota et al. (2022), Tobias et al. (2022),

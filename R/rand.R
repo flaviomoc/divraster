@@ -7,8 +7,9 @@
 #'
 #' @param x SpatRaster. A SpatRaster containing presence-absence
 #' data (0 or 1) for a set of species.
-#' @param tree a data.frame with species traits or a phylogenetic
-#' tree.
+#' @param tree It can be a 'data.frame' with species traits or a
+#' 'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+#' and 'x' must match!
 #' @param aleats positive integer. A positive integer indicating
 #' how many times the calculation should be repeated.
 #' @param random character. A character indicating the type of

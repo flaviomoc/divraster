@@ -10,8 +10,9 @@ spat.alpha(bin, tree, cores = 1, filename = "", ...)
 \item{bin}{A SpatRaster with presence-absence data (0 or 1) for
 a set of species.}
 
-\item{tree}{It can be a data frame with species traits or a
-phylogenetic tree.}
+\item{tree}{It can be a 'data.frame' with species traits or a
+'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+and 'bin' must match!}
 
 \item{cores}{A positive integer. If cores > 1, a 'parallel'
 package cluster with that many cores is created and used.}
