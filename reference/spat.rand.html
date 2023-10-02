@@ -85,8 +85,9 @@ data (0 or 1) for a set of species.</p></dd>
 
 
 <dt>tree</dt>
-<dd><p>a data.frame with species traits or a phylogenetic
-tree.</p></dd>
+<dd><p>It can be a 'data.frame' with species traits or a
+'phylo' with a rooted phylogenetic tree. Species names in 'tree'
+and 'x' must match!</p></dd>
 
 
 <dt>aleats</dt>
@@ -137,9 +138,9 @@ a calling function.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :  Mean_PD,      SD_PD, Observed_PD,    SES_PD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :  3.37144, 0.05587961,    3.359948, -4.057662 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 10.15591, 1.05520110,   10.571964, 19.365642 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :   Mean_PD,      SD_PD, Observed_PD,    SES_PD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  :  3.814737, 0.03282766,    3.359948, -2.657489 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 10.080007, 1.06234400,   10.571964,  6.013550 </span>
 <span class="r-in"><span><span class="fu">spat.rand</span><span class="op">(</span><span class="va">x</span>, <span class="va">traits</span>, <span class="fl">3</span>, <span class="st">"site"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span>
@@ -147,9 +148,9 @@ a calling function.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. : lon/lat WGS 84 (EPSG:4326) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :   Mean_FD,      SD_FD, Observed_FD,     SES_FD </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3717851, 0.01138261,   0.2374052, -10.249221 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1.2006560, 0.24505129,   1.2493508,   8.114878 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :   Mean_FD,      SD_FD, Observed_FD,    SES_FD </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3517626, 0.01090039,   0.2374052, -15.07343 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 1.2025175, 0.25542435,   1.2493508,  11.25037 </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
