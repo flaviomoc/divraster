@@ -70,7 +70,7 @@ inputs_chk <- function(bin1, bin2, tree) {
         }
       } else if (inherits(tree, "phylo")) {
         # Check if species names in 'bin1' and 'tree' match
-        if (!identical(sort(names(bin1)), sort(tree[[4]]))) {
+        if (!identical(sort(names(bin1)), sort(tree$tip.label))) {
           stop("Species names in 'bin1' and 'tree' must match.")
         }
       }
@@ -86,7 +86,7 @@ inputs_chk <- function(bin1, bin2, tree) {
       # Check if species names in 'bin1', 'bin2', and 'tree' match
       if (inherits(tree, "phylo")) {
         if (!identical(sort(names(bin1)), sort(names(bin2))) ||
-            !identical(sort(tree[[4]]), sort(names(bin1)))) {
+            !identical(sort(tree$tip.label), sort(names(bin1)))) {
           stop("Species names in 'bin1', 'bin2', and 'tree' must
                match.")
         }
