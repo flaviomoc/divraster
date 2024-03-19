@@ -17,7 +17,7 @@
 #' package = "divraster"))
 #' r2 <- terra::rast(system.file("extdata", "fut.tif",
 #' package = "divraster"))
-#' suit.change(r1[[1]], r2[[1]])
+#' suit.change(r1, r2)
 #' }
 suit.change <- function(r1, r2, filename = "") {
   gain <- (r2 == 1) & (r1 == 0)
@@ -28,6 +28,5 @@ suit.change <- function(r1, r2, filename = "") {
   if (filename != "") {
     terra::writeRaster(change_map, filename = filename, overwrite = TRUE)
   }
-
   return(change_map)
 }
