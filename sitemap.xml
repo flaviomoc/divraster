@@ -22,6 +22,9 @@
     <loc>https://flaviomoc.github.io/divraster/news/index.html</loc>
   </url>
   <url>
+    <loc>https://flaviomoc.github.io/divraster/reference/area.calc.html</loc>
+  </url>
+  <url>
     <loc>https://flaviomoc.github.io/divraster/reference/index.html</loc>
   </url>
   <url>
@@ -29,6 +32,12 @@
   </url>
   <url>
     <loc>https://flaviomoc.github.io/divraster/reference/load.data.html</loc>
+  </url>
+  <url>
+    <loc>https://flaviomoc.github.io/divraster/reference/range.list.html</loc>
+  </url>
+  <url>
+    <loc>https://flaviomoc.github.io/divraster/reference/range.rast.html</loc>
   </url>
   <url>
     <loc>https://flaviomoc.github.io/divraster/reference/spat.alpha.html</loc>
