@@ -11,7 +11,7 @@
 #' @export
 #'
 #' @examples
-#' #' \donttest{
+#' \donttest{
 #' library(terra)
 #' r1 <- terra::rast(system.file("extdata", "ref.tif",
 #' package = "divraster"))

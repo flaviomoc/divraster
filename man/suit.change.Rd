@@ -23,7 +23,7 @@ unchanged, and unsuitable).
 Species suitability change between climate scenarios
 }
 \examples{
-#' \donttest{
+\donttest{
 library(terra)
 r1 <- terra::rast(system.file("extdata", "ref.tif",
 package = "divraster"))
