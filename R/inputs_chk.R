@@ -10,21 +10,6 @@
 #' 'bin1', and 'bin2' must match!
 #'
 #' @return Either a success message or an error.
-#' @export
-#'
-#' @examples
-#' \donttest{
-#' library(terra)
-#' bin1 <- terra::rast(system.file("extdata", "ref.tif",
-#' package = "divraster"))
-#' bin2 <- terra::rast(system.file("extdata", "fut.tif",
-#' package = "divraster"))
-#' traits <- read.csv(system.file("extdata", "traits.csv",
-#' package = "divraster"), row.names = 1)
-#' tree <- ape::read.tree(system.file("extdata", "tree.tre",
-#' package = "divraster"))
-#' inputs_chk(bin1, bin2, tree)
-#' }
 inputs_chk <- function(bin1, bin2, tree) {
   success_message <- "Awesome! All objects are compatible with
   the package."  # Initialize success message
