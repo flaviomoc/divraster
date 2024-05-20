@@ -3,6 +3,7 @@
 export(area.calc)
 export(load.data)
 export(spat.alpha)
+export(spat.alpha2)
 export(spat.beta)
 export(spat.rand)
 export(spat.trait)
