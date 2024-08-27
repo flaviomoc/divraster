@@ -1,9 +1,9 @@
-#' Function to calculate distances between centroids of multiple SpatRasters
+#' Function to calculate distance and direction of change between centroids
 #'
 #' @param ... N number of single or multilayer spatrasters
 #' @param ref Spatraster of reference
 #'
-#' @return A data frame with distance values
+#' @return A data frame with distance and direction values
 #' @export
 #'
 #' @examples
@@ -13,67 +13,80 @@
 #' package = "divraster"))
 #' r2 <- terra::rast(system.file("extdata", "fut.tif",
 #' package = "divraster"))
-#' dist.centroids(r1, r2)
+#' d.centroids(r1, r2)
 #' }
-dist.centroids <- function(..., ref = 1) {
-  # Collect all SpatRasters into a list
+d.centroids <- function(..., ref = 1) {
   rasters <- list(...)
 
-  # Ensure there are at least two SpatRasters
   if (length(rasters) < 2) {
     stop("At least two SpatRaster objects are required.")
   }
 
-  # Ensure all SpatRasters have the same number of layers
   n_layers <- terra::nlyr(rasters[[1]])
   if (!all(sapply(rasters, terra::nlyr) == n_layers)) {
     stop("All SpatRaster objects must have the same number of layers.")
   }
 
-  # Initialize a list to store the distances for each layer
   distances <- list()
-
-  # Get the base raster for comparison
   base_raster <- rasters[[ref]]
 
-  # Loop over each layer
   for (i in seq_len(n_layers)) {
-    # Extract the i-th layer from the base raster
     base_layer <- base_raster[[i]]
-
-    # Convert base raster layer to binary and then to polygons
     base_true <- base_layer == 1
     base_polygons <- terra::as.polygons(base_true)
     base_centroids <- terra::centroids(base_polygons)
 
-    # Initialize a data frame to store distances for this layer
+    if (nrow(base_centroids) == 0) next # Skip if no centroids found
+    base_coords <- terra::crds(base_centroids)[1, ]  # Use the first centroid
+
     dist_df <- data.frame(Layer = i)
 
-    # Loop over the other rasters and calculate distances
     for (j in seq_along(rasters)) {
       if (j != ref) {
-        # Extract the i-th layer from the current raster
         current_layer <- rasters[[j]][[i]]
-
-        # Convert the current raster layer to binary and then to polygons
         current_true <- current_layer == 1
         current_polygons <- terra::as.polygons(current_true)
         current_centroids <- terra::centroids(current_polygons)
 
-        # Calculate the distance between centroids of base and current raster layers
-        dist <- terra::distance(base_centroids, current_centroids, pairwise = FALSE, unit = "m")[2, 2]
+        if (nrow(current_centroids) == 0) {
+          dist <- NA
+          direction <- NA
+        } else {
+          current_coords <- terra::crds(current_centroids)[1, ]
+          dist <- terra::distance(base_centroids, current_centroids, pairwise = FALSE, unit = "m")[1, 1]
 
-        # Add the distance to the data frame
+          delta_x <- current_coords[1] - base_coords[1]
+          delta_y <- current_coords[2] - base_coords[2]
+
+          if (delta_x > 0 && delta_y > 0) {
+            direction <- "Northeast"
+          } else if (delta_x > 0 && delta_y < 0) {
+            direction <- "Southeast"
+          } else if (delta_x < 0 && delta_y > 0) {
+            direction <- "Northwest"
+          } else if (delta_x < 0 && delta_y < 0) {
+            direction <- "Southwest"
+          } else if (delta_x == 0 && delta_y > 0) {
+            direction <- "North"
+          } else if (delta_x == 0 && delta_y < 0) {
+            direction <- "South"
+          } else if (delta_x > 0 && delta_y == 0) {
+            direction <- "East"
+          } else if (delta_x < 0 && delta_y == 0) {
+            direction <- "West"
+          } else {
+            direction <- "No movement"
+          }
+        }
+
         dist_df[[paste0("Distance_r", ref, "_r", j)]] <- dist
+        dist_df[[paste0("Direction_r", ref, "_r", j)]] <- direction
       }
     }
 
-    # Store the distance data frame in the list
     distances[[i]] <- dist_df
   }
 
-  # Combine the list into a single data.frame
   distances_df <- do.call(rbind, distances)
-
   return(distances_df)
 }
