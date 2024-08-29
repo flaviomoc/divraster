@@ -1,9 +1,9 @@
 #' Function to calculate distance and direction of change between centroids
 #'
-#' @param ... N number of single or multilayer spatrasters
-#' @param ref Spatraster of reference
+#' @param raster1 A binary spatraster.
+#' @param raster2 A binary spatraster.
 #'
-#' @return A data frame with distance and direction values
+#' @return A data frame with distance and direction.
 #' @export
 #'
 #' @examples
@@ -13,80 +13,86 @@
 #' package = "divraster"))
 #' r2 <- terra::rast(system.file("extdata", "fut.tif",
 #' package = "divraster"))
-#' d.centroids(r1, r2)
+#' dd.calc(r1, r2)
 #' }
-d.centroids <- function(..., ref = 1) {
-  rasters <- list(...)
-
-  if (length(rasters) < 2) {
-    stop("At least two SpatRaster objects are required.")
+dd.calc <- function(raster1, raster2) {
+  # Check if the SpatRasters have the same number of layers
+  if (terra::nlyr(raster1) != terra::nlyr(raster2)) {
+    stop("The SpatRasters must have the same number of layers.")
   }
 
-  n_layers <- terra::nlyr(rasters[[1]])
-  if (!all(sapply(rasters, terra::nlyr) == n_layers)) {
-    stop("All SpatRaster objects must have the same number of layers.")
-  }
+  # Initialize a list to store the results
+  results <- list()
 
-  distances <- list()
-  base_raster <- rasters[[ref]]
+  # Iterate over the layers
+  for (i in 1:terra::nlyr(raster1)) {
+    # Select the current layer
+    layer1 <- raster1[[i]]
+    layer2 <- raster2[[i]]
 
-  for (i in seq_len(n_layers)) {
-    base_layer <- base_raster[[i]]
-    base_true <- base_layer == 1
-    base_polygons <- terra::as.polygons(base_true)
-    base_centroids <- terra::centroids(base_polygons)
+    # Convert values equal to 1 into SpatVector polygons
+    terra::values(layer1)[terra::values(layer1) != 1] <- NA
+    terra::values(layer2)[terra::values(layer2) != 1] <- NA
 
-    if (nrow(base_centroids) == 0) next # Skip if no centroids found
-    base_coords <- terra::crds(base_centroids)[1, ]  # Use the first centroid
+    # Calculate the centroids of the polygons
+    cent1 <- terra::centroids(terra::as.polygons(layer1))
+    cent2 <- terra::centroids(terra::as.polygons(layer2))
 
-    dist_df <- data.frame(Layer = i)
+    # Handle the case where no centroids are found
+    if (nrow(terra::crds(cent1)) == 0 || nrow(terra::crds(cent2)) == 0) {
+      warning(paste("No centroids found in layer", i, "- skipping this layer."))
+      next
+    }
 
-    for (j in seq_along(rasters)) {
-      if (j != ref) {
-        current_layer <- rasters[[j]][[i]]
-        current_true <- current_layer == 1
-        current_polygons <- terra::as.polygons(current_true)
-        current_centroids <- terra::centroids(current_polygons)
+    # Get the coordinates of the centroids
+    coords1 <- terra::crds(cent1)
+    coords2 <- terra::crds(cent2)
 
-        if (nrow(current_centroids) == 0) {
-          dist <- NA
-          direction <- NA
-        } else {
-          current_coords <- terra::crds(current_centroids)[1, ]
-          dist <- terra::distance(base_centroids, current_centroids, pairwise = FALSE, unit = "m")[1, 1]
+    # Calculate the distance in meters (assuming the projection is appropriate)
+    dist_meters <- terra::distance(coords1, coords2, lonlat = TRUE)[1, 1]
 
-          delta_x <- current_coords[1] - base_coords[1]
-          delta_y <- current_coords[2] - base_coords[2]
+    # Function to determine the relative direction
+    determine_direction <- function(coord1, coord2) {
+      dx <- coord2[1] - coord1[1]
+      dy <- coord2[2] - coord1[2]
 
-          if (delta_x > 0 && delta_y > 0) {
-            direction <- "Northeast"
-          } else if (delta_x > 0 && delta_y < 0) {
-            direction <- "Southeast"
-          } else if (delta_x < 0 && delta_y > 0) {
-            direction <- "Northwest"
-          } else if (delta_x < 0 && delta_y < 0) {
-            direction <- "Southwest"
-          } else if (delta_x == 0 && delta_y > 0) {
-            direction <- "North"
-          } else if (delta_x == 0 && delta_y < 0) {
-            direction <- "South"
-          } else if (delta_x > 0 && delta_y == 0) {
-            direction <- "East"
-          } else if (delta_x < 0 && delta_y == 0) {
-            direction <- "West"
-          } else {
-            direction <- "No movement"
-          }
-        }
-
-        dist_df[[paste0("Distance_r", ref, "_r", j)]] <- dist
-        dist_df[[paste0("Direction_r", ref, "_r", j)]] <- direction
+      if (dx == 0 && dy == 0) {
+        return("No change")
+      } else if (dx > 0 && dy > 0) {
+        return("Northeast")
+      } else if (dx > 0 && dy < 0) {
+        return("Southeast")
+      } else if (dx < 0 && dy > 0) {
+        return("Northwest")
+      } else if (dx < 0 && dy < 0) {
+        return("Southwest")
+      } else if (dx > 0 && dy == 0) {
+        return("East")
+      } else if (dx < 0 && dy == 0) {
+        return("West")
+      } else if (dx == 0 && dy > 0) {
+        return("North")
+      } else {
+        return("South")
       }
     }
 
-    distances[[i]] <- dist_df
+    # Determine the relative direction
+    direction <- determine_direction(coords1, coords2)
+
+    # Create a data frame with the information for the current layer
+    result <- data.frame(
+      Layer = names(raster1)[i],
+      Distance_meters = dist_meters,
+      Direction = direction
+    )
+
+    # Add the result to the list
+    results[[i]] <- result
   }
 
-  distances_df <- do.call(rbind, distances)
-  return(distances_df)
+  # Combine all results into a single data frame
+  results_df <- do.call(rbind, results)
+
+  return(results_df)
 }
