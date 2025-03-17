@@ -20,11 +20,11 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
 #' library(terra)
-#'
 #' bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
-#'
 #' area.calc(bin1, bin1[[1]], bin1[[2]])
+#' }
 area.calc <- function(x, y = NULL, z = NULL, filename = "", unit = "km", cellsize = NULL, ...) {
   # Check if input is a SpatRaster
   if (!inherits(x, "SpatRaster")) {
@@ -36,7 +36,7 @@ area.calc <- function(x, y = NULL, z = NULL, filename = "", unit = "km", cellsiz
     if (!inherits(y, "SpatRaster")) {
       stop("Input y must be a SpatRaster object.")
     }
-    if (nlyr(y) != 1) {
+    if (terra::nlyr(y) != 1) {
       stop("Input y must be a SpatRaster with a single layer.")
     }
   }
@@ -46,7 +46,7 @@ area.calc <- function(x, y = NULL, z = NULL, filename = "", unit = "km", cellsiz
     if (!inherits(z, "SpatRaster")) {
       stop("Input z must be a SpatRaster object.")
     }
-    if (nlyr(z) != 1) {
+    if (terra::nlyr(z) != 1) {
       stop("Input z must be a SpatRaster with a single layer.")
     }
   }
@@ -60,9 +60,9 @@ area.calc <- function(x, y = NULL, z = NULL, filename = "", unit = "km", cellsiz
   area_values <- terra::global(x * cellsize, fun = "sum", na.rm = TRUE)[, 1]
 
   # Initialize overlap_area_values
-  overlap_area_values_y <- rep(NA, nlyr(x))  # Default to NA if y is not provided
-  overlap_area_values_z <- rep(NA, nlyr(x))  # Default to NA if z is not provided
-  overlap_area_values_all <- rep(NA, nlyr(x))  # Default to NA if y or z is not provided
+  overlap_area_values_y <- rep(NA, terra::nlyr(x))  # Default to NA if y is not provided
+  overlap_area_values_z <- rep(NA, terra::nlyr(x))  # Default to NA if z is not provided
+  overlap_area_values_all <- rep(NA, terra::nlyr(x))  # Default to NA if y or z is not provided
 
   # If y is provided, calculate the overlapping area with y
   if (!is.null(y)) {

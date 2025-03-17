@@ -2,35 +2,49 @@
 % Please edit documentation in R/range_size.R
 \name{area.calc}
 \alias{area.calc}
-\title{Area calculation}
+\title{Calculate Area of SpatRaster and Overlapping Areas}
 \usage{
-area.calc(r1, unit = "km", r2 = NULL, r3 = NULL, filename = "")
+area.calc(
+  x,
+  y = NULL,
+  z = NULL,
+  filename = "",
+  unit = "km",
+  cellsize = NULL,
+  ...
+)
 }
 \arguments{
-\item{r1}{A SpatRaster or a list of multiple SpatRasters.}
+\item{x}{A SpatRaster object for which the area will be calculated.}
 
-\item{unit}{Character. Default is "km", but "m" and "ha" are
-also available.}
+\item{y}{An optional SpatRaster object with a single layer to calculate the overlapping area with \code{x}.}
 
-\item{r2}{A SpatRaster with the same resolution and extent as "r1".}
+\item{z}{An optional SpatRaster object with a single layer to calculate the overlapping area with \code{x} and \code{y}.}
 
-\item{r3}{A SpatRaster with the same resolution and extent as "r1".}
+\item{filename}{A character string specifying the name of the CSV file to save the results.
+If not provided, the results will not be saved to a file.}
 
-\item{filename}{Character. Save results if a name is provided.}
+\item{unit}{A character string specifying the unit of measurement for area calculations.
+Default is "km".}
+
+\item{cellsize}{An optional numeric value specifying the cell size for area calculations.
+If not provided, the function will use the cell size of the raster.}
+
+\item{...}{Additional arguments to be passed to other methods.}
 }
 \value{
-A vector or a data.frame with area values in the chosen
-unit.
+A data frame containing the area of each layer in the SpatRaster object,
+along with the overlapping areas if \code{y} or \code{z} are provided.
 }
 \description{
-Area calculation
+This function calculates the total area of a SpatRaster object and the overlapping areas
+with up to two additional SpatRaster objects. The results can be saved to a CSV file if a
+filename is provided.
 }
 \examples{
 \donttest{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif",
-package = "divraster"))
-my.list <- list(bin1 = bin1[[1:2]])
-area.calc(my.list)
+bin1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+area.calc(bin1, bin1[[1]], bin1[[2]])
 }
 }
