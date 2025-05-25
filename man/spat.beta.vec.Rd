@@ -21,7 +21,7 @@ comparisons.}
 
 \item{nspp}{Numeric. Number of species.}
 
-\item{...}{Additional arguments to be passed passed down from a
+\item{...}{Additional arguments to be passed down from a
 calling function.}
 }
 \value{

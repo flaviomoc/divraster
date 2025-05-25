@@ -9,57 +9,59 @@
 #' comparisons.
 #' @param spp Character. Species names.
 #' @param nspp Numeric. Number of species.
-#' @param ... Additional arguments to be passed passed down from a
+#' @param ... Additional arguments to be passed down from a
 #' calling function.
 #'
 #' @return A vector with beta results (total, replacement,
 #' richness difference, and ratio).
-#'
 spat.beta.vec <- function(x,
                           tree,
                           global = FALSE,
                           spp,
                           nspp, ...) {
-  # Convert 'x' to a matrix with specified species names and remove
-  # the 'lyr1' column
+  # Convert vector to matrix
   x <- matrix(x,
               ncol = nspp,
               byrow = FALSE,
               dimnames = list(NULL, spp))
-  x <- subset(x,
-              select = colnames(x) != "lyr1")
 
-  # Reorder the rows of 'x', placing the middle row at the first
-  # position
-  fcel <- ceiling(nrow(x) / 2)
-  x[] <- x[c(fcel, 1:(fcel - 1), (fcel + 1):nrow(x)), ]
-
-  # Remove rows with any NA values and rows with all zeros
-  # (no presence)
-  x <- x[stats::complete.cases(x) & rowSums(x, na.rm = TRUE) > 0, ]
-
-  # Check if 'x' contains only NA values and return NA values for
-  # all beta diversity components
-  if (all(is.na(x))) {
-    # Remove names when returning NA values
-    return(unname(c(Btotal = NA, Brepl = NA, Brich = NA, Bratio = NA)))
-  } else if (!inherits(x, "matrix")) {
-    # Remove names when returning zero values
-    return(unname(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0)))
-  } else if (sum(x, na.rm = TRUE) == 0) {
-    # Remove names when returning zero values
-    return(unname(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0)))
-  } else {
-    res <- sapply(BAT::beta(x, tree, abund = TRUE),
-                  function(x, global) {
-                    ifelse(global,
-                           mean(x),
-                           mean(as.matrix(x)[-1, 1]))
-                  }, global)
-    res[4] <- res[2] / res[1]
-    # Ensure this result is also un-named
-    return(unname(res))
+  # Remove any unwanted column like 'lyr1' if present
+  if ("lyr1" %in% colnames(x)) {
+    x <- x[, colnames(x) != "lyr1", drop = FALSE]
   }
+
+  # Reorder to place the central cell first
+  fcel <- ceiling(nrow(x) / 2)
+  x <- x[c(fcel, setdiff(seq_len(nrow(x)), fcel)), , drop = FALSE]
+
+  # Remove rows with NA or no presence
+  x <- x[stats::complete.cases(x) & rowSums(x, na.rm = TRUE) > 0, , drop = FALSE]
+
+  # Early exit if empty or all NA
+  if (nrow(x) == 0 || all(is.na(x))) {
+    return(unname(c(Btotal = NA_real_, Brepl = NA_real_, Brich = NA_real_, Bratio = NA_real_)))
+  }
+
+  # Compute beta diversity
+  res <- tryCatch({
+    beta_list <- BAT::beta(x, tree, abund = TRUE)
+
+    vals <- vapply(beta_list, function(b) {
+      if (global) {
+        mean(b, na.rm = TRUE)
+      } else {
+        mean(as.matrix(b)[-1, 1], na.rm = TRUE)
+      }
+    }, numeric(1))
+
+    vals["Bratio"] <- vals["Brepl"] / vals["Btotal"]
+    unname(vals)
+  }, error = function(e) {
+    warning("Error in beta diversity calculation: ", conditionMessage(e))
+    c(NA_real_, NA_real_, NA_real_, NA_real_)
+  })
+
+  return(res)
 }
 
 #' Spatial beta diversity for raster
@@ -81,148 +83,75 @@ spat.beta.vec <- function(x,
 #' @param d Window radius to compute beta diversity.
 #' @param type Character. Window format. Default = "circle".
 #' @param na.policy Character. Default = "omit".
-#' See ?terra::focal3D for details.
-#' @param ... Additional arguments to be passed passed down from
-#' a calling function.
-#'
-#' @details The TD beta diversity partitioning framework we used
-#' was developed by Podani and Schmera (2011) and Carvalho et al.
-#' (2012) and expanded to PD and FD by Cardoso et al. (2014).
-#'
-#' @references Cardoso, P. et al. 2014. Partitioning taxon,
-#' phylogenetic and functional beta diversity into replacement
-#' and richness difference components. - Journal of Biogeography
-#' 41: 749–761.
-#'
-#' @references Carvalho, J. C. et al. 2012. Determining the
-#' relative roles of species replacement and species richness
-#' differences in generating beta-diversity patterns. - Global
-#' Ecology and Biogeography 21: 760–771.
-#'
-#' @references Podani, J. and Schmera, D. 2011. A new conceptual
-#' and methodological framework for exploring and explaining
-#' pattern in presence - absence data. - Oikos 120: 1625–1638.
-#'
-#' @references Hidasi-Neto, J. et al. 2019. Climate change will
-#' drive mammal species loss and biotic homogenization in the
-#' Cerrado Biodiversity Hotspot. - Perspectives in Ecology and
-#' Conservation 17: 57–63.
+#' @param ... Additional arguments passed to lower-level functions.
 #'
 #' @return A SpatRaster with beta results (total, replacement,
 #' richness difference, and ratio).
 #' @export
-#'
-#' @examples
-#' \donttest{
-#' library(terra)
-#' bin1 <- terra::rast(system.file("extdata", "ref.tif",
-#' package = "divraster"))
-#' traits <- read.csv(system.file("extdata", "traits.csv",
-#' package = "divraster"), row.names = 1)
-#' rownames(traits) <- names(bin1)
-#' tree <- ape::read.tree(system.file("extdata", "tree.tre",
-#' package = "divraster"))
-#' spat.beta(bin1)
-#' spat.beta(bin1, traits)
-#' spat.beta(bin1, tree)
-#' }
 spat.beta <- function(x, tree, filename = "", global = FALSE,
                       fm = NULL,
                       d = mean(terra::res(terra::rast(x))) * 2,
                       type = "circle",
                       na.policy = "omit", ...) {
 
-  # Initial tests
-  inputs_chk(bin1 = x, tree = tree)
+  # Input validation (custom function if defined)
+  if (exists("inputs_chk", mode = "function")) {
+    inputs_chk(bin1 = x, tree = tree)
+  }
 
-  # Create focal matrix
+  # Create focal matrix if missing
   if (is.null(fm)) {
-    # Calculate the minimum distance for the focal matrix
     min.d <- sqrt(prod(terra::res(x)))
-
-    # Check if 'd' is smaller than the minimum distance required
-    # for the focal matrix
     if (d < min.d) {
-      stop(paste("Radius too small to build a focal window.
-                 Minimum d must be larger than:", min.d))
+      stop("Radius too small to build a focal window. Minimum d must be larger than: ", min.d)
     }
-
-    # Generate the focal matrix based on 'd', 'type', and the
-    # SpatRaster 'x'
     fm <- terra::focalMat(x, d, type = type, fillNA = FALSE)
   }
 
-  # Transform values to 1 to find exact values in the focal matrix
   fm[] <- fm / fm
-  fm[is.nan(fm)] <- 0  # Replace NaN by 0
+  fm[is.nan(fm)] <- 0
 
-  # Test even-odd dimensions in the focal matrix
   even <- (c(dim(fm), terra::nlyr(x)) %% 2) == 0
-  if (any(even)) {
-    # Test if focal matrix dimensions are even
-    if (even[1]) {
-      fm <- rbind(fm, 0)
-    }
-    if (even[2]) {
-      fm <- cbind(fm, 0)
-    }
+  if (even[1]) fm <- rbind(fm, 0)
+  if (even[2]) fm <- cbind(fm, 0)
 
-    # Test if number of spp layers is even
-    if (even[3]) {
-      # Add a layer to get odd dimensions (to enable 'terra::focal3D')
-      x <- c(x, terra::app(x, function(x) {
-        ifelse(all(is.na(x)), NA, 0)
-      }))
-      # Create an array for 3D focal calculations
-      fmA <- replicate(terra::nlyr(x), fm)
-      # Set weight 0 for the last layer to exclude it from calculations
-      fmA[, , terra::nlyr(x)] <- 0
-    } else {
-      # Create an array for 3D focal calculations
-      fmA <- replicate(terra::nlyr(x), fm)
-    }
+  if (even[3]) {
+    x <- c(x, terra::app(x, function(x) {
+      ifelse(all(is.na(x)), NA, 0)
+    }))
+    fmA <- replicate(terra::nlyr(x), fm)
+    fmA[, , terra::nlyr(x)] <- 0
   } else {
-    # Create an array for 3D focal calculations
     fmA <- replicate(terra::nlyr(x), fm)
   }
 
-  # Apply focal3D calculation using spat.beta.vec function
-  if (missing(tree)) {
-    betaR <- terra::focal3D(x,
-                            fmA,
-                            spat.beta.vec,
-                            global = global,
-                            spp = names(x),
-                            nspp = terra::nlyr(x),
-                            na.policy = na.policy, ...)
-  } else {
+  # Apply 3D focal function
+  betaR <- terra::focal3D(
+    x,
+    fmA,
+    fun = spat.beta.vec,
+    tree = tree,
+    global = global,
+    spp = names(x),
+    nspp = terra::nlyr(x),
+    na.policy = na.policy,
+    ...
+  )
 
-    betaR <- terra::focal3D(x,
-                            fmA,
-                            spat.beta.vec,
-                            tree = tree,
-                            global = global,
-                            spp = names(x),
-                            nspp = terra::nlyr(x),
-                            na.policy = na.policy, ...)
+  # Check output layer count
+  if (terra::nlyr(betaR) != 4) {
+    stop("Unexpected number of layers returned: ", terra::nlyr(betaR), ". Expected 4.")
   }
 
-  # Define names for the output based on the type of 'tree'
+  # Assign names
   lyrnames <- c("Btotal", "Brepl", "Brich", "Bratio")
-  if (missing(tree)) {
-    names(betaR) <- paste0(lyrnames, "_TD")
-  } else if (inherits(tree, "data.frame")) {
-    names(betaR) <- paste0(lyrnames, "_FD")
-  } else {
-    names(betaR) <- paste0(lyrnames, "_PD")
+  suffix <- if (missing(tree)) "_TD" else if (inherits(tree, "data.frame")) "_FD" else "_PD"
+  names(betaR) <- paste0(lyrnames, suffix)
+
+  # Save if requested
+  if (filename != "") {
+    betaR <- terra::writeRaster(betaR, filename = filename, overwrite = TRUE)
   }
 
-  # Save the output if 'filename' is provided
-  if (filename != "") {
-    terra::writeRaster(betaR,
-                       filename = filename,
-                       overwrite = TRUE, ...)
-  }
-  # Return the SpatRaster with beta diversity values
   return(betaR)
 }

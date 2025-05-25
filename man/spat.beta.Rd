@@ -36,11 +36,9 @@ comparisons.}
 
 \item{type}{Character. Window format. Default = "circle".}
 
-\item{na.policy}{Character. Default = "omit".
-See ?terra::focal3D for details.}
+\item{na.policy}{Character. Default = "omit".}
 
-\item{...}{Additional arguments to be passed passed down from
-a calling function.}
+\item{...}{Additional arguments passed to lower-level functions.}
 }
 \value{
 A SpatRaster with beta results (total, replacement,
@@ -50,44 +48,4 @@ richness difference, and ratio).
 Calculates spatial beta diversity for
 taxonomic (TD), functional (FD), and phylogenetic (PD)
 dimensions. Adapted from \code{\link[BAT]{beta}}.
-}
-\details{
-The TD beta diversity partitioning framework we used
-was developed by Podani and Schmera (2011) and Carvalho et al.
-(2012) and expanded to PD and FD by Cardoso et al. (2014).
-}
-\examples{
-\donttest{
-library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif",
-package = "divraster"))
-traits <- read.csv(system.file("extdata", "traits.csv",
-package = "divraster"), row.names = 1)
-rownames(traits) <- names(bin1)
-tree <- ape::read.tree(system.file("extdata", "tree.tre",
-package = "divraster"))
-spat.beta(bin1)
-spat.beta(bin1, traits)
-spat.beta(bin1, tree)
-}
-}
-\references{
-Cardoso, P. et al. 2014. Partitioning taxon,
-phylogenetic and functional beta diversity into replacement
-and richness difference components. - Journal of Biogeography
-41: 749–761.
-
-Carvalho, J. C. et al. 2012. Determining the
-relative roles of species replacement and species richness
-differences in generating beta-diversity patterns. - Global
-Ecology and Biogeography 21: 760–771.
-
-Podani, J. and Schmera, D. 2011. A new conceptual
-and methodological framework for exploring and explaining
-pattern in presence - absence data. - Oikos 120: 1625–1638.
-
-Hidasi-Neto, J. et al. 2019. Climate change will
-drive mammal species loss and biotic homogenization in the
-Cerrado Biodiversity Hotspot. - Perspectives in Ecology and
-Conservation 17: 57–63.
 }
