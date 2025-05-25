@@ -1,3 +1,10 @@
+# divraster 1.2
+
+* New functions added: suit.change, area.calc, spat.alpha2, and differ.rast.
+* Minor changes in function documentation.
+* Minor changes in function tests.
+* Minor changes in vignette.
+
 # divraster 1.0.4
 
 * New function added for initial testing [#3](https://github.com/flaviomoc/divraster/issues/3).
