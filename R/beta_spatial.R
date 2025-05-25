@@ -41,33 +41,24 @@ spat.beta.vec <- function(x,
   # Check if 'x' contains only NA values and return NA values for
   # all beta diversity components
   if (all(is.na(x))) {
-    return(c(Btotal = NA, Brepl = NA, Brich = NA, Bratio = NA))
-  }
-  # Check if 'x' is not a matrix and return zero values for all beta
-  # diversity components
-  else if (!inherits(x, "matrix")) {
-    return(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0))
-  }
-  # Check if 'x' contains all zeros (no presence) and return zero
-  # values for all beta diversity components
-  else if (sum(x, na.rm = TRUE) == 0) {
-    return(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0))
-  }
-  # Calculate beta diversity using BAT::beta function and return
-  # the result
-  else {
+    # Remove names when returning NA values
+    return(unname(c(Btotal = NA, Brepl = NA, Brich = NA, Bratio = NA)))
+  } else if (!inherits(x, "matrix")) {
+    # Remove names when returning zero values
+    return(unname(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0)))
+  } else if (sum(x, na.rm = TRUE) == 0) {
+    # Remove names when returning zero values
+    return(unname(c(Btotal = 0, Brepl = 0, Brich = 0, Bratio = 0)))
+  } else {
     res <- sapply(BAT::beta(x, tree, abund = TRUE),
                   function(x, global) {
                     ifelse(global,
-                           # Calculate mean of all possible
-                           # pairwise combinations
                            mean(x),
-                           # Calculate mean of focal against all
                            mean(as.matrix(x)[-1, 1]))
                   }, global)
-    # Calculate beta ratio (Brepl / Btotal) and store it
-    res[4] <- res[2] / res[1] # See Hidasi-Neto et al. (2019)
-    return(res)
+    res[4] <- res[2] / res[1]
+    # Ensure this result is also un-named
+    return(unname(res))
   }
 }
 

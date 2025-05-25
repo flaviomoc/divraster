@@ -2,35 +2,51 @@
 % Please edit documentation in R/diff_rast.R
 \name{differ.rast}
 \alias{differ.rast}
-\title{Difference between raster objects}
+\title{Calculate Absolute or Percentage Difference Between SpatRaster Objects}
 \usage{
 differ.rast(r1, r2, perc = TRUE, filename = "")
 }
 \arguments{
-\item{r1}{A SpatRaster object.}
+\item{r1}{A \code{SpatRaster} object representing the baseline or initial values.
+Can have one or multiple layers.}
 
-\item{r2}{A SpatRaster object.}
+\item{r2}{A \code{SpatRaster} object representing the future or comparison values.
+Must have the same dimensions, resolution, CRS, and number of layers as \code{r1}.}
 
-\item{perc}{Boolean. Default is TRUE to calculate the percentage
-of change between r1 and r2. FALSE gives the absolute number
-instead.}
+\item{perc}{Logical (default is \code{TRUE}). If \code{TRUE}, the percentage of change
+relative to \code{r1} is calculated: \code{((r2 - r1) / r1) * 100}.
+If \code{FALSE}, the absolute difference (\code{r2 - r1}) is returned.}
 
-\item{filename}{Character. Save results if a name is provided.}
+\item{filename}{Character string. Optional path and filename to save the resulting
+\code{SpatRaster}. Supported formats are those recognized by \code{terra::writeRaster}
+(e.g., ".tif", ".grd"). If provided, the \code{SpatRaster} will be saved to
+this file.}
 }
 \value{
-A SpatRaster object with the difference between
-r1 and r2.
+A \code{SpatRaster} object containing the calculated differences.
+\itemize{
+\item If \code{perc = TRUE}, the layer name will be "Percentage_Difference".
+\item If \code{perc = FALSE}, the layer name will be "Absolute_Difference".
+}
+The output \code{SpatRaster} will have the same dimensions, resolution, and CRS as
+the input rasters.
 }
 \description{
-Difference between raster objects
+Computes the difference between two \code{SpatRaster} objects, either as an absolute value
+or as a percentage of change relative to the first raster (\code{r1}).
+This function is commonly used to assess changes in spatial patterns, such as
+shifts in species richness or environmental variables over time or between scenarios.
 }
-\examples{
-\donttest{
-library(terra)
-rich1 <- terra::rast(system.file("extdata", "rich_ref.tif",
-package = "divraster"))
-rich2 <- terra::rast(system.file("extdata", "rich_fut.tif",
-package = "divraster"))
-differ.rast(rich1, rich2)
+\details{
+This function performs a cell-wise subtraction (\code{r2 - r1}).
+\itemize{
+\item For \strong{percentage difference}, the formula used is \code{((r2 - r1) / r1) * 100}.
+Cells where \code{r1} is \code{NA} or \code{0} will result in \code{NA} in the output
+\code{SpatRaster} for percentage calculations, to avoid division by zero or
+meaningless percentages.
+\item It is crucial that \code{r1} and \code{r2} are aligned spatially (same extent,
+resolution, and Coordinate Reference System - CRS) and have the
+same number of layers, with corresponding layers representing the
+same variable or species.
 }
 }

@@ -2,33 +2,43 @@
 % Please edit documentation in R/suit_change.R
 \name{suit.change}
 \alias{suit.change}
-\title{Species suitability change between climate scenarios}
+\title{Species Suitability Change Between Climate Scenarios}
 \usage{
 suit.change(r1, r2, filename = "")
 }
 \arguments{
-\item{r1}{A SpatRaster with presence-absence data (0 or 1)
-for a set of species.}
+\item{r1}{A \code{SpatRaster} with multiple layers. Each layer represents a species'
+presence-absence data (0 for absence, 1 for presence) for the
+\strong{baseline climate scenario}. Layer names should correspond to species names.}
 
-\item{r2}{A SpatRaster with presence-absence data (0 or 1)
-for a set of species.}
+\item{r2}{A \code{SpatRaster} with multiple layers. Each layer represents a species'
+presence-absence data (0 for absence, 1 for presence) for the
+\strong{future climate scenario}. Layer names should correspond to species names
+and must match those in \code{r1}.}
 
-\item{filename}{Character. Save results if a name is provided.}
+\item{filename}{Character string. Optional path and filename to save the resulting \code{SpatRaster}
+stack. Supported formats are those recognized by \code{terra::writeRaster}
+(e.g., ".tif", ".grd"). If provided, the \code{SpatRaster} will be saved to this file.}
 }
 \value{
-A SpatRaster with suitability change (gain, loss,
-unchanged, and unsuitable).
+A \code{SpatRaster} object with multiple layers, where each layer corresponds to a species
+from the input SpatRasters. Cell values are encoded as follows:
+1 = Gain: Species absent in r1 (baseline) becomes present in r2 (future).
+2 = Loss: Species present in r1 (baseline) becomes absent in r2 (future).
+3 = Unchanged (Presence): Species present in both r1 and r2.
+4 = Unsuitable (Both): Species absent in both r1 and r2.
+The dimensions, resolution, and layer names of the output raster will match those of the input
+r1 and r2.
 }
 \description{
-Species suitability change between climate scenarios
+Compares two \code{SpatRaster} objects, each containing species presence-absence data
+for multiple species under different climate scenarios (e.g., baseline vs. future).
+It calculates and encodes the change in habitat suitability (gain, loss, unchanged, unsuitable)
+for each species in each raster cell.
 }
-\examples{
-\donttest{
-library(terra)
-r1 <- terra::rast(system.file("extdata", "ref.tif",
-package = "divraster"))
-r2 <- terra::rast(system.file("extdata", "fut.tif",
-package = "divraster"))
-suit.change(r1, r2)
-}
+\details{
+This function processes each species layer independently. It's crucial that
+both input \code{SpatRaster}s (\code{r1} and \code{r2}) have the same extent, resolution, and
+the same number of layers, with corresponding layers representing the same species.
+The function expects binary (0 or 1) presence-absence data.
 }

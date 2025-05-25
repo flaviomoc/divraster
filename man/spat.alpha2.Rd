@@ -2,30 +2,52 @@
 % Please edit documentation in R/alpha2.R
 \name{spat.alpha2}
 \alias{spat.alpha2}
-\title{Alternative method to calculate alpha taxonomic diversity}
+\title{Alternative Method to Calculate Alpha Taxonomic Diversity}
 \usage{
 spat.alpha2(bin, cores = 1, filename = "")
 }
 \arguments{
-\item{bin}{A SpatRaster with presence-absence data (0 or 1) for
-a set of species.}
+\item{bin}{A \code{SpatRaster} object with multiple layers, where each layer represents
+a species and cell values are binary (0 for absence, 1 for presence).
+Species names should correspond to layer names (e.g., \code{names(bin)}).}
 
-\item{cores}{A positive integer. If cores > 1, a 'parallel'
-package cluster with that many cores is created and used.}
+\item{cores}{A positive integer (default is 1). If \code{cores > 1}, a parallel processing cluster
+is created using the \code{parallel} package to speed up calculations across raster cells.}
 
-\item{filename}{Character. Save results if a name is provided.}
+\item{filename}{Character string. Optional path and filename to save the resulting \code{SpatRaster}.
+Supported formats are those recognized by \code{terra::writeRaster} (e.g., ".tif", ".grd").
+If provided, the \code{SpatRaster} will be saved to this file.}
 }
 \value{
-A SpatRaster object with richness.
+A \code{SpatRaster} object with a single layer named "Richness". Each cell in this
+\code{SpatRaster} contains the calculated species richness (number of species present).
+The output \code{SpatRaster} will have the same dimensions, resolution, and CRS as the input \code{bin}.
 }
 \description{
-Alternative method to calculate alpha taxonomic diversity
+Calculates the alpha taxonomic diversity, specifically \strong{species richness},
+for each cell in a \code{SpatRaster} object containing species presence-absence data.
+This function provides a straightforward method to sum the number of species present
+in each grid cell.
+}
+\details{
+This function calculates species richness by summing the presence (value 1) of all
+species across layers for each individual raster cell. It is an alternative
+to \code{spat.alpha()} when only Taxonomic Diversity (TD) is required, offering
+a more direct and potentially faster computation for this specific metric.
+\code{NA} values in input cells are ignored during the sum calculation.
 }
 \examples{
 \donttest{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif",
-package = "divraster"))
-spat.alpha2(bin1)
+
+# Load an example SpatRaster with binary presence-absence data
+bin_rast <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+
+# Calculate species richness (alpha taxonomic diversity)
+richness_map <- spat.alpha2(bin_rast)
+richness_map
+
+# Plot the resulting richness map
+plot(richness_map, main = "Species Richness Map")
 }
 }
