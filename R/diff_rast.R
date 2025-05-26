@@ -49,16 +49,15 @@
 #' rich2 <- terra::rast(system.file("extdata", "rich_fut.tif",
 #' package = "divraster"))
 #'
-#' Calculate absolute difference in richness
+#' # Calculate absolute difference in richness
 #' abs_diff_rast <- differ.rast(rich1, rich2, perc = FALSE)
 #' abs_diff_rast
 #' plot(abs_diff_rast, main = "Absolute Difference in Richness")
 #'
-#' Calculate percentage difference in richness
+#' # Calculate percentage difference in richness
 #' perc_diff_rast <- differ.rast(rich1, rich2, perc = TRUE)
 #' perc_diff_rast
 #' plot(perc_diff_rast, main = "Percentage Difference in Richness")
-#' }
 differ.rast <- function(r1, r2, perc = TRUE, filename = "") {
   # Validate input types
   if (!inherits(r1, "SpatRaster") || !inherits(r2, "SpatRaster")) {

@@ -42,7 +42,6 @@
 #' # Calculate suitability change
 #' change_map <- suit.change(r1, r2)
 #' change_map
-#' }
 suit.change <- function(r1, r2, filename = "") {
   # Ensure inputs are SpatRaster objects with the same number of layers
   if (!inherits(r1, "SpatRaster") || !inherits(r2, "SpatRaster")) {

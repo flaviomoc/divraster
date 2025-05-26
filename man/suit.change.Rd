@@ -42,3 +42,14 @@ both input \code{SpatRaster}s (\code{r1} and \code{r2}) have the same extent, re
 the same number of layers, with corresponding layers representing the same species.
 The function expects binary (0 or 1) presence-absence data.
 }
+\examples{
+library(terra)
+
+# Load example rasters for baseline and future climate scenarios
+r1 <- terra::rast(system.file("extdata", "ref.tif", package = "divraster"))
+r2 <- terra::rast(system.file("extdata", "fut.tif", package = "divraster"))
+
+# Calculate suitability change
+change_map <- suit.change(r1, r2)
+change_map
+}

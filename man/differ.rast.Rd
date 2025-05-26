@@ -50,3 +50,22 @@ same number of layers, with corresponding layers representing the
 same variable or species.
 }
 }
+\examples{
+library(terra)
+
+# Load rasters
+rich1 <- terra::rast(system.file("extdata", "rich_ref.tif",
+package = "divraster"))
+rich2 <- terra::rast(system.file("extdata", "rich_fut.tif",
+package = "divraster"))
+
+# Calculate absolute difference in richness
+abs_diff_rast <- differ.rast(rich1, rich2, perc = FALSE)
+abs_diff_rast
+plot(abs_diff_rast, main = "Absolute Difference in Richness")
+
+# Calculate percentage difference in richness
+perc_diff_rast <- differ.rast(rich1, rich2, perc = TRUE)
+perc_diff_rast
+plot(perc_diff_rast, main = "Percentage Difference in Richness")
+}
