@@ -9,7 +9,7 @@ test_that("function spat.beta works", {
                                      package = "divraster"))
 
   # applying the function
-  beta.td <- spat.beta(bin1, filename = paste0(tempfile(), ".tif"))
+  beta.td <- spat.beta(bin1)
   beta.fd <- spat.beta(bin1, traits)
   beta.pd <- spat.beta(bin1, tree)
   bin.na <- bin1
