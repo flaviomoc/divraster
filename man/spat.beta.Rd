@@ -33,12 +33,12 @@ richness difference, and ratio).
 \description{
 Calculates spatial beta diversity for
 taxonomic (TD), functional (FD), and phylogenetic (PD)
-dimensions. Adapted from \code{\link[BAT]{beta}}.
+dimensions. See \code{\link[BAT]{raster.beta}}.
 }
 \examples{
 \donttest{
 library(terra)
-bin1 <- terra::rast(system.file("extdata", "ref.tif",
+bin1 <- terra::rast(system.file("extdata", "fut.tif",
 package = "divraster"))
 traits <- read.csv(system.file("extdata", "traits.csv",
 package = "divraster"), row.names = 1)

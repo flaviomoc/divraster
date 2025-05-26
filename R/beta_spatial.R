@@ -2,7 +2,7 @@
 #'
 #' @description Calculates spatial beta diversity for
 #' taxonomic (TD), functional (FD), and phylogenetic (PD)
-#' dimensions. Adapted from \code{\link[BAT]{beta}}.
+#' dimensions. See \code{\link[BAT]{raster.beta}}.
 #'
 #' @param x A SpatRaster with presence-absence data (0 or 1) for a
 #' set of species. (This maps to `layers` in `BAT::raster.beta`).
@@ -25,7 +25,7 @@
 #' @examples
 #' \donttest{
 #' library(terra)
-#' bin1 <- terra::rast(system.file("extdata", "ref.tif",
+#' bin1 <- terra::rast(system.file("extdata", "fut.tif",
 #' package = "divraster"))
 #' traits <- read.csv(system.file("extdata", "traits.csv",
 #' package = "divraster"), row.names = 1)
@@ -47,20 +47,15 @@ spat.beta <- function(x, tree, filename = "",
 
   # Call BAT::raster.beta directly.
   # Removed 'neighbour' from the arguments passed to BAT::raster.beta
-  betaR_from_BAT <- BAT::raster.beta(layers = x,
-                                     tree = tree,
-                                     func = func,
-                                     abund = abund,
-                                     ...) # Pass any other arguments to BAT::raster.beta
-
-  # BAT::raster.beta returns a SpatRaster with 3 layers named "Btotal", "Brepl", "Brich"
-  if (!inherits(betaR_from_BAT, "SpatRaster") || terra::nlyr(betaR_from_BAT) != 3) {
-    stop("BAT::raster.beta did not return an expected 3-layer SpatRaster.")
-  }
+  betaR <- BAT::raster.beta(layers = x,
+                            tree = tree,
+                            func = func,
+                            abund = abund,
+                            ...) # Pass any other arguments to BAT::raster.beta
 
   # Calculate the Bratio layer
-  Btotal_layer <- betaR_from_BAT[["Btotal"]]
-  Brepl_layer <- betaR_from_BAT[["Brepl"]]
+  Btotal_layer <- betaR[["Btotal"]]
+  Brepl_layer <- betaR[["Brepl"]]
 
   if (is.null(Btotal_layer) || is.null(Brepl_layer)) {
     stop("Could not find 'Btotal' or 'Brepl' layers in the output from BAT::raster.beta.
@@ -71,7 +66,7 @@ spat.beta <- function(x, tree, filename = "",
   names(Bratio_layer) <- "Bratio"
 
   # Combine the original layers with the new Bratio layer
-  final_betaR <- c(betaR_from_BAT, Bratio_layer)
+  final_betaR <- c(betaR, Bratio_layer)
 
   # Assign the final names with the correct suffix
   lyrnames <- c("Btotal", "Brepl", "Brich", "Bratio")
