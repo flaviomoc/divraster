@@ -68,11 +68,6 @@ spat.beta <- function(x, tree, filename = "",
   # Combine the original layers with the new Bratio layer
   final_betaR <- c(betaR, Bratio_layer)
 
-  # Assign the final names with the correct suffix
-  lyrnames <- c("Btotal", "Brepl", "Brich", "Bratio")
-  suffix <- if (missing(tree)) "_TD" else if (inherits(tree, "data.frame")) "_FD" else "_PD"
-  names(final_betaR) <- paste0(lyrnames, suffix)
-
   # Save if requested
   if (filename != "") {
     terra::writeRaster(final_betaR, filename = filename, overwrite = TRUE)
