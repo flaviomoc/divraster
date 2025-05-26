@@ -37,7 +37,6 @@ a more direct and potentially faster computation for this specific metric.
 \code{NA} values in input cells are ignored during the sum calculation.
 }
 \examples{
-\donttest{
 library(terra)
 
 # Load an example SpatRaster with binary presence-absence data
@@ -49,5 +48,4 @@ richness_map
 
 # Plot the resulting richness map
 plot(richness_map, main = "Species Richness Map")
-}
 }

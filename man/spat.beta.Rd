@@ -4,15 +4,7 @@
 \alias{spat.beta}
 \title{Spatial beta diversity for raster}
 \usage{
-spat.beta(
-  x,
-  tree,
-  filename = "",
-  func = "jaccard",
-  neighbour = 8,
-  abund = FALSE,
-  ...
-)
+spat.beta(x, tree, filename = "", func = "jaccard", abund = FALSE, ...)
 }
 \arguments{
 \item{x}{A SpatRaster with presence-absence data (0 or 1) for a
@@ -27,14 +19,12 @@ and 'x' must match!}
 \item{func}{Character. Distance function for beta diversity calculation.
 Defaults to "jaccard". Passed to \code{BAT::beta}.}
 
-\item{neighbour}{Numeric. Number of neighbours to consider (e.g., 4 or 8).
-Defaults to 8. Passed to \code{BAT::raster.beta}.}
-
 \item{abund}{Logical. Whether to use abundance data (TRUE) or presence-absence (FALSE).
 Defaults to FALSE. Passed to \code{BAT::beta}.}
 
 \item{...}{Additional arguments to be passed to internal functions
-within \code{BAT::raster.beta} (e.g., \code{BAT::beta}).}
+within \code{BAT::raster.beta} (e.g., \code{BAT::beta}).
+Note: \code{BAT::raster.beta} does not accept a 'neighbour' argument.}
 }
 \value{
 A SpatRaster with beta results (total, replacement,
@@ -44,4 +34,18 @@ richness difference, and ratio).
 Calculates spatial beta diversity for
 taxonomic (TD), functional (FD), and phylogenetic (PD)
 dimensions. Adapted from \code{\link[BAT]{beta}}.
+}
+\examples{
+\donttest{
+library(terra)
+bin1 <- terra::rast(system.file("extdata", "ref.tif",
+package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv",
+package = "divraster"), row.names = 1)
+tree <- ape::read.tree(system.file("extdata", "tree.tre",
+package = "divraster"))
+spat.beta(bin1)
+spat.beta(bin1, traits)
+spat.beta(bin1, tree)
+}
 }

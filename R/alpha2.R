@@ -28,7 +28,6 @@
 #' `NA` values in input cells are ignored during the sum calculation.
 #'
 #' @examples
-#' \donttest{
 #' library(terra)
 #'
 #' # Load an example SpatRaster with binary presence-absence data
@@ -40,7 +39,6 @@
 #'
 #' # Plot the resulting richness map
 #' plot(richness_map, main = "Species Richness Map")
-#' }
 spat.alpha2 <- function(bin, cores = 1, filename = "") {
   # Validate input type
   if (!inherits(bin, "SpatRaster")) {
