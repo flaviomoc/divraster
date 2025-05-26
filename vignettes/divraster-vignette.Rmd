@@ -64,7 +64,7 @@ bin2 <- terra::rast(system.file("extdata",
 
 # Change extension to process faster
 terra::ext(bin1)
-e <- c(-41, -39, -15, -13)
+e <- c(-40, -39, -14, -13)
 bin1 <- terra::crop(bin1, e)
 bin2 <- terra::crop(bin2, e)
 
@@ -89,17 +89,17 @@ divraster::spat.alpha(bin2)
 The alpha taxonomic diversity in the first scenario ranges from 0 to 67, and in the second scenario, it ranges from 0 to 65, with higher values concentrated towards the north in both cases.
 
 ## 2.1.2 Alpha FD {#alpha-fd}
-```{r}
+```{r, eval = FALSE}
 divraster::spat.alpha(bin1, traits)
 ```
-The alpha functional diversity for the first scenario ranges from 3.7 to 4.4, with higher values concentrated towards the north, indicating greater functional diversity.
+The alpha functional diversity for the first scenario ranges from 4.248408 to 4.378846, with higher values concentrated towards the north, indicating greater functional diversity.
 
 ## 2.1.3 Alpha PD {#alpha-pd}
 ```{r}
 # Alpha PD calculation
 divraster::spat.alpha(bin1, tree)
 ```
-The alpha phylogenetic diversity for the first scenario ranges from 1524 to 1860, with higher values concentrated towards the north, indicating greater phylogenetic diversity.
+The alpha phylogenetic diversity for the first scenario ranges from 1793.342 to 1859.668, with higher values concentrated towards the north, indicating greater phylogenetic diversity.
 
 ## 3 Standardized effect size (SES) {#ses}
 
@@ -107,24 +107,24 @@ SES is often used in ecological studies to measure the magnitude of difference b
 
 ## 3.1 SES examples {#ses-ex}
 ## 3.1.1 SES FD {#ses-fd}
-```{r}
+```{r, eval = FALSE}
 # SES FD calculation
 divraster::spat.rand(x = bin1, 
-                               tree = traits, 
-                               aleats = 3, 
-                               random = "site")
+                     tree = traits, 
+                     aleats = 3, 
+                     random = "site")
 ```
-The SES indicates that the majority of the areas have values close to 0, suggesting that functional diversity does not significantly differ from the expected change. However, one community is projected to be functionally dispersed (SES_FD = 31), while another community is projected to be functionally clustered (SES_FD = -39). This indicates an increase and decrease in functional diversity within these communities from scenarios 1 to 2, respectively.
+The SES indicates that the majority of the areas have values close to 0, suggesting that functional diversity does not significantly differ from the expected change. However, one community is projected to be functionally clustered (SES_FD = -25).
 
 ## 3.1.2 SES PD {#ses-pd}
-```{r}
+```{r, eval = FALSE}
 # SES PD calculation
 divraster::spat.rand(x = bin1, 
-                               tree = tree, 
-                               aleats = 3, 
-                               random = "site")
+                     tree = tree, 
+                     aleats = 3, 
+                     random = "site")
 ```
-Similarly, the SES for phylogenetic diversity does not differ from what is expected by chance, with most communities presenting values close to 0. However, one community is projected to be phylogenetically dispersed (SES_PD = 10), while another community is projected to be phylogenetically clustered (SES_FD = -15). This indicates an increase and decrease in phylogenetic diversity within these communities from scenarios 1 to 2, respectively.
+In contrast, the SES for phylogenetic diversity does not differ from what is expected by chance, with most communities presenting values close to 0. However, one community is projected to be phylogenetically dispersed (SES_PD = 12).
 
 ## 4 Beta diversity {#beta}
 
@@ -132,46 +132,46 @@ Beta diversity captures variations in species composition between different comm
 
 ## 4.1 Beta examples {#betaspat-ex}
 ## 4.1.1 Beta spatial TD {#betaspat-td}
-```{r}
+```{r, eval = FALSE}
 # Beta spatial TD calculation
 divraster::spat.beta(bin1)
 ```
-Spatial beta diversity for TD indicates a slight change in species composition towards the south, as evidenced by the small values of Btotal (~0.1). The predominant component contributing to this change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of species. The Bratio also indicates the predominance of Birch component in most communities.
+Spatial beta diversity for TD indicates a slight change in species composition towards the south, as evidenced by the small values of Btotal (ranging from 0.002985075 to 0.045232793). The predominant component contributing to this change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of species.
 
 ## 4.1.2 Beta spatial FD {#betaspat-fd}
-```{r}
+```{r, eval = FALSE}
 # Beta spatial FD calculation
 divraster::spat.beta(bin1, traits)
 ```
-Similarly, spatial beta diversity for FD indicates a slight change in functional traits composition towards the south, as evidenced by the small values of Btotal (~0.08). The predominant component contributing to this little change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of functional traits. The Bratio also indicates the predominance of Birch component in most communities.
+Similarly, spatial beta diversity for FD indicates a slight change in functional traits composition towards the south, as evidenced by the small values of Btotal (ranging from 0.0001674408 to 0.0235750070). The predominant component contributing to this little change is the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are primarily due to the loss or gain of functional traits.
 
 ## 4.1.3 Beta spatial PD {#betaspat-pd}
-```{r}
+```{r, eval = FALSE}
 # Beta spatial PD calculation
 divraster::spat.beta(bin1, tree)
 ```
-The spatial beta diversity for PD indicates a slight change in the evolutionary history of communities towards the south. However this change is even lower compared to TD and FD, as evidenced by the smallest values of Btotal (~0.06). The predominant component contributing to this little change is also the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are due to the loss or gain of evolutionary history. The Bratio also indicates the predominance of Birch component in most communities.
+The spatial beta diversity for PD also indicates a slight change in the evolutionary history of communities towards the south, as evidenced by the small values of Btotal (ranging from 0.0008262028 to 0.0190497319). The predominant component contributing to this little change is also the richness difference (Brich), suggesting that dissimilarities between each community (i.e. pixel) and its neighbors are due to the loss or gain of evolutionary history.
 
 ## 4.1.4 Beta temporal TD {#betatemp-td}
 ```{r}
 # Beta temporal TD calculation
 divraster::temp.beta(bin1, bin2)
 ```
-The temporal beta diversity for TD indicates that future communities are expected to experience changes in their species composition, predominantly towards the south, with Btotal reaching approximately 0.3. The predominance of the Brich component suggests that these dissimilarities are attributed to gains or losses of species. The Bratio also indicates the predominance of Birch component in most communities.
+The temporal beta diversity for TD indicates that future communities in the north are expected to experience changes in their species composition. This is driven by the Brich component, suggesting these dissimilarities are attributed to gains or losses of species.
 
 ## 4.1.5 Beta temporal FD {#betatemp-fd}
 ```{r}
 # Beta temporal FD calculation
 divraster::temp.beta(bin1, bin2, traits)
 ```
-The temporal beta diversity for FD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.17. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of functional traits. The Bratio also indicates the predominance of Birch component in most communities.
+The temporal beta diversity for FD indicates a less pronounced pattern compared to TD, with smaller values of Btotal. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of functional traits.
 
 ## 4.1.6 Beta temporal PD {#betatemp-pd}
 ```{r}
 # Beta temporal PD calculation
 divraster::temp.beta(bin1, bin2, tree)
 ```
-Likewise, the temporal beta diversity for PD indicates a less pronounced pattern compared to TD, with smaller values of Btotal, reaching a maximum of only 0.18. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of evolutionary history. The Bratio also indicates the predominance of Birch component in most communities.
+Likewise, the temporal beta diversity for PD indicates a less pronounced pattern compared to TD, with smaller values of Btotal. The Brich component is also predominant, suggesting that the small dissimilarities can be attributed to gains or losses of evolutionary history.
 
 ## 5 Traits average {#traits-avg}
 
@@ -186,12 +186,12 @@ divraster::spat.trait(bin1, traits)
 # Scenario 2
 divraster::spat.trait(bin2, traits)
 ```
-The average beak depth in the first scenario ranges from 8.5 to 9.6, while in the second scenario, it ranges from 8.8 to 9.9. Beak depth increased by 13.5% in the southern region but decreased by 4.5% in the central region. The earlier analysis indicated a prevalence of species loss, implying that the rise in average beak depth in the second scenario can be attributed to the decline of species with smaller beak depths. Conversely, the reduction in beak size can be attributed to the decline of species with larger beak depths.
+The average beak depth in the first scenario ranges from 9.25 to 9.6, while in the second scenario, it ranges from 8.9 to 9.6. The reduction in beak size can be attributed to the decline of species with larger beak depths.
 
 ## 6 Suitability change {#suit-change}
 ```{r}
 # Suitability change between climate scenarios
-change <- divraster::suit.change(bin1, bin2)
+change <- divraster::suit.change(bin1[[1:4]], bin2[[1:4]])
 
 # Visualization
 # Initialize an empty list to store color mappings for each layer
@@ -220,12 +220,12 @@ Suitability change between climate scenarios with values equals 1 representing g
 ## 7 Area calculation {#area-calc}
 ```{r}
 # Climate suitable area scenario 1
-divraster::area.calc(bin1)
+divraster::area.calc(bin1[[1:4]])
 
 # Climate suitable area scenario 2
-divraster::area.calc(bin2)
+divraster::area.calc(bin2[[1:4]])
 ```
-The climate suitable area for species such as *Amazona farinosa* is expected to remain the same (20,247 km2), while for species such as *Arremon semitorquatus* is expected to reduce by 33%.
+The climate suitable area for species such as *Amazona farinosa* is expected to remain the same (7,686 km$^2$), while for species such as *Amazona vinacea* climate suitability is expected to be eliminated (a 100% reduction).
 
 ## 8 Richness difference between scenarios {#differ}
 ```{r}
@@ -233,4 +233,4 @@ The climate suitable area for species such as *Amazona farinosa* is expected to 
 divraster::differ.rast(divraster::spat.alpha2(bin1),
                        divraster::spat.alpha2(bin2), perc = FALSE)
 ```
-When comparing the two scenarios, subtracting the second from the first reveals greater species losses (n = 18) towards the south.
+When comparing the two scenarios, subtracting the second from the first reveals greater species losses (n = 9) in the north.
