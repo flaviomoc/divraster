@@ -8,17 +8,15 @@ spat.beta(
   x,
   tree,
   filename = "",
-  global = FALSE,
-  fm = NULL,
-  d = mean(terra::res(terra::rast(x))) * 2,
-  type = "circle",
-  na.policy = "omit",
+  func = "jaccard",
+  neighbour = 8,
+  abund = FALSE,
   ...
 )
 }
 \arguments{
 \item{x}{A SpatRaster with presence-absence data (0 or 1) for a
-set of species.}
+set of species. (This maps to \code{layers} in \code{BAT::raster.beta}).}
 
 \item{tree}{It can be a 'data.frame' with species traits or a
 'phylo' with a rooted phylogenetic tree. Species names in 'tree'
@@ -26,19 +24,17 @@ and 'x' must match!}
 
 \item{filename}{Character. Save results if a name is provided.}
 
-\item{global}{Logical. Mean of pairwise comparisons between
-focal cell and its neighbors (default) or mean of all pairwise
-comparisons.}
+\item{func}{Character. Distance function for beta diversity calculation.
+Defaults to "jaccard". Passed to \code{BAT::beta}.}
 
-\item{fm}{Numeric. Focal matrix ("moving window").}
+\item{neighbour}{Numeric. Number of neighbours to consider (e.g., 4 or 8).
+Defaults to 8. Passed to \code{BAT::raster.beta}.}
 
-\item{d}{Window radius to compute beta diversity.}
+\item{abund}{Logical. Whether to use abundance data (TRUE) or presence-absence (FALSE).
+Defaults to FALSE. Passed to \code{BAT::beta}.}
 
-\item{type}{Character. Window format. Default = "circle".}
-
-\item{na.policy}{Character. Default = "omit".}
-
-\item{...}{Additional arguments passed to lower-level functions.}
+\item{...}{Additional arguments to be passed to internal functions
+within \code{BAT::raster.beta} (e.g., \code{BAT::beta}).}
 }
 \value{
 A SpatRaster with beta results (total, replacement,
