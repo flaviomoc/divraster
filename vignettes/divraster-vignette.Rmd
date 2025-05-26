@@ -208,7 +208,7 @@ for(i in 1:terra::nlyr(change)){
   change.col[[i]][change.col[[i]] == 3] <- "grey"   # No change
   change.col[[i]][change.col[[i]] == 4] <- "white"  # Unsuitable
   
-  # Plot the change in suitability for the current species
+  # Plot the change in suitability
   terra::plot(change[[i]], col = change.col[[i]], 
               main = names(change)[i],
               cex.main = 1,          
@@ -229,7 +229,7 @@ The climate suitable area for species such as *Amazona farinosa* is expected to 
 
 ## 8 Richness difference between scenarios {#differ}
 ```{r}
-# Suitability change between climate scenarios
+# Difference in species richness between climate scenarios
 divraster::differ.rast(divraster::spat.alpha2(bin1),
                        divraster::spat.alpha2(bin2), perc = FALSE)
 ```

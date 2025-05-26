@@ -1,6 +1,6 @@
 Package: divraster
 Title: Diversity Metrics Calculations for Rasterized Data
-Version: 1.2
+Version: 1.2.1
 Authors@R: c(
     person("Flávio M. M.", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-0308-7151")),

@@ -1,4 +1,4 @@
-# divraster 1.2
+# divraster 1.2.1
 
 * New functions added: suit.change, area.calc, spat.alpha2, and differ.rast.
 * Minor changes in function documentation.
