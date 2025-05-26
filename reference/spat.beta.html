@@ -52,11 +52,9 @@ dimensions. Adapted from <code><a href="https://rdrr.io/pkg/BAT/man/beta.html" c
 <span>  <span class="va">x</span>,</span>
 <span>  <span class="va">tree</span>,</span>
 <span>  filename <span class="op">=</span> <span class="st">""</span>,</span>
-<span>  global <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  fm <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  d <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">res</a></span><span class="op">(</span><span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">2</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"circle"</span>,</span>
-<span>  na.policy <span class="op">=</span> <span class="st">"omit"</span>,</span>
+<span>  func <span class="op">=</span> <span class="st">"jaccard"</span>,</span>
+<span>  neighbour <span class="op">=</span> <span class="fl">8</span>,</span>
+<span>  abund <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -67,7 +65,7 @@ dimensions. Adapted from <code><a href="https://rdrr.io/pkg/BAT/man/beta.html" c
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>A SpatRaster with presence-absence data (0 or 1) for a
-set of species.</p></dd>
+set of species. (This maps to <code>layers</code> in <code><a href="https://rdrr.io/pkg/BAT/man/raster.beta.html" class="external-link">BAT::raster.beta</a></code>).</p></dd>
 
 
 <dt id="arg-tree">tree<a class="anchor" aria-label="anchor" href="#arg-tree"></a></dt>
@@ -80,30 +78,24 @@ and 'x' must match!</p></dd>
 <dd><p>Character. Save results if a name is provided.</p></dd>
 
 
-<dt id="arg-global">global<a class="anchor" aria-label="anchor" href="#arg-global"></a></dt>
-<dd><p>Logical. Mean of pairwise comparisons between
-focal cell and its neighbors (default) or mean of all pairwise
-comparisons.</p></dd>
+<dt id="arg-func">func<a class="anchor" aria-label="anchor" href="#arg-func"></a></dt>
+<dd><p>Character. Distance function for beta diversity calculation.
+Defaults to "jaccard". Passed to <code><a href="https://rdrr.io/pkg/BAT/man/beta.html" class="external-link">BAT::beta</a></code>.</p></dd>
 
 
-<dt id="arg-fm">fm<a class="anchor" aria-label="anchor" href="#arg-fm"></a></dt>
-<dd><p>Numeric. Focal matrix ("moving window").</p></dd>
+<dt id="arg-neighbour">neighbour<a class="anchor" aria-label="anchor" href="#arg-neighbour"></a></dt>
+<dd><p>Numeric. Number of neighbours to consider (e.g., 4 or 8).
+Defaults to 8. Passed to <code><a href="https://rdrr.io/pkg/BAT/man/raster.beta.html" class="external-link">BAT::raster.beta</a></code>.</p></dd>
 
 
-<dt id="arg-d">d<a class="anchor" aria-label="anchor" href="#arg-d"></a></dt>
-<dd><p>Window radius to compute beta diversity.</p></dd>
-
-
-<dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
-<dd><p>Character. Window format. Default = "circle".</p></dd>
-
-
-<dt id="arg-na-policy">na.policy<a class="anchor" aria-label="anchor" href="#arg-na-policy"></a></dt>
-<dd><p>Character. Default = "omit".</p></dd>
+<dt id="arg-abund">abund<a class="anchor" aria-label="anchor" href="#arg-abund"></a></dt>
+<dd><p>Logical. Whether to use abundance data (TRUE) or presence-absence (FALSE).
+Defaults to FALSE. Passed to <code><a href="https://rdrr.io/pkg/BAT/man/beta.html" class="external-link">BAT::beta</a></code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments passed to lower-level functions.</p></dd>
+<dd><p>Additional arguments to be passed to internal functions
+within <code><a href="https://rdrr.io/pkg/BAT/man/raster.beta.html" class="external-link">BAT::raster.beta</a></code> (e.g., <code><a href="https://rdrr.io/pkg/BAT/man/beta.html" class="external-link">BAT::beta</a></code>).</p></dd>
 
 </dl></div>
     <div class="section level2">
