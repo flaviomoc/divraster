@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">divraster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -501,7 +501,7 @@ beak depths.</p>
 <span>  <span class="va">change.col</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">change.col</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"grey"</span>   <span class="co"># No change</span></span>
 <span>  <span class="va">change.col</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">[</span><span class="va">change.col</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="fl">4</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"white"</span>  <span class="co"># Unsuitable</span></span>
 <span>  </span>
-<span>  <span class="co"># Plot the change in suitability for the current species</span></span>
+<span>  <span class="co"># Plot the change in suitability</span></span>
 <span>  <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">change</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, col <span class="op">=</span> <span class="va">change.col</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>, </span>
 <span>              main <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">change</span><span class="op">)</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>,</span>
 <span>              cex.main <span class="op">=</span> <span class="fl">1</span>,          </span>
@@ -542,7 +542,7 @@ is expected to be eliminated (a 100% reduction).</p>
 <h2 id="differ">8 Richness difference between scenarios<a class="anchor" aria-label="anchor" href="#differ"></a>
 </h2>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Suitability change between climate scenarios</span></span>
+<code class="sourceCode R"><span><span class="co"># Difference in species richness between climate scenarios</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/differ.rast.html">differ.rast</a></span><span class="op">(</span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha2.html">spat.alpha2</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span>,</span>
 <span>                       <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha2.html">spat.alpha2</a></span><span class="op">(</span><span class="va">bin2</span><span class="op">)</span>, perc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
