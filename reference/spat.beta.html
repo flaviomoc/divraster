@@ -11,7 +11,7 @@ dimensions. See raster.beta."><meta property="og:image" content="https://flaviom
 
     <a class="navbar-brand me-2" href="../index.html">divraster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,34 +104,34 @@ richness difference, and ratio).</p>
 <span class="r-in"><span>package <span class="op">=</span> <span class="st">"divraster"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">spat.beta</span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 8, 8, 6  (nrow, ncol, nlyr)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1, 1  (x, y)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 8, 0, 8  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. :  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :    Btotal,     Brepl,    Brich,    Bratio </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.4821429, 0.1111111, 0.075000, 0.1582734 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.9178571, 0.7285714, 0.609375, 0.8978930 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :    Btotal,     Brepl,    Brich,      Bgain,      Bloss,    Bratio </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.4821429, 0.1111111, 0.075000, 0.05555556, 0.05729167, 0.1582734 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.9178571, 0.7285714, 0.609375, 0.67559524, 0.51736111, 0.8978930 </span>
 <span class="r-in"><span><span class="fu">spat.beta</span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 8, 8, 6  (nrow, ncol, nlyr)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1, 1  (x, y)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 8, 0, 8  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. :  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :    Btotal,      Brepl,    Brich,     Bratio </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3237529, 0.03470649, 0.123868, 0.04212794 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.8238354, 0.43752776, 0.789129, 0.74179377 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :    Btotal,      Brepl,    Brich,      Bgain,      Bloss,     Bratio </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.3237529, 0.03470649, 0.123868, 0.03757175, 0.01735324, 0.04212794 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.8238354, 0.43752776, 0.789129, 0.80648220, 0.48381412, 0.74179377 </span>
 <span class="r-in"><span><span class="fu">spat.beta</span><span class="op">(</span><span class="va">bin1</span>, <span class="va">tree</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class       : SpatRaster </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> size        : 8, 8, 6  (nrow, ncol, nlyr)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> resolution  : 1, 1  (x, y)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> extent      : 0, 8, 0, 8  (xmin, xmax, ymin, ymax)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> coord. ref. :  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> names       :    Btotal,      Brepl,     Brich,    Bratio </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.2652022, 0.05756414, 0.1011549, 0.1642921 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.5976476, 0.45291494, 0.3969972, 0.7897035 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> names       :    Btotal,      Brepl,     Brich,      Bgain,      Bloss,    Bratio </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> min values  : 0.2652022, 0.05756414, 0.1011549, 0.02878207, 0.04156621, 0.1642921 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  : 0.5976476, 0.45291494, 0.3969972, 0.45768560, 0.34008882, 0.7897035 </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

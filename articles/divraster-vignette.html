@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">divraster</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Flávio M. M.
 Mota, Neander M. Heming, and Gabriela Alves-Ferreira</h4>
             
-            <h4 data-toc-skip class="date">2025-05-26</h4>
+            <h4 data-toc-skip class="date">2025-10-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flaviomoc/divraster/blob/master/vignettes/divraster-vignette.Rmd" class="external-link"><code>vignettes/divraster-vignette.Rmd</code></a></small>
       <div class="d-none name"><code>divraster-vignette.Rmd</code></div>
@@ -200,7 +200,7 @@ since all taxa are at the same level.</p>
 <span><span class="co"># Alpha TD calculation for scenario 1</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -212,7 +212,7 @@ since all taxa are at the same level.</p>
 <span><span class="co"># Alpha TD calculation for scenario 2</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">bin2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -240,7 +240,7 @@ indicating greater functional diversity.</p>
 <code class="sourceCode R"><span><span class="co"># Alpha PD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -377,7 +377,7 @@ are due to the loss or gain of evolutionary history.</p>
 <code class="sourceCode R"><span><span class="co"># Beta temporal TD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -397,14 +397,14 @@ dissimilarities are attributed to gains or losses of species.</p>
 <code class="sourceCode R"><span><span class="co"># Beta temporal FD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">traits</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
 <span><span class="co">#&gt; source(s)   : memory</span></span>
-<span><span class="co">#&gt; names       :  Btotal_FD,   Brepl_FD,   Brich_FD, Bratio_FD </span></span>
-<span><span class="co">#&gt; min values  : 0.01733908, 0.00000000, 0.01012696, 0.0000000 </span></span>
-<span><span class="co">#&gt; max values  : 0.07722150, 0.02225306, 0.07722150, 0.6872465</span></span></code></pre></div>
+<span><span class="co">#&gt; names       :  Btotal_FD,   Brepl_FD,    Brich_FD, Bratio_FD </span></span>
+<span><span class="co">#&gt; min values  : 0.01358064, 0.00000000, 0.007364383, 0.0000000 </span></span>
+<span><span class="co">#&gt; max values  : 0.07041225, 0.02160415, 0.070412255, 0.7457799</span></span></code></pre></div>
 <p>The temporal beta diversity for FD indicates a less pronounced
 pattern compared to TD, with smaller values of Btotal. The Brich
 component is also predominant, suggesting that the small dissimilarities
@@ -417,7 +417,7 @@ can be attributed to gains or losses of functional traits.</p>
 <code class="sourceCode R"><span><span class="co"># Beta temporal PD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 4  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 4  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -454,7 +454,7 @@ species.</p>
 <span><span class="co"># Scenario 1</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.trait.html">spat.trait</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 12  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 12  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -466,7 +466,7 @@ species.</p>
 <span><span class="co"># Scenario 2</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.trait.html">spat.trait</a></span><span class="op">(</span><span class="va">bin2</span>, <span class="va">traits</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 12  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 12  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
@@ -546,7 +546,7 @@ is expected to be eliminated (a 100% reduction).</p>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/differ.rast.html">differ.rast</a></span><span class="op">(</span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha2.html">spat.alpha2</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span>,</span>
 <span>                       <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha2.html">spat.alpha2</a></span><span class="op">(</span><span class="va">bin2</span><span class="op">)</span>, perc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
-<span><span class="co">#&gt; dimensions  : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; size        : 8, 8, 1  (nrow, ncol, nlyr)</span></span>
 <span><span class="co">#&gt; resolution  : 0.125, 0.125  (x, y)</span></span>
 <span><span class="co">#&gt; extent      : -40, -39, -14, -13  (xmin, xmax, ymin, ymax)</span></span>
 <span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
