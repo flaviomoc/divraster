@@ -17,8 +17,9 @@
 #'
 #' @return A standard R data.frame with the calculated areas in square kilometers.
 #'
-area.calc2 <- function(r1_multi, r2 = NULL, polys = NULL,
-                       threshold, category_col = NULL, cellSz = NULL) {
+#' @export
+area.calc.flex <- function(r1_multi, r2 = NULL, polys = NULL,
+                           threshold, category_col = NULL, cellSz = NULL) {
 
   # Ensure necessary packages are loaded
   if (!requireNamespace("terra", quietly = TRUE)) stop("Package 'terra' is required.")
