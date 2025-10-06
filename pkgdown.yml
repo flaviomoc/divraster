@@ -3,7 +3,7 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   divraster-vignette: divraster-vignette.html
-last_built: 2025-10-06T14:25Z
+last_built: 2025-10-06T14:36Z
 urls:
   reference: https://flaviomoc.github.io/divraster/reference
   article: https://flaviomoc.github.io/divraster/articles
