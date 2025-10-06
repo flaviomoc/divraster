@@ -1,6 +1,6 @@
 Package: divraster
 Title: Diversity Metrics Calculations for Rasterized Data
-Version: 1.2.1
+Version: 1.2.2
 Authors@R: c(
     person("Flávio M. M.", "Mota", , "flaviomoc@gmail.com", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0002-0308-7151")),
@@ -27,6 +27,7 @@ Imports:
     BAT,
     SESraster,
     terra,
+    dplyr,
     utils
 Suggests: 
     ape,
@@ -38,4 +39,4 @@ VignetteBuilder:
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
