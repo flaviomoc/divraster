@@ -2,38 +2,44 @@
 % Please edit documentation in R/range_size2.R
 \name{area.calc.flex}
 \alias{area.calc.flex}
-\title{Calculates Zonal or Total Area for Species Rasters}
+\title{Flexible Area Calculation for Raster}
 \usage{
 area.calc.flex(
-  r1_multi,
-  r2 = NULL,
-  polys = NULL,
-  threshold,
-  category_col = NULL,
-  cellSz = NULL
+  r1,
+  r2_raster = NULL,
+  r2_vector = NULL,
+  threshold = NULL,
+  zonal_polys = NULL,
+  id_col = NULL,
+  add_cols = NULL,
+  omit_zero = TRUE,
+  unit = "km"
 )
 }
 \arguments{
-\item{r1_multi}{A SpatRaster with multiple layers (species), with values of 1 (presence) and 0 (absence).}
+\item{r1}{The primary SpatRaster with integer categories.}
 
-\item{r2}{A single-layer SpatRaster. Can be continuous or binary (0/1). Optional.}
+\item{r2_raster}{An optional SpatRaster for overlay analysis.}
 
-\item{polys}{A SpatVector of polygons with categories. Optional.}
+\item{r2_vector}{An optional SpatVector for overlay analysis.}
 
-\item{threshold}{A numeric threshold to binarize \code{r2}. Only required if \code{r2} is continuous.}
+\item{threshold}{A numeric value required to binarize 'r2_raster' if it's continuous.}
 
-\item{category_col}{The name of the column in \code{polys} with the categories. Required if \code{polys} is used.}
+\item{zonal_polys}{An optional SpatVector for zonal analysis.}
 
-\item{cellSz}{A pre-calculated SpatRaster of cell sizes in km^2. If NULL (default), it will be
-calculated automatically. Providing this can increase efficiency.}
+\item{id_col}{A string specifying the column in 'zonal_polys'.}
+
+\item{add_cols}{An optional character vector of additional column names from 'zonal_polys'.}
+
+\item{omit_zero}{A logical value. If TRUE (default), results for category = 0 are removed.}
+
+\item{unit}{A string specifying the area unit ("km", "m", or "ha").}
 }
 \value{
-A standard R data.frame with the calculated areas in square kilometers.
+A data frame with the area for each category.
 }
 \description{
-This function calculates the area of suitable habitat from a binary species raster (\code{r1_multi})
-and, optionally, the area of overlap with a second raster (\code{r2}). The second
-raster \code{r2} can be continuous (requiring a threshold) or already binary.
-The calculation can be performed for the entire raster extent ("total") or be
-separated by categories defined in a polygon vector (\code{polys}).
+This function calculates the area of integer categories in a primary raster (r1).
+It can optionally compute an overlay area with a second layer (r2) and/or
+perform calculations within distinct zones defined by a polygon SpatVector.
 }

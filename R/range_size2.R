@@ -1,122 +1,170 @@
-#' Calculates Zonal or Total Area for Species Rasters
+#' Flexible Area Calculation for Raster
 #'
-#' @description
-#' This function calculates the area of suitable habitat from a binary species raster (`r1_multi`)
-#' and, optionally, the area of overlap with a second raster (`r2`). The second
-#' raster `r2` can be continuous (requiring a threshold) or already binary.
-#' The calculation can be performed for the entire raster extent ("total") or be
-#' separated by categories defined in a polygon vector (`polys`).
+#' This function calculates the area of integer categories in a primary raster (r1).
+#' It can optionally compute an overlay area with a second layer (r2) and/or
+#' perform calculations within distinct zones defined by a polygon SpatVector.
 #'
-#' @param r1_multi A SpatRaster with multiple layers (species), with values of 1 (presence) and 0 (absence).
-#' @param r2 A single-layer SpatRaster. Can be continuous or binary (0/1). Optional.
-#' @param polys A SpatVector of polygons with categories. Optional.
-#' @param threshold A numeric threshold to binarize `r2`. Only required if `r2` is continuous.
-#' @param category_col The name of the column in `polys` with the categories. Required if `polys` is used.
-#' @param cellSz A pre-calculated SpatRaster of cell sizes in km^2. If NULL (default), it will be
-#'   calculated automatically. Providing this can increase efficiency.
+#' @param r1 The primary SpatRaster with integer categories.
+#' @param r2_raster An optional SpatRaster for overlay analysis.
+#' @param r2_vector An optional SpatVector for overlay analysis.
+#' @param threshold A numeric value required to binarize 'r2_raster' if it's continuous.
+#' @param zonal_polys An optional SpatVector for zonal analysis.
+#' @param id_col A string specifying the column in 'zonal_polys'.
+#' @param add_cols An optional character vector of additional column names from 'zonal_polys'.
+#' @param omit_zero A logical value. If TRUE (default), results for category = 0 are removed.
+#' @param unit A string specifying the area unit ("km", "m", or "ha").
 #'
-#' @return A standard R data.frame with the calculated areas in square kilometers.
+#' @return A data frame with the area for each category.
 #'
+#' @importFrom stats aggregate
 #' @export
-area.calc.flex <- function(r1_multi, r2 = NULL, polys = NULL,
-                           threshold, category_col = NULL, cellSz = NULL) {
+area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = NULL,
+                           zonal_polys = NULL, id_col = NULL, add_cols = NULL,
+                           omit_zero = TRUE, unit = "km") {
 
-  # Ensure necessary packages are loaded
+  # --- 1. Input Validation and Setup ---
   if (!requireNamespace("terra", quietly = TRUE)) stop("Package 'terra' is required.")
-  if (!requireNamespace("dplyr", quietly = TRUE)) stop("Package 'dplyr' is required.")
+  if (!is.null(zonal_polys) && is.null(id_col)) stop("'id_col' is required when 'zonal_polys' is provided.")
+  if (!is.null(r2_raster) && !is.null(r2_vector)) stop("Only one of 'r2_raster' or 'r2_vector' can be provided.")
 
-  # --- Step 1: Prepare and Standardize Rasters ---
+  unit <- tolower(unit)
+  if (!unit %in% c("m", "km", "ha")) stop("Argument 'unit' must be one of 'm', 'km', or 'ha'.")
+  area_col_name <- paste0("area_", unit)
 
-  # Prepare r2 if it exists
-  if (!is.null(r2)) {
-    # NEW: Check if r2 is binary or continuous
-    r2_vals <- terra::minmax(r2)
-    is_binary <- all(r2_vals %in% c(0, 1))
-
-    if (is_binary) {
-      message("Note: 'r2' detected as binary. 'threshold' argument will be ignored.")
-      r2_binary <- r2
-    } else {
-      # r2 is continuous, threshold is mandatory
-      if (missing(threshold)) {
-        stop("Argument 'r2' is continuous. 'threshold' must be provided to binarize it.")
+  # --- 2. Prepare Overlay Raster ---
+  overlay_r <- NULL
+  if (!is.null(r2_raster) || !is.null(r2_vector)) {
+    message("Preparing overlay layer...")
+    if (!is.null(r2_raster)) {
+      if (all(terra::minmax(r2_raster) %in% c(0, 1))) {
+        overlay_r <- r2_raster
+      } else {
+        if (is.null(threshold)) stop("'threshold' is required for the continuous 'r2_raster'.")
+        overlay_r <- r2_raster >= threshold
       }
-      r2_binary <- r2 >= threshold
-    }
-
-    # Standardize grid alignment if necessary
-    if (!isTRUE(all.equal(terra::res(r1_multi), terra::res(r2)))) {
-      message("Note: Raster grids differ. Resampling r2 to match r1...")
-      r2_binary <- terra::resample(r2_binary, r1_multi, method = "near") # 'near' for binary data
+      if (!terra::compareGeom(r1, overlay_r, stopOnError = FALSE)) {
+        message("Aligning overlay raster grid to match r1...")
+        overlay_r <- terra::project(overlay_r, r1, method = "near")
+      }
+    } else {
+      message("Rasterizing overlay vector...")
+      overlay_r <- terra::rasterize(r2_vector, r1, field = 1)
     }
   }
 
-  # Prepare the cell size raster (cellSz)
-  if (is.null(cellSz)) {
-    cellSz <- terra::cellSize(r1_multi[[1]], unit = "km")
-  }
-
+  # --- 3. Main Calculation Logic ---
+  cell_area <- terra::cellSize(r1[[1]], unit = unit)
   final_results_list <- list()
 
-  # --- Step 2: Loop through each species layer ---
-  for (i in 1:terra::nlyr(r1_multi)) {
-    current_species_raster <- r1_multi[[i]]
-    species_name <- names(current_species_raster)
+  for (i in 1:terra::nlyr(r1)) {
+    current_layer <- r1[[i]]
+    layer_name <- names(current_layer)
+    message(paste("Processing layer:", layer_name))
 
-    # SCENARIO A: Polygons ARE provided (Zonal Statistics)
-    if (!is.null(polys)) {
-      if (is.null(category_col)) stop("'category_col' must be specified when using 'polys'.")
-      categories <- unique(polys[[category_col, drop = TRUE]])
+    if (!is.null(zonal_polys)) {
+      for (j in 1:nrow(zonal_polys)) {
+        current_poly <- zonal_polys[j, ]
+        poly_id <- current_poly[[id_col, drop = TRUE]]
 
-      for (cat in categories) {
-        current_poly <- polys[polys[[category_col]] == cat, ]
+        layer_masked <- terra::mask(current_layer, current_poly)
+        area_masked <- terra::mask(cell_area, current_poly)
 
-        # Mask the area raster once per polygon for efficiency
-        area_masked <- terra::mask(cellSz, current_poly)
+        simple_results <- terra::zonal(area_masked, layer_masked, fun = "sum", na.rm = TRUE)
+        if (nrow(simple_results) > 0) {
+          result_simple <- data.frame(
+            layer = layer_name,
+            polygon_id = poly_id,
+            area_id = "Total Area",
+            category = simple_results[, 1],
+            area = simple_results[, 2]
+          )
+          names(result_simple)[names(result_simple) == "polygon_id"] <- id_col
+          names(result_simple)[names(result_simple) == "area"] <- area_col_name
 
-        # Calculate species area
-        species_masked <- terra::mask(current_species_raster, current_poly)
-        area_species_km2 <- terra::global(species_masked * area_masked,
-                                          "sum", na.rm = TRUE)$sum
-
-        result <- dplyr::tibble(species = species_name, category = cat,
-                                analysis_type = "Species only", area_km2 = area_species_km2)
-
-        # Calculate overlay area if r2 is provided
-        if (!is.null(r2)) {
-          overlay_raster <- species_masked + terra::mask(r2_binary, current_poly)
-
-          area_overlay_km2 <- terra::global((overlay_raster == 2) * area_masked,
-                                            "sum", na.rm = TRUE)$sum
-
-          result <- dplyr::bind_rows(result, dplyr::tibble(species = species_name, category = cat,
-                                                           analysis_type = "Overlay", area_km2 = area_overlay_km2))
+          if(!is.null(add_cols)){
+            for(col_name in add_cols){
+              result_simple[[col_name]] <- current_poly[[col_name, drop = TRUE]]
+            }
+          }
+          final_results_list <- append(final_results_list, list(result_simple))
         }
-        final_results_list[[paste(species_name, cat)]] <- result
-      }
 
-      # SCENARIO B: Polygons ARE NOT provided (Total Area)
+        if (!is.null(overlay_r)) {
+          overlay_masked <- terra::mask(overlay_r, current_poly)
+          overlay_results <- terra::zonal(area_masked, (layer_masked * 10) + overlay_masked, fun = "sum", na.rm = TRUE)
+          if (nrow(overlay_results) > 0) {
+            df_overlay <- as.data.frame(overlay_results)
+            df_overlay$category <- floor(df_overlay[, 1] / 10)
+            df_overlay$overlay_value <- df_overlay[, 1] %% 10
+            df_overlay$area <- df_overlay[, 2]
+
+            df_filtered <- df_overlay[df_overlay$overlay_value == 1, ]
+
+            if(nrow(df_filtered) > 0) {
+              agg_results <- aggregate(area ~ category, data = df_filtered, FUN = sum, na.rm = TRUE)
+
+              result_overlay <- data.frame(
+                layer = layer_name,
+                polygon_id = poly_id,
+                area_id = "Overlay Area",
+                category = agg_results$category,
+                area = agg_results$area
+              )
+              names(result_overlay)[names(result_overlay) == "polygon_id"] <- id_col
+              names(result_overlay)[names(result_overlay) == "area"] <- area_col_name
+
+              if(!is.null(add_cols)){
+                for(col_name in add_cols){
+                  result_overlay[[col_name]] <- current_poly[[col_name, drop = TRUE]]
+                }
+              }
+              final_results_list <- append(final_results_list, list(result_overlay))
+            }
+          }
+        }
+      }
     } else {
-      # Calculate total species area
-      area_species_km2 <- terra::global(current_species_raster * cellSz,
-                                        "sum", na.rm = TRUE)$sum
+      simple_results <- terra::zonal(cell_area, current_layer, fun = "sum", na.rm = TRUE)
+      result_simple <- data.frame(
+        layer = layer_name,
+        area_id = "Total Area",
+        category = simple_results[, 1],
+        area = simple_results[, 2]
+      )
+      names(result_simple)[names(result_simple) == "area"] <- area_col_name
+      final_results_list <- append(final_results_list, list(result_simple))
 
-      result <- dplyr::tibble(species = species_name, category = "total",
-                              analysis_type = "Species only", area_km2 = area_species_km2)
+      if (!is.null(overlay_r)) {
+        overlay_results <- terra::zonal(cell_area, (current_layer * 10) + overlay_r, fun = "sum", na.rm = TRUE)
+        df_overlay <- as.data.frame(overlay_results)
+        df_overlay$category <- floor(df_overlay[, 1] / 10)
+        df_overlay$overlay_value <- df_overlay[, 1] %% 10
+        df_overlay$area <- df_overlay[, 2]
 
-      # CORRECTED: Add overlay calculation for the total area scenario
-      if (!is.null(r2)) {
-        overlay_raster <- current_species_raster + r2_binary
-        area_overlay_km2 <- terra::global((overlay_raster == 2) * cellSz,
-                                          "sum", na.rm = TRUE)$sum
+        df_filtered <- df_overlay[df_overlay$overlay_value == 1, ]
 
-        result <- dplyr::bind_rows(result, dplyr::tibble(species = species_name, category = "total",
-                                                         analysis_type = "Overlay", area_km2 = area_overlay_km2))
+        if(nrow(df_filtered) > 0) {
+          agg_results <- aggregate(area ~ category, data = df_filtered, FUN = sum, na.rm = TRUE)
+
+          result_overlay <- data.frame(
+            layer = layer_name,
+            area_id = "Overlay Area",
+            category = agg_results$category,
+            area = agg_results$area
+          )
+          names(result_overlay)[names(result_overlay) == "area"] <- area_col_name
+          final_results_list <- append(final_results_list, list(result_overlay))
+        }
       }
-      final_results_list[[species_name]] <- result
     }
   }
 
-  # Combine all results and return a standard data.frame
-  return(data.frame(dplyr::bind_rows(final_results_list)))
+  # --- 4. Final Output Formatting ---
+  final_df <- do.call(rbind, final_results_list)
+
+  if (omit_zero && "category" %in% names(final_df) && !is.null(final_df) && nrow(final_df) > 0) {
+    final_df <- final_df[final_df$category != 0, ]
+  }
+
+  return(final_df)
 }

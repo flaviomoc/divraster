@@ -27,7 +27,6 @@ Imports:
     BAT,
     SESraster,
     terra,
-    dplyr,
     utils
 Suggests: 
     ape,

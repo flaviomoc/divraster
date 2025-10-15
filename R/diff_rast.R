@@ -41,6 +41,7 @@
 #' }
 #'
 #' @examples
+#' \donttest{
 #' library(terra)
 #'
 #' # Load rasters
@@ -58,6 +59,7 @@
 #' perc_diff_rast <- differ.rast(rich1, rich2, perc = TRUE)
 #' perc_diff_rast
 #' plot(perc_diff_rast, main = "Percentage Difference in Richness")
+#' }
 differ.rast <- function(r1, r2, perc = TRUE, filename = "") {
   # Validate input types
   if (!inherits(r1, "SpatRaster") || !inherits(r2, "SpatRaster")) {
