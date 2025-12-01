@@ -2,26 +2,36 @@
 % Please edit documentation in R/data.R
 \name{load.data}
 \alias{load.data}
-\title{Load data adapted from Mota et al. (2022), Tobias et al. (2022),
-and Jetz et al. (2014)}
+\title{Load data adapted from Mota et al. (2025), Şekercioğlu et al. (2025),
+Mota et al. (2022), Tobias et al. (2022), and Jetz et al. (2014)}
 \usage{
 load.data()
 }
 \value{
 A list with binary maps of species for the reference
-and future climate scenarios, species traits, and a rooted
+and future climate scenarios, species traits, a rooted
 phylogenetic tree for the species. The species names across
-these objects must match!
+these objects must match! It also includes a polygon of the CCAF,
+and the protected areas of the CCAF.
 }
 \description{
-Load data adapted from Mota et al. (2022), Tobias et al. (2022),
-and Jetz et al. (2014)
+Load data adapted from Mota et al. (2025), Şekercioğlu et al. (2025),
+Mota et al. (2022), Tobias et al. (2022), and Jetz et al. (2014)
 }
 \examples{
 data <- load.data()
 data
 }
 \references{
+Mota, F. M. M. et al. 2025. Impact of Climate Change
+on the Multiple Facets of Forest Bird Diversity in a Biodiversity
+Hotspot Within the Atlantic Forest -
+Diversity and Distributions 31: e70129.
+
+Şekercioğlu, Ç. H. et al. 2025. BIRDBASE: A Global Dataset
+of Avian Biogeography, Conservation, Ecology and Life History Traits. -
+Scientific Data 12: 1558.
+
 Mota, F. M. M. et al. 2022. Climate change is
 expected to restructure forest frugivorous bird communities in
 a biodiversity hot-point within the Atlantic Forest. -

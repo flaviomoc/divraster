@@ -4,7 +4,7 @@ test_that("function load.data works", {
   data <- divraster::load.data()
 
   # testing
-  expect_equal(length(data), 4)
+  expect_equal(length(data), 6)
   expect_s4_class(data$ref, "SpatRaster")
   expect_s4_class(data$fut, "SpatRaster")
   expect_s3_class(data$traits, "data.frame")
