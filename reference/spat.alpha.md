@@ -1,0 +1,120 @@
+# Alpha calculation for raster
+
+Calculates alpha diversity for taxonomic (TD), functional (FD), and
+phylogenetic (PD) dimensions. Adapted from
+[`alpha`](https://rdrr.io/pkg/BAT/man/alpha.html)
+
+## Usage
+
+``` r
+spat.alpha(bin, tree, cores = 1, filename = "", ...)
+```
+
+## Arguments
+
+- bin:
+
+  A SpatRaster with presence-absence data (0 or 1) for a set of species.
+
+- tree:
+
+  It can be a 'data.frame' with species traits or a 'phylo' with a
+  rooted phylogenetic tree. Species names in 'tree' and 'bin' must
+  match!
+
+- cores:
+
+  A positive integer. If cores \> 1, a 'parallel' package cluster with
+  that many cores is created and used.
+
+- filename:
+
+  Character. Save results if a name is provided.
+
+- ...:
+
+  Additional arguments to be passed passed down from a calling function.
+
+## Value
+
+A SpatRaster with alpha result.
+
+## Details
+
+Alpha calculations use a tree-based approach for TD, FD, and PD (Cardoso
+et al. 2014). In the FD calculation, a species traits matrix is
+transformed into a distance matrix and clustered to create a regional
+dendrogram (i.e. a dendrogram with all species in the raster stack),
+from which the total branch length is calculated. When computing FD for
+each community (i.e. raster cell), the regional dendrogram is subsetted
+to create a local dendrogram that includes only the species present in
+the local community. The branch lengths connecting these species are
+then summed to represent the functional relationships of the locally
+present species (Petchey and Gaston, 2002, 2006). Similarly, in PD, the
+cumulative branch lengths connecting species within a community indicate
+their shared phylogenetic relationships (Faith, 1992). Alpha TD can also
+be visualized using a tree diagram, where each species is directly
+connected to the root by an edge of unit length, reflecting the number
+of different taxa in the community (i.e. species richness) since all
+taxa are at the same level (Cardoso et al. 2014).
+
+## References
+
+Cardoso, P. et al. 2014. Partitioning taxon, phylogenetic and functional
+beta diversity into replacement and richness difference components. -
+Journal of Biogeography 41: 749–761.
+
+Faith, D. P. 1992. Conservation evaluation and phylogenetic diversity. -
+Biological Conservation 61: 1–10.
+
+Petchey, O. L. and Gaston, K. J. 2002. Functional diversity (FD),
+species richness and community composition. - Ecology Letters 5:
+402–411.
+
+Rodrigues, A. S. L. and Gaston, K. J. 2002. Maximising phylogenetic
+diversity in the selection of networks of conservation areas. -
+Biological Conservation 105: 103–111.
+
+## Examples
+
+``` r
+# \donttest{
+library(terra)
+bin1 <- terra::rast(system.file("extdata", "ref.tif",
+package = "divraster"))
+traits <- read.csv(system.file("extdata", "traits.csv",
+package = "divraster"), row.names = 1)
+tree <- ape::read.tree(system.file("extdata", "tree.tre",
+package = "divraster"))
+spat.alpha(bin1)
+#> class       : SpatRaster 
+#> size        : 8, 8, 1  (nrow, ncol, nlyr)
+#> resolution  : 0.125, 0.125  (x, y)
+#> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source(s)   : memory
+#> name        : Alpha_TD 
+#> min value   :        2 
+#> max value   :        8 
+spat.alpha(bin1, traits)
+#> class       : SpatRaster 
+#> size        : 8, 8, 1  (nrow, ncol, nlyr)
+#> resolution  : 0.125, 0.125  (x, y)
+#> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source(s)   : memory
+#> name        :  Alpha_FD 
+#> min value   : 0.3492543 
+#> max value   : 1.2493508 
+spat.alpha(bin1, tree)
+#> class       : SpatRaster 
+#> size        : 8, 8, 1  (nrow, ncol, nlyr)
+#> resolution  : 0.125, 0.125  (x, y)
+#> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source(s)   : memory
+#> name        : Alpha_PD 
+#> min value   : 3.101099 
+#> max value   : 9.761420 
+# }
+```
