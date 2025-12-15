@@ -27,7 +27,10 @@ Imports:
     BAT,
     SESraster,
     terra,
-    utils
+    utils,
+    dplyr,
+    sf,
+    rlang
 Suggests: 
     ape,
     knitr,
