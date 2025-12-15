@@ -78,7 +78,7 @@ Areas are reported in the specified `unit`.
 ``` r
 # \donttest{
 library(terra)
-#> terra 1.8.80
+#> terra 1.8.86
 
 # Load example rasters for demonstration
 # Ensure these files are present in your package's inst/extdata folder

@@ -15,6 +15,8 @@
   : Load data adapted from Mota et al. (2025), Şekercioğlu et al.
   (2025), Mota et al. (2022), Tobias et al. (2022), and Jetz et al.
   (2014)
+- [`occ.avg.dist()`](https://flaviomoc.github.io/divraster/reference/occ.avg.dist.md)
+  : Average pairwise distance between occurrences by species
 - [`rast.by.polys()`](https://flaviomoc.github.io/divraster/reference/rast.by.polys.md)
   : Summarise raster values by polygons
 - [`spat.alpha()`](https://flaviomoc.github.io/divraster/reference/spat.alpha.md)
