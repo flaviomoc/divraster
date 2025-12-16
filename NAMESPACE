@@ -2,6 +2,7 @@
 
 export(area.calc)
 export(area.calc.flex)
+export(combine.rasters)
 export(differ.rast)
 export(load.data)
 export(occ.avg.dist)
