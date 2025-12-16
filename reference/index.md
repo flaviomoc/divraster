@@ -6,6 +6,8 @@
   : Calculate SpatRaster Layer Areas and Overlap Areas
 - [`area.calc.flex()`](https://flaviomoc.github.io/divraster/reference/area.calc.flex.md)
   : Flexible Area Calculation for Raster
+- [`combine.rasters()`](https://flaviomoc.github.io/divraster/reference/combine.rasters.md)
+  : Combine GeoTIFF rasters into a multilayer SpatRaster
 - [`differ.rast()`](https://flaviomoc.github.io/divraster/reference/differ.rast.md)
   : Calculate Absolute or Percentage Difference Between SpatRaster
   Objects
