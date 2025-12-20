@@ -2,6 +2,7 @@
 
 export(area.calc)
 export(area.calc.flex)
+export(bin2crop)
 export(combine.rasters)
 export(differ.rast)
 export(load.data)
