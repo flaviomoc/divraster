@@ -6,6 +6,9 @@
   : Calculate SpatRaster Layer Areas and Overlap Areas
 - [`area.calc.flex()`](https://flaviomoc.github.io/divraster/reference/area.calc.flex.md)
   : Flexible Area Calculation for Raster
+- [`bin2crop()`](https://flaviomoc.github.io/divraster/reference/bin2crop.md)
+  : Crop a continuous raster by a binary (0/1) raster footprint (value
+  == 1)
 - [`combine.rasters()`](https://flaviomoc.github.io/divraster/reference/combine.rasters.md)
   : Combine GeoTIFF rasters into a multilayer SpatRaster
 - [`differ.rast()`](https://flaviomoc.github.io/divraster/reference/differ.rast.md)
