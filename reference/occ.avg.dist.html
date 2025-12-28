@@ -43,7 +43,7 @@ occurrence records for each species, using longitude/latitude coordinates
     <div class="ref-description section level2">
     <p>Compute the mean of all unique pairwise great-circle distances between
 occurrence records for each species, using longitude/latitude coordinates
-(EPSG:4326). Distances are computed with <code><a href="https://r-spatial.github.io/sf/reference/geos_measures.html" class="external-link">sf::st_distance()</a></code>.</p>
+(EPSG:4326). Distances are computed with sf::st_distance().</p>
     </div>
 
     <div class="section level2">
@@ -60,31 +60,69 @@ occurrence records for each species, using longitude/latitude coordinates
 
 
 <dt id="arg-species-col">species_col<a class="anchor" aria-label="anchor" href="#arg-species-col"></a></dt>
-<dd><p>Character scalar. Column name containing species names.</p></dd>
+<dd><p>Character. Column name containing species names. Default "species".</p></dd>
 
 
 <dt id="arg-lon-col">lon_col<a class="anchor" aria-label="anchor" href="#arg-lon-col"></a></dt>
-<dd><p>Character scalar. Column name containing longitudes (decimal degrees).</p></dd>
+<dd><p>Character. Column name containing longitudes (decimal degrees). Default "lon".</p></dd>
 
 
 <dt id="arg-lat-col">lat_col<a class="anchor" aria-label="anchor" href="#arg-lat-col"></a></dt>
-<dd><p>Character scalar. Column name containing latitudes (decimal degrees).</p></dd>
+<dd><p>Character. Column name containing latitudes (decimal degrees). Default "lat".</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble with columns:</p><ul><li><p><code>species</code>: unique species names.</p></li>
-<li><p><code>avg_distance_m</code>: mean pairwise distance (meters).</p></li>
+    <p>A data.frame with columns:</p><ul><li><p>species: unique species names</p></li>
+<li><p>avg_distance_m: mean pairwise distance in meters</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>For each species, the function:</p><ul><li><p>Filters out rows with missing species / coordinates.</p></li>
-<li><p>Converts lon/lat to an <code>sf</code> point object with CRS = 4326.</p></li>
-<li><p>Builds a full distance matrix within the species.</p></li>
-<li><p>Extracts the upper triangle (unique pairs) and averages distances.</p></li>
-</ul><p>Species with &lt; 2 valid records return <code>NA</code>.</p>
+    <p>For each species, the function:</p><ul><li><p>Filters out rows with missing species or coordinates</p></li>
+<li><p>Converts lon/lat to an sf point object with CRS = 4326</p></li>
+<li><p>Builds a full distance matrix within the species</p></li>
+<li><p>Extracts the upper triangle (unique pairs) and averages distances</p></li>
+</ul><p>Species with fewer than 2 valid records return NA.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create example occurrence data for 3 species</span></span></span>
+<span class="r-in"><span><span class="va">occurrences</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Species_A"</span>, <span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Species_B"</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Species_C"</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="co"># Species A: widespread across Brazil</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">43.2</span>, <span class="op">-</span><span class="fl">47.9</span>, <span class="op">-</span><span class="fl">38.5</span>, <span class="op">-</span><span class="fl">51.2</span>,</span></span>
+<span class="r-in"><span>    <span class="co"># Species B: clustered in southeast</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">43.9</span>, <span class="op">-</span><span class="fl">44.1</span>, <span class="op">-</span><span class="fl">43.7</span>, <span class="op">-</span><span class="fl">44.3</span>, <span class="op">-</span><span class="fl">43.8</span>,</span></span>
+<span class="r-in"><span>    <span class="co"># Species C: only 2 points</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">45.0</span>, <span class="op">-</span><span class="fl">46.0</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span>,</span></span>
+<span class="r-in"><span>  lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="co"># Species A</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">22.9</span>, <span class="op">-</span><span class="fl">15.8</span>, <span class="op">-</span><span class="fl">12.9</span>, <span class="op">-</span><span class="fl">30.0</span>,</span></span>
+<span class="r-in"><span>    <span class="co"># Species B</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">19.9</span>, <span class="op">-</span><span class="fl">20.1</span>, <span class="op">-</span><span class="fl">19.8</span>, <span class="op">-</span><span class="fl">20.3</span>, <span class="op">-</span><span class="fl">20.0</span>,</span></span>
+<span class="r-in"><span>    <span class="co"># Species C</span></span></span>
+<span class="r-in"><span>    <span class="op">-</span><span class="fl">23.5</span>, <span class="op">-</span><span class="fl">24.0</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Calculate average pairwise distances</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">occ.avg.dist</span><span class="op">(</span><span class="va">occurrences</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
