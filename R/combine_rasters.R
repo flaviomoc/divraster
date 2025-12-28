@@ -20,7 +20,7 @@
 #' @return A single multilayer SpatRaster with one layer per input.
 #'   Layers are named from list names or file basenames without extension.
 #'
-#' @import terra
+#' @importFrom terra rast values mask crop extract classify
 #'
 #' @examples
 #' \dontrun{

@@ -10,7 +10,7 @@
 #'
 #' @return SpatRaster (cropped/masked continuous raster).
 #'
-#' @import terra
+#' @importFrom terra rast values mask crop extract classify
 #'
 #' @examples
 #' \dontrun{

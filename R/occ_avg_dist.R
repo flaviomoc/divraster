@@ -23,7 +23,6 @@
 #' - avg_distance_m: mean pairwise distance in meters
 #'
 #' @import sf
-#' @import dplyr
 #' @importFrom dplyr all_of
 #'
 #' @examples

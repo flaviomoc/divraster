@@ -21,8 +21,8 @@
 #'
 #' @return A data.frame containing area calculations for each interval class and scenario
 #'
-#' @import terra
-#' @import dplyr
+#' @importFrom dplyr filter select mutate group_by summarize arrange
+#' @importFrom terra rast values mask crop extract classify
 #' @importFrom stats setNames
 #' @importFrom utils write.csv
 #'
