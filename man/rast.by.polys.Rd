@@ -60,14 +60,14 @@ v <- as.polygons(r > 500, dissolve = TRUE)
 v$PA_ID <- paste0("PA_", seq_len(nrow(v)))
 
 # Mean elevation per polygon
-pa_stats <- summarize_raster_by_polygons(
+pa_stats <- rast.by.polys(
   x        = r,
   polygons = v,
   id_col   = "PA_ID"
 )
 
 # Multiple statistics per polygon
-pa_stats_multi <- summarize_raster_by_polygons(
+pa_stats_multi <- rast.by.polys(
   x        = r,
   polygons = v,
   id_col   = "PA_ID",

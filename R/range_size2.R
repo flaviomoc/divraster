@@ -17,6 +17,44 @@
 #' @return A data frame with the area for each category.
 #'
 #' @importFrom stats aggregate
+#'
+#' @examples
+#' \dontrun{
+#' library(terra)
+#'
+#' # Create land cover raster
+#' # 1 = Forest, 2 = Grassland, 3 = Agriculture
+#' land_cover <- rast(ncol = 30, nrow = 30,
+#'                    xmin = -50, xmax = -49,
+#'                    ymin = -15, ymax = -14,
+#'                    crs = "EPSG:4326")
+#' values(land_cover) <- sample(1:3, ncell(land_cover), replace = TRUE)
+#'
+#' # Basic: Calculate area for each category
+#' area_result <- area.calc.flex(land_cover, unit = "km")
+#'
+#' # With zones: Calculate area by region
+#' region1 <- vect("POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))",
+#'                 crs = "EPSG:4326")
+#' region2 <- vect("POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))",
+#'                 crs = "EPSG:4326")
+#' regions <- rbind(region1, region2)
+#' regions$region_id <- c("A", "B")
+#'
+#' area_zonal <- area.calc.flex(land_cover,
+#'                              zonal_polys = regions,
+#'                              id_col = "region_id",
+#'                              unit = "km")
+#'
+#' # With overlay: Calculate area within protected areas
+#' protected <- rast(land_cover)
+#' values(protected) <- sample(0:1, ncell(protected), replace = TRUE)
+#'
+#' area_overlay <- area.calc.flex(land_cover,
+#'                                r2_raster = protected,
+#'                                unit = "km")
+#' }
+#'
 #' @export
 area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = NULL,
                            zonal_polys = NULL, id_col = NULL, add_cols = NULL,

@@ -52,18 +52,20 @@ the area for each class across all rasters.
 }
 \examples{
 \dontrun{
+library(terra)
+
 # Single raster - automatic min/max detection with rounding
 r1 <- rast(ncol=10, nrow=10, vals=runif(100, 0.12, 0.98))
-result <- calculate_interval_areas(r1, interval = 0.1, round = TRUE)
+result <- area.interval(r1, interval = 0.1, round = TRUE)
 # min 0.12 becomes 0.1, max 0.98 becomes 1.0
 
 # Multiple rasters without rounding (use exact detected values)
 r2 <- rast(ncol=10, nrow=10, vals=runif(100, 0, 1))
 raster_list <- list(scenario1 = r1, scenario2 = r2)
-result <- calculate_interval_areas(raster_list, interval = 0.1, round = FALSE)
+result <- area.interval(raster_list, interval = 0.1, round = FALSE)
 
 # Specify custom min/max values (rounding not applied to manual values)
-result <- calculate_interval_areas(
+result <- area.interval(
   raster_list = raster_list,
   min_value = 0.6,
   max_value = 0.8,
