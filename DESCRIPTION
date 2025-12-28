@@ -29,8 +29,7 @@ Imports:
     terra,
     utils,
     dplyr,
-    sf,
-    rlang
+    sf
 Suggests: 
     ape,
     knitr,

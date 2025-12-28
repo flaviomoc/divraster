@@ -9,6 +9,36 @@
 #' @param overwrite Logical. Passed to writeRaster if filename is provided.
 #'
 #' @return SpatRaster (cropped/masked continuous raster).
+#'
+#' @import terra
+#'
+#' @examples
+#' \dontrun{
+#' library(terra)
+#'
+#' # Create continuous raster (e.g., suitability values 0-1)
+#' r_continuous <- rast(ncol = 50, nrow = 50, xmin = 0, xmax = 10,
+#'                      ymin = 0, ymax = 10, crs = "EPSG:4326")
+#' values(r_continuous) <- runif(ncell(r_continuous), 0, 1)
+#' names(r_continuous) <- "suitability"
+#'
+#' # Create binary raster (circular study area)
+#' r_binary <- rast(r_continuous)
+#' xy <- xyFromCell(r_binary, 1:ncell(r_binary))
+#' center_dist <- sqrt((xy[,1] - 5)^2 + (xy[,2] - 5)^2)
+#' values(r_binary) <- ifelse(center_dist <= 3, 1, 0)
+#' names(r_binary) <- "study_area"
+#'
+#' # Crop continuous raster to binary footprint
+#' result <- bin2crop(r_bin = r_binary, r_cont = r_continuous)
+#'
+#' # Plot comparison
+#' par(mfrow = c(1, 3))
+#' plot(r_binary, main = "Binary Footprint (Study Area)")
+#' plot(r_continuous, main = "Original Continuous")
+#' plot(result, main = "Cropped Result")
+#' }
+#'
 #' @export
 bin2crop <- function(r_bin,
                      r_cont,
@@ -17,41 +47,52 @@ bin2crop <- function(r_bin,
                      dissolve = TRUE,
                      filename = NULL,
                      overwrite = FALSE) {
-  
+
+  # === 1. Validate inputs ===
   stopifnot(inherits(r_bin,  "SpatRaster"))
   stopifnot(inherits(r_cont, "SpatRaster"))
   if (!is.null(clip)) stopifnot(inherits(clip, "SpatVector"))
-  
-  # Align grids if needed (common in workflows mixing rasters)
-  if (!isTRUE(all.equal(terra::ext(r_bin), terra::ext(r_cont))) ||
-      !isTRUE(all.equal(terra::res(r_bin), terra::res(r_cont)))) {
+
+  # === 2. Align grids if necessary ===
+  grids_match <- isTRUE(all.equal(terra::ext(r_bin), terra::ext(r_cont))) &&
+    isTRUE(all.equal(terra::res(r_bin), terra::res(r_cont)))
+
+  if (!grids_match) {
     r_cont <- terra::resample(r_cont, r_bin, method = resample_method)
   }
-  
-  # Set 0 -> NA so polygonization yields only the footprint of 1s
-  r1 <- terra::classify(r_bin, rcl = matrix(c(0, NA), ncol = 2, byrow = TRUE)) 
-  
-  # Polygonize the footprint
-  p1 <- terra::as.polygons(r1, values = FALSE, aggregate = dissolve, na.rm = TRUE) 
-  
-  # If there is no area with value==1, return an all-NA raster on same grid
-  if (nrow(p1) == 0) {
-    out <- r_cont
-    terra::values(out) <- NA
+
+  # === 3. Convert binary to polygon footprint ===
+  # Replace 0 with NA (keep only cells with value = 1)
+  r_footprint <- terra::classify(r_bin, cbind(0, NA))
+
+  # Convert to polygon(s)
+  poly_footprint <- terra::as.polygons(
+    r_footprint,
+    values = FALSE,
+    aggregate = dissolve,
+    na.rm = TRUE
+  )
+
+  # === 4. Crop continuous raster ===
+  # Check if footprint is empty (no cells with value = 1)
+  if (nrow(poly_footprint) == 0) {
+    # Return empty raster (all NA, same grid as input)
+    result <- r_cont
+    terra::values(result) <- NA
   } else {
-    # Crop/mask by footprint
-    out <- terra::crop(r_cont, p1, mask = TRUE) 
-    
-    # Optional second crop/mask
+    # Crop and mask to footprint
+    result <- terra::crop(r_cont, poly_footprint, mask = TRUE)
+
+    # Apply optional additional clipping
     if (!is.null(clip)) {
-      out <- terra::crop(out, clip, mask = TRUE) 
+      result <- terra::crop(result, clip, mask = TRUE)
     }
   }
-  
-  # Optional write to disk
+
+  # === 5. Save to file if requested ===
   if (!is.null(filename)) {
-    terra::writeRaster(out, filename, overwrite = overwrite) 
+    terra::writeRaster(result, filename, overwrite = overwrite)
   }
-  
-  out
+
+  return(result)
 }

@@ -9,31 +9,68 @@ occ.avg.dist(df, species_col = "species", lon_col = "lon", lat_col = "lat")
 \arguments{
 \item{df}{A data.frame (or tibble) containing species names and coordinates.}
 
-\item{species_col}{Character scalar. Column name containing species names.}
+\item{species_col}{Character. Column name containing species names. Default "species".}
 
-\item{lon_col}{Character scalar. Column name containing longitudes (decimal degrees).}
+\item{lon_col}{Character. Column name containing longitudes (decimal degrees). Default "lon".}
 
-\item{lat_col}{Character scalar. Column name containing latitudes (decimal degrees).}
+\item{lat_col}{Character. Column name containing latitudes (decimal degrees). Default "lat".}
 }
 \value{
-A tibble with columns:
+A data.frame with columns:
 \itemize{
-\item \code{species}: unique species names.
-\item \code{avg_distance_m}: mean pairwise distance (meters).
+\item species: unique species names
+\item avg_distance_m: mean pairwise distance in meters
 }
 }
 \description{
 Compute the mean of all unique pairwise great-circle distances between
 occurrence records for each species, using longitude/latitude coordinates
-(EPSG:4326). Distances are computed with \code{\link[sf:geos_measures]{sf::st_distance()}}.
+(EPSG:4326). Distances are computed with sf::st_distance().
 }
 \details{
 For each species, the function:
 \itemize{
-\item Filters out rows with missing species / coordinates.
-\item Converts lon/lat to an \code{sf} point object with CRS = 4326.
-\item Builds a full distance matrix within the species.
-\item Extracts the upper triangle (unique pairs) and averages distances.
+\item Filters out rows with missing species or coordinates
+\item Converts lon/lat to an sf point object with CRS = 4326
+\item Builds a full distance matrix within the species
+\item Extracts the upper triangle (unique pairs) and averages distances
 }
-Species with < 2 valid records return \code{NA}.
+
+Species with fewer than 2 valid records return NA.
+}
+\examples{
+\dontrun{
+library(dplyr)
+library(sf)
+
+# Create example occurrence data for 3 species
+occurrences <- tibble(
+  species = c(
+    rep("Species_A", 4),
+    rep("Species_B", 5),
+    rep("Species_C", 2)
+  ),
+  lon = c(
+    # Species A: widespread across Brazil
+    -43.2, -47.9, -38.5, -51.2,
+    # Species B: clustered in southeast
+    -43.9, -44.1, -43.7, -44.3, -43.8,
+    # Species C: only 2 points
+    -45.0, -46.0
+  ),
+  lat = c(
+    # Species A
+    -22.9, -15.8, -12.9, -30.0,
+    # Species B
+    -19.9, -20.1, -19.8, -20.3, -20.0,
+    # Species C
+    -23.5, -24.0
+  )
+)
+
+# Calculate average pairwise distances
+result <- occ.avg.dist(occurrences)
+result
+}
+
 }
