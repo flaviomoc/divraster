@@ -23,6 +23,9 @@
 - [6 Suitability change](#suit-change)
 - [7 Area calculation](#area-calc)
 - [8 Richness difference between scenarios](#differ)
+- [9 Occurrence distance helper](#occ-avg-dist)
+- [10 Raster–polygon summaries](#rast-by-polys)
+- [11 Cropping by binary footprint](#bin2crop)
 
 ## 1 Introduction
 
@@ -38,6 +41,13 @@ to calculate diversity metrics directly from rasters, eliminating the
 need for matrix transformations. This capability is especially valuable
 when dealing with extensive datasets, as matrices often impose memory
 constraints.
+
+``` r
+library(divraster)
+library(terra)
+library(dplyr)
+library(sf)
+```
 
 ## 2 Alpha calculations
 
@@ -60,7 +70,7 @@ since all taxa are at the same level.
 
 ## 2.1 Alpha examples
 
-## 2.1.1 Alpha TD
+### 2.1.1 Alpha TD
 
 ``` r
 # Loading data
@@ -406,7 +416,7 @@ for(i in 1:terra::nlyr(change)){
 }
 ```
 
-![](divraster-vignette_files/figure-html/unnamed-chunk-14-1.png)![](divraster-vignette_files/figure-html/unnamed-chunk-14-2.png)![](divraster-vignette_files/figure-html/unnamed-chunk-14-3.png)![](divraster-vignette_files/figure-html/unnamed-chunk-14-4.png)
+![](divraster-vignette_files/figure-html/unnamed-chunk-15-1.png)![](divraster-vignette_files/figure-html/unnamed-chunk-15-2.png)![](divraster-vignette_files/figure-html/unnamed-chunk-15-3.png)![](divraster-vignette_files/figure-html/unnamed-chunk-15-4.png)
 Suitability change between climate scenarios with values equals 1
 representing gain, values equals 2 representing loss, values equals 3
 representing no change, and values equals 4 representing unsuitable in
@@ -456,3 +466,140 @@ divraster::differ.rast(divraster::spat.alpha2(bin1),
 
 When comparing the two scenarios, subtracting the second from the first
 reveals greater species losses (n = 9) in the north.
+
+## 9 Occurrence distance helper
+
+The function
+[`occ.avg.dist()`](https://flaviomoc.github.io/divraster/reference/occ.avg.dist.md)
+calculates the average pairwise great‑circle distance between occurrence
+points for each species.
+
+``` r
+set.seed(1)
+
+occurrences <- data.frame(
+species = c(
+rep("Species_A", 3),
+rep("Species_B", 4),
+"Species_C"
+),
+lon = c(-40, -41, -42, -43, -44, -45, -46, -47),
+lat = c(-20, -21, -22, -23, -24, -25, -26, -27)
+)
+
+avg_dist <- occ.avg.dist(occurrences)
+avg_dist
+#>     species avg_distance_m
+#> 1 Species_A       202821.5
+#> 2 Species_B       250551.7
+#> 3 Species_C             NA
+```
+
+Species with only one record (e.g. `Species_C`) return `NA` for the
+average distance because pairwise distances cannot be computed.
+
+## 10 Raster–polygon summaries
+
+The function
+[`rast.by.polys()`](https://flaviomoc.github.io/divraster/reference/rast.by.polys.md)
+summarises raster values by polygons using a user‑defined function.
+
+``` r
+# Continuous raster (e.g. environmental suitability)
+r_env <- rast(
+ncol = 50, nrow = 50,
+xmin = 0, xmax = 10,
+ymin = 0, ymax = 10,
+crs = "EPSG:4326"
+)
+values(r_env) <- runif(ncell(r_env), 0, 1)
+names(r_env) <- "suitability"
+
+# Two polygons with IDs
+p1 <- vect("POLYGON ((0 0, 5 0, 5 10, 0 10, 0 0))", crs = "EPSG:4326")
+p2 <- vect("POLYGON ((5 0, 10 0, 10 10, 5 10, 5 0))", crs = "EPSG:4326")
+polys <- rbind(p1, p2)
+polys$poly_id <- c("P1", "P2")
+
+# Mean suitability per polygon
+poly_mean <- rast.by.polys(
+x = r_env,
+polygons = polys,
+id_col = "poly_id"
+)
+poly_mean
+#>   poly_id suitability
+#> 1      P1   0.4964579
+#> 2      P2   0.4907004
+```
+
+It is also possible to compute multiple statistics by supplying a custom
+function.
+
+``` r
+poly_stats <- rast.by.polys(
+x = r_env,
+polygons = polys,
+id_col = "poly_id",
+fun = function(v, ...) c(
+mean = mean(v, ...),
+min = min(v, ...),
+max = max(v, ...)
+),
+na.rm = TRUE
+)
+poly_stats
+#>   poly_id suitability suitability.1 suitability.2
+#> 1      P1   0.4964579  0.0010268190     0.9984705
+#> 2      P2   0.4907004  0.0006052661     0.9999306
+```
+
+## 11 Cropping by binary footprint
+
+The function
+[`bin2crop()`](https://flaviomoc.github.io/divraster/reference/bin2crop.md)
+crops a continuous raster according to a binary footprint (0/1).
+
+``` r
+#Continuous raster
+r_cont <- rast(
+ncol = 50, nrow = 50,
+xmin = 0, xmax = 10,
+ymin = 0, ymax = 10,
+crs = "EPSG:4326"
+)
+values(r_cont) <- runif(ncell(r_cont), 0, 1)
+names(r_cont) <- "suitability"
+
+#Binary footprint (circle around centre)
+r_bin <- rast(r_cont)
+xy <- terra::xyFromCell(r_bin, 1:ncell(r_bin))
+dist_center <- sqrt((xy[, 1] - 5)^2 + (xy[, 2] - 5)^2)
+values(r_bin) <- ifelse(dist_center <= 3, 1, 0)
+names(r_bin) <- "footprint"
+
+#Crop continuous raster to footprint
+r_cropped <- bin2crop(r_bin = r_bin, r_cont = r_cont)
+
+r_cropped
+#> class       : SpatRaster 
+#> size        : 30, 30, 1  (nrow, ncol, nlyr)
+#> resolution  : 0.2, 0.2  (x, y)
+#> extent      : 2, 8, 2, 8  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source(s)   : memory
+#> name        : suitability 
+#> min value   : 0.001161998 
+#> max value   : 0.999194679
+
+par(mfrow = c(1, 3))
+plot(r_cont, main = "Original raster")
+plot(r_bin, main = "Binary footprint")
+plot(r_cropped, main = "Cropped raster")
+```
+
+![](divraster-vignette_files/figure-html/unnamed-chunk-21-1.png)
+
+``` r
+par(mfrow = c(1, 1))
+```

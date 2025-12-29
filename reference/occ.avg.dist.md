@@ -55,9 +55,21 @@ Species with fewer than 2 valid records return NA.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(dplyr)
+#> 
+#> Attaching package: ‘dplyr’
+#> The following objects are masked from ‘package:terra’:
+#> 
+#>     intersect, union
+#> The following objects are masked from ‘package:stats’:
+#> 
+#>     filter, lag
+#> The following objects are masked from ‘package:base’:
+#> 
+#>     intersect, setdiff, setequal, union
 library(sf)
+#> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
 
 # Create example occurrence data for 3 species
 occurrences <- tibble(
@@ -87,5 +99,9 @@ occurrences <- tibble(
 # Calculate average pairwise distances
 result <- occ.avg.dist(occurrences)
 result
-} # }
+#>     species avg_distance_m
+#> 1 Species_A     1375543.80
+#> 2 Species_B       41801.74
+#> 3 Species_C      115972.99
+# }
 ```

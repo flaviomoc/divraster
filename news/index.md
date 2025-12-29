@@ -1,5 +1,25 @@
 # Changelog
 
+## divraster 1.2.3 (2025-12-29)
+
+#### New features
+
+- [`area.calc.flex()`](https://flaviomoc.github.io/divraster/reference/area.calc.flex.md):
+  flexible area calculation by categories, zones, and overlays
+- [`occ.avg.dist()`](https://flaviomoc.github.io/divraster/reference/occ.avg.dist.md):
+  average pairwise great-circle distance between occurrences
+- [`rast.by.polys()`](https://flaviomoc.github.io/divraster/reference/rast.by.polys.md):
+  summarise raster values by polygons with custom functions
+- [`bin2crop()`](https://flaviomoc.github.io/divraster/reference/bin2crop.md):
+  crop continuous rasters by binary footprints
+
+#### Improvements
+
+- Updated vignette with new function examples
+- Test coverage increased to 84%
+- Fixed import conflicts (dplyr/terra)
+- Requires R \>= 4.1.0 (native pipe `|>`)
+
 ## divraster 1.2.1
 
 CRAN release: 2025-05-26

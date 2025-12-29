@@ -54,7 +54,7 @@ SpatRaster (cropped/masked continuous raster).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 
 # Create continuous raster (e.g., suitability values 0-1)
@@ -78,5 +78,6 @@ par(mfrow = c(1, 3))
 plot(r_binary, main = "Binary Footprint (Study Area)")
 plot(r_continuous, main = "Original Continuous")
 plot(result, main = "Cropped Result")
-} # }
+
+# }
 ```

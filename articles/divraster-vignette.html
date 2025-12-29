@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Flávio M. M.
 Mota, Neander M. Heming, and Gabriela Alves-Ferreira</h4>
             
-            <h4 data-toc-skip class="date">2025-12-28</h4>
+            <h4 data-toc-skip class="date">2025-12-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/flaviomoc/divraster/blob/master/vignettes/divraster-vignette.Rmd" class="external-link"><code>vignettes/divraster-vignette.Rmd</code></a></small>
       <div class="d-none name"><code>divraster-vignette.Rmd</code></div>
@@ -124,6 +124,9 @@ Mota, Neander M. Heming, and Gabriela Alves-Ferreira</h4>
 <li><a href="#suit-change">6 Suitability change</a></li>
 <li><a href="#area-calc">7 Area calculation</a></li>
 <li><a href="#differ">8 Richness difference between scenarios</a></li>
+<li><a href="#occ-avg-dist">9 Occurrence distance helper</a></li>
+<li><a href="#rast-by-polys">10 Raster–polygon summaries</a></li>
+<li><a href="#bin2crop">11 Cropping by binary footprint</a></li>
 </ul>
 <div class="section level2">
 <h2 id="intro">1 Introduction<a class="anchor" aria-label="anchor" href="#intro"></a>
@@ -140,6 +143,11 @@ functions to calculate diversity metrics directly from rasters,
 eliminating the need for matrix transformations. This capability is
 especially valuable when dealing with extensive datasets, as matrices
 often impose memory constraints.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/flaviomoc/divraster" class="external-link">divraster</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="alpha">2 Alpha calculations<a class="anchor" aria-label="anchor" href="#alpha"></a>
@@ -164,11 +172,10 @@ since all taxa are at the same level.</p>
 <div class="section level2">
 <h2 id="alpha-ex">2.1 Alpha examples<a class="anchor" aria-label="anchor" href="#alpha-ex"></a>
 </h2>
-</div>
-<div class="section level2">
-<h2 id="alpha-td">2.1.1 Alpha TD<a class="anchor" aria-label="anchor" href="#alpha-td"></a>
-</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="section level3">
+<h3 id="alpha-td">2.1.1 Alpha TD<a class="anchor" aria-label="anchor" href="#alpha-td"></a>
+</h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Loading data</span></span>
 <span><span class="co"># Presence-absence SpatRaster</span></span>
 <span><span class="va">bin1</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, </span>
@@ -224,10 +231,11 @@ since all taxa are at the same level.</p>
 67, and in the second scenario, it ranges from 0 to 65, with higher
 values concentrated towards the north in both cases.</p>
 </div>
+</div>
 <div class="section level2">
 <h2 id="alpha-fd">2.1.2 Alpha FD<a class="anchor" aria-label="anchor" href="#alpha-fd"></a>
 </h2>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span><span class="op">)</span></span></code></pre></div>
 <p>The alpha functional diversity for the first scenario ranges from
 4.248408 to 4.378846, with higher values concentrated towards the north,
@@ -236,7 +244,7 @@ indicating greater functional diversity.</p>
 <div class="section level2">
 <h2 id="alpha-pd">2.1.3 Alpha PD<a class="anchor" aria-label="anchor" href="#alpha-pd"></a>
 </h2>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Alpha PD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha.html">spat.alpha</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -275,7 +283,7 @@ a negative SES indicates the opposite.</p>
 <div class="section level2">
 <h2 id="ses-fd">3.1.1 SES FD<a class="anchor" aria-label="anchor" href="#ses-fd"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># SES FD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.rand.html">spat.rand</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bin1</span>, </span>
 <span>                     tree <span class="op">=</span> <span class="va">traits</span>, </span>
@@ -289,7 +297,7 @@ functionally clustered (SES_FD = -25).</p>
 <div class="section level2">
 <h2 id="ses-pd">3.1.2 SES PD<a class="anchor" aria-label="anchor" href="#ses-pd"></a>
 </h2>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># SES PD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.rand.html">spat.rand</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">bin1</span>, </span>
 <span>                     tree <span class="op">=</span> <span class="va">tree</span>, </span>
@@ -331,7 +339,7 @@ communities.</p>
 <div class="section level2">
 <h2 id="betaspat-td">4.1.1 Beta spatial TD<a class="anchor" aria-label="anchor" href="#betaspat-td"></a>
 </h2>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta spatial TD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span></span></code></pre></div>
 <p>Spatial beta diversity for TD indicates a slight change in species
@@ -345,7 +353,7 @@ species.</p>
 <div class="section level2">
 <h2 id="betaspat-fd">4.1.2 Beta spatial FD<a class="anchor" aria-label="anchor" href="#betaspat-fd"></a>
 </h2>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta spatial FD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span><span class="op">)</span></span></code></pre></div>
 <p>Similarly, spatial beta diversity for FD indicates a slight change in
@@ -359,7 +367,7 @@ or gain of functional traits.</p>
 <div class="section level2">
 <h2 id="betaspat-pd">4.1.3 Beta spatial PD<a class="anchor" aria-label="anchor" href="#betaspat-pd"></a>
 </h2>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta spatial PD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.beta.html">spat.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">tree</span><span class="op">)</span></span></code></pre></div>
 <p>The spatial beta diversity for PD also indicates a slight change in
@@ -373,7 +381,7 @@ are due to the loss or gain of evolutionary history.</p>
 <div class="section level2">
 <h2 id="betatemp-td">4.1.4 Beta temporal TD<a class="anchor" aria-label="anchor" href="#betatemp-td"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta temporal TD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -393,7 +401,7 @@ dissimilarities are attributed to gains or losses of species.</p>
 <div class="section level2">
 <h2 id="betatemp-fd">4.1.5 Beta temporal FD<a class="anchor" aria-label="anchor" href="#betatemp-fd"></a>
 </h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta temporal FD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">traits</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -413,7 +421,7 @@ can be attributed to gains or losses of functional traits.</p>
 <div class="section level2">
 <h2 id="betatemp-pd">4.1.6 Beta temporal PD<a class="anchor" aria-label="anchor" href="#betatemp-pd"></a>
 </h2>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta temporal PD calculation</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/temp.beta.html">temp.beta</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">bin2</span>, <span class="va">tree</span><span class="op">)</span></span>
 <span><span class="co">#&gt; class       : SpatRaster </span></span>
@@ -449,7 +457,7 @@ species.</p>
 <div class="section level2">
 <h2 id="traits-ex">5.1 Traits average examples<a class="anchor" aria-label="anchor" href="#traits-ex"></a>
 </h2>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Average traits calculation</span></span>
 <span><span class="co"># Scenario 1</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.trait.html">spat.trait</a></span><span class="op">(</span><span class="va">bin1</span>, <span class="va">traits</span><span class="op">)</span></span>
@@ -482,7 +490,7 @@ beak depths.</p>
 <div class="section level2">
 <h2 id="suit-change">6 Suitability change<a class="anchor" aria-label="anchor" href="#suit-change"></a>
 </h2>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Suitability change between climate scenarios</span></span>
 <span><span class="va">change</span> <span class="op">&lt;-</span> <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/suit.change.html">suit.change</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, <span class="va">bin2</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
@@ -507,7 +515,7 @@ beak depths.</p>
 <span>              cex.main <span class="op">=</span> <span class="fl">1</span>,          </span>
 <span>              font.main <span class="op">=</span> <span class="fl">4</span><span class="op">)</span>  </span>
 <span><span class="op">}</span></span></code></pre></div>
-<p><img src="divraster-vignette_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="700"><img src="divraster-vignette_files/figure-html/unnamed-chunk-14-2.png" class="r-plt" alt="" width="700"><img src="divraster-vignette_files/figure-html/unnamed-chunk-14-3.png" class="r-plt" alt="" width="700"><img src="divraster-vignette_files/figure-html/unnamed-chunk-14-4.png" class="r-plt" alt="" width="700">
+<p><img src="divraster-vignette_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="700"><img src="divraster-vignette_files/figure-html/unnamed-chunk-15-2.png" class="r-plt" alt="" width="700"><img src="divraster-vignette_files/figure-html/unnamed-chunk-15-3.png" class="r-plt" alt="" width="700"><img src="divraster-vignette_files/figure-html/unnamed-chunk-15-4.png" class="r-plt" alt="" width="700">
 Suitability change between climate scenarios with values equals 1
 representing gain, values equals 2 representing loss, values equals 3
 representing no change, and values equals 4 representing unsuitable in
@@ -516,7 +524,7 @@ both scenarios.</p>
 <div class="section level2">
 <h2 id="area-calc">7 Area calculation<a class="anchor" aria-label="anchor" href="#area-calc"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Climate suitable area scenario 1</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/area.calc.html">area.calc</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">[[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                   Layer     Area</span></span>
@@ -541,7 +549,7 @@ is expected to be eliminated (a 100% reduction).</p>
 <div class="section level2">
 <h2 id="differ">8 Richness difference between scenarios<a class="anchor" aria-label="anchor" href="#differ"></a>
 </h2>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Difference in species richness between climate scenarios</span></span>
 <span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/differ.rast.html">differ.rast</a></span><span class="op">(</span><span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha2.html">spat.alpha2</a></span><span class="op">(</span><span class="va">bin1</span><span class="op">)</span>,</span>
 <span>                       <span class="fu">divraster</span><span class="fu">::</span><span class="fu"><a href="../reference/spat.alpha2.html">spat.alpha2</a></span><span class="op">(</span><span class="va">bin2</span><span class="op">)</span>, perc <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -556,6 +564,131 @@ is expected to be eliminated (a 100% reduction).</p>
 <span><span class="co">#&gt; max value   :                  -2</span></span></code></pre></div>
 <p>When comparing the two scenarios, subtracting the second from the
 first reveals greater species losses (n = 9) in the north.</p>
+</div>
+<div class="section level2">
+<h2 id="occ-avg-dist">9 Occurrence distance helper<a class="anchor" aria-label="anchor" href="#occ-avg-dist"></a>
+</h2>
+<p>The function <code><a href="../reference/occ.avg.dist.html">occ.avg.dist()</a></code> calculates the average
+pairwise great‑circle distance between occurrence points for each
+species.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">occurrences</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>species <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Species_A"</span>, <span class="fl">3</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Species_B"</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span><span class="st">"Species_C"</span></span>
+<span><span class="op">)</span>,</span>
+<span>lon <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">40</span>, <span class="op">-</span><span class="fl">41</span>, <span class="op">-</span><span class="fl">42</span>, <span class="op">-</span><span class="fl">43</span>, <span class="op">-</span><span class="fl">44</span>, <span class="op">-</span><span class="fl">45</span>, <span class="op">-</span><span class="fl">46</span>, <span class="op">-</span><span class="fl">47</span><span class="op">)</span>,</span>
+<span>lat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">20</span>, <span class="op">-</span><span class="fl">21</span>, <span class="op">-</span><span class="fl">22</span>, <span class="op">-</span><span class="fl">23</span>, <span class="op">-</span><span class="fl">24</span>, <span class="op">-</span><span class="fl">25</span>, <span class="op">-</span><span class="fl">26</span>, <span class="op">-</span><span class="fl">27</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">avg_dist</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/occ.avg.dist.html">occ.avg.dist</a></span><span class="op">(</span><span class="va">occurrences</span><span class="op">)</span></span>
+<span><span class="va">avg_dist</span></span>
+<span><span class="co">#&gt;     species avg_distance_m</span></span>
+<span><span class="co">#&gt; 1 Species_A       202821.5</span></span>
+<span><span class="co">#&gt; 2 Species_B       250551.7</span></span>
+<span><span class="co">#&gt; 3 Species_C             NA</span></span></code></pre></div>
+<p>Species with only one record (e.g. <code>Species_C</code>) return
+<code>NA</code> for the average distance because pairwise distances
+cannot be computed.</p>
+</div>
+<div class="section level2">
+<h2 id="rast-by-polys">10 Raster–polygon summaries<a class="anchor" aria-label="anchor" href="#rast-by-polys"></a>
+</h2>
+<p>The function <code><a href="../reference/rast.by.polys.html">rast.by.polys()</a></code> summarises raster values by
+polygons using a user‑defined function.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Continuous raster (e.g. environmental suitability)</span></span>
+<span><span class="va">r_env</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span></span>
+<span>ncol <span class="op">=</span> <span class="fl">50</span>, nrow <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>crs <span class="op">=</span> <span class="st">"EPSG:4326"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r_env</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">r_env</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">r_env</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"suitability"</span></span>
+<span></span>
+<span><span class="co"># Two polygons with IDs</span></span>
+<span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">"POLYGON ((0 0, 5 0, 5 10, 0 10, 0 0))"</span>, crs <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span></span>
+<span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">"POLYGON ((5 0, 10 0, 10 10, 5 10, 5 0))"</span>, crs <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span></span>
+<span><span class="va">polys</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">p1</span>, <span class="va">p2</span><span class="op">)</span></span>
+<span><span class="va">polys</span><span class="op">$</span><span class="va">poly_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P1"</span>, <span class="st">"P2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Mean suitability per polygon</span></span>
+<span><span class="va">poly_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rast.by.polys.html">rast.by.polys</a></span><span class="op">(</span></span>
+<span>x <span class="op">=</span> <span class="va">r_env</span>,</span>
+<span>polygons <span class="op">=</span> <span class="va">polys</span>,</span>
+<span>id_col <span class="op">=</span> <span class="st">"poly_id"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">poly_mean</span></span>
+<span><span class="co">#&gt;   poly_id suitability</span></span>
+<span><span class="co">#&gt; 1      P1   0.4964579</span></span>
+<span><span class="co">#&gt; 2      P2   0.4907004</span></span></code></pre></div>
+<p>It is also possible to compute multiple statistics by supplying a
+custom function.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">poly_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rast.by.polys.html">rast.by.polys</a></span><span class="op">(</span></span>
+<span>x <span class="op">=</span> <span class="va">r_env</span>,</span>
+<span>polygons <span class="op">=</span> <span class="va">polys</span>,</span>
+<span>id_col <span class="op">=</span> <span class="st">"poly_id"</span>,</span>
+<span>fun <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">v</span>, <span class="va">...</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>mean <span class="op">=</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/summarize-generics.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">...</span><span class="op">)</span>,</span>
+<span>min <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">...</span><span class="op">)</span>,</span>
+<span>max <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">v</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="op">)</span>,</span>
+<span>na.rm <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">poly_stats</span></span>
+<span><span class="co">#&gt;   poly_id suitability suitability.1 suitability.2</span></span>
+<span><span class="co">#&gt; 1      P1   0.4964579  0.0010268190     0.9984705</span></span>
+<span><span class="co">#&gt; 2      P2   0.4907004  0.0006052661     0.9999306</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="bin2crop">11 Cropping by binary footprint<a class="anchor" aria-label="anchor" href="#bin2crop"></a>
+</h2>
+<p>The function <code><a href="../reference/bin2crop.html">bin2crop()</a></code> crops a continuous raster
+according to a binary footprint (0/1).</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#Continuous raster</span></span>
+<span><span class="va">r_cont</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span></span>
+<span>ncol <span class="op">=</span> <span class="fl">50</span>, nrow <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>xmin <span class="op">=</span> <span class="fl">0</span>, xmax <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>ymin <span class="op">=</span> <span class="fl">0</span>, ymax <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>crs <span class="op">=</span> <span class="st">"EPSG:4326"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r_cont</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">r_cont</span><span class="op">)</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">r_cont</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"suitability"</span></span>
+<span></span>
+<span><span class="co">#Binary footprint (circle around centre)</span></span>
+<span><span class="va">r_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">r_cont</span><span class="op">)</span></span>
+<span><span class="va">xy</span> <span class="op">&lt;-</span> <span class="fu">terra</span><span class="fu">::</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/xyCellFrom.html" class="external-link">xyFromCell</a></span><span class="op">(</span><span class="va">r_bin</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">r_bin</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">dist_center</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="op">(</span><span class="va">xy</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span> <span class="op">+</span> <span class="op">(</span><span class="va">xy</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">-</span> <span class="fl">5</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">r_bin</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">dist_center</span> <span class="op">&lt;=</span> <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">r_bin</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"footprint"</span></span>
+<span></span>
+<span><span class="co">#Crop continuous raster to footprint</span></span>
+<span><span class="va">r_cropped</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bin2crop.html">bin2crop</a></span><span class="op">(</span>r_bin <span class="op">=</span> <span class="va">r_bin</span>, r_cont <span class="op">=</span> <span class="va">r_cont</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">r_cropped</span></span>
+<span><span class="co">#&gt; class       : SpatRaster </span></span>
+<span><span class="co">#&gt; size        : 30, 30, 1  (nrow, ncol, nlyr)</span></span>
+<span><span class="co">#&gt; resolution  : 0.2, 0.2  (x, y)</span></span>
+<span><span class="co">#&gt; extent      : 2, 8, 2, 8  (xmin, xmax, ymin, ymax)</span></span>
+<span><span class="co">#&gt; coord. ref. : lon/lat WGS 84 (EPSG:4326) </span></span>
+<span><span class="co">#&gt; source(s)   : memory</span></span>
+<span><span class="co">#&gt; name        : suitability </span></span>
+<span><span class="co">#&gt; min value   : 0.001161998 </span></span>
+<span><span class="co">#&gt; max value   : 0.999194679</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_cont</span>, main <span class="op">=</span> <span class="st">"Original raster"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_bin</span>, main <span class="op">=</span> <span class="st">"Binary footprint"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rspatial.github.io/terra/reference/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">r_cropped</span>, main <span class="op">=</span> <span class="st">"Cropped raster"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="divraster-vignette_files/figure-html/unnamed-chunk-21-1.png" class="r-plt" alt="" width="700"></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

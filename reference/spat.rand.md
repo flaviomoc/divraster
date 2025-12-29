@@ -78,8 +78,8 @@ spat.rand(x, tree, 3, "site")
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
 #> source(s)   : memory
 #> names       :  Mean_PD,      SD_PD, Observed_PD,     SES_PD 
-#> min values  : 3.532664, 0.03133403,    3.359948, -17.017347 
-#> max values  : 9.647016, 0.90483915,   10.571964,   4.938143 
+#> min values  : 3.815058, 0.08169004,    3.359948, -16.856756 
+#> max values  : 9.867378, 0.98140262,   10.571964,   5.955834 
 spat.rand(x, traits, 3, "site")
 #> class       : SpatRaster 
 #> size        : 8, 8, 4  (nrow, ncol, nlyr)
@@ -87,8 +87,8 @@ spat.rand(x, traits, 3, "site")
 #> extent      : 0, 1, 0, 1  (xmin, xmax, ymin, ymax)
 #> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
 #> source(s)   : memory
-#> names       :   Mean_FD,       SD_FD, Observed_FD,    SES_FD 
-#> min values  : 0.4190749, 0.008954188,   0.3492543, -14.36953 
-#> max values  : 1.2653867, 0.218039587,   1.2493508,  28.59406 
+#> names       :   Mean_FD,      SD_FD, Observed_FD,    SES_FD 
+#> min values  : 0.2992551, 0.02017932,   0.3492543, -11.42736 
+#> max values  : 1.3001187, 0.22713700,   1.2493508,  11.18722 
 # }
 ```

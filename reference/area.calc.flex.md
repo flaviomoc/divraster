@@ -68,7 +68,7 @@ A data frame with the area for each category.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 
 # Create land cover raster
@@ -81,6 +81,7 @@ values(land_cover) <- sample(1:3, ncell(land_cover), replace = TRUE)
 
 # Basic: Calculate area for each category
 area_result <- area.calc.flex(land_cover, unit = "km")
+#> Processing layer: lyr.1
 
 # With zones: Calculate area by region
 region1 <- vect("POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))",
@@ -94,6 +95,7 @@ area_zonal <- area.calc.flex(land_cover,
                              zonal_polys = regions,
                              id_col = "region_id",
                              unit = "km")
+#> Processing layer: lyr.1
 
 # With overlay: Calculate area within protected areas
 protected <- rast(land_cover)
@@ -102,5 +104,7 @@ values(protected) <- sample(0:1, ncell(protected), replace = TRUE)
 area_overlay <- area.calc.flex(land_cover,
                                r2_raster = protected,
                                unit = "km")
-} # }
+#> Preparing overlay layer...
+#> Processing layer: lyr.1
+# }
 ```

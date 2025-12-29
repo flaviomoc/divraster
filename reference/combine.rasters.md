@@ -51,7 +51,7 @@ Areas where a raster has no data are filled with NA.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 
 # Create 3 separate rasters with different extents
@@ -71,5 +71,14 @@ values(r3) <- runif(ncell(r3), 0, 100)
 raster_list <- list(baseline = r1, future_A = r2, future_B = r3)
 combined <- combine.rasters(raster_list = raster_list)
 combined
-} # }
+#> class       : SpatRaster 
+#> size        : 36, 36, 3  (nrow, ncol, nlyr)
+#> resolution  : 0.3333333, 0.3333333  (x, y)
+#> extent      : -1, 11, -1, 11  (xmin, xmax, ymin, ymax)
+#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> source(s)   : memory
+#> names       :   baseline,  future_A,  future_B 
+#> min values  :  0.3315152,  0.174157,  0.132205 
+#> max values  : 99.9023285, 99.964592, 99.983269 
+# }
 ```

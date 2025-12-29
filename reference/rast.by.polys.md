@@ -64,7 +64,7 @@ summary statistics are returned for each layer.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+# \donttest{
 library(terra)
 
 # Example SpatRaster and SpatVector
@@ -91,5 +91,5 @@ pa_stats_multi <- rast.by.polys(
   ),
   na.rm    = TRUE
 )
-} # }
+# }
 ```
