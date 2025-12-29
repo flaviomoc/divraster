@@ -29,7 +29,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #'
 #' # Single raster - automatic min/max detection with rounding
@@ -51,11 +51,9 @@
 #' )
 #'
 #' # Save results to file
-#' result <- calculate_interval_areas(
+#' result <- area.interval(
 #'   raster_list = raster_list,
-#'   interval = 0.1,
-#'   filename = "area_results.csv"
-#' )
+#'   interval = 0.1)
 #' }
 area.interval <- function(raster_list,
                           min_value = NULL,

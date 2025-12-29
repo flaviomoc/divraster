@@ -34,7 +34,7 @@
 #' summary statistics are returned for each layer.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #'
 #' # Example SpatRaster and SpatVector

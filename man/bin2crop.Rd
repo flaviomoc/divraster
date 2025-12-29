@@ -36,7 +36,7 @@ SpatRaster (cropped/masked continuous raster).
 Crop a continuous raster by a binary (0/1) raster footprint (value == 1)
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 
 # Create continuous raster (e.g., suitability values 0-1)

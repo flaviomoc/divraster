@@ -44,7 +44,7 @@ It can optionally compute an overlay area with a second layer (r2) and/or
 perform calculations within distinct zones defined by a polygon SpatVector.
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 
 # Create land cover raster

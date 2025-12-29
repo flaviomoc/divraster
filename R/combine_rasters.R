@@ -23,7 +23,7 @@
 #' @importFrom terra rast values mask crop extract classify
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #'
 #' # Create 3 separate rasters with different extents

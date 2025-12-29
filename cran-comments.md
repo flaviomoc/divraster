@@ -1,6 +1,6 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 notes
 
 ## Maintainer comments
 Main changes are listed below and in the NEWS file:
@@ -20,3 +20,11 @@ Main changes are listed below and in the NEWS file:
 * Vignette was remodeled to better exemplify the `divraster` functionalities.
 
 * Tests and citation have been updated.
+
+## New features in v1.2.3
+
+- Added `area.calc.flex()`: flexible area calculation with zonal/overlay support
+- Added `occ.avg.dist()`: average pairwise occurrence distances
+- Added `rast.by.polys()`: raster summaries by polygons
+- Added `bin2crop()`: crop continuous rasters by binary footprint
+- Updated vignette with new examples

@@ -51,7 +51,7 @@ intervals based on user-defined or automatically calculated min/max values, and 
 the area for each class across all rasters.
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 
 # Single raster - automatic min/max detection with rounding
@@ -73,10 +73,8 @@ result <- area.interval(
 )
 
 # Save results to file
-result <- calculate_interval_areas(
+result <- area.interval(
   raster_list = raster_list,
-  interval = 0.1,
-  filename = "area_results.csv"
-)
+  interval = 0.1)
 }
 }

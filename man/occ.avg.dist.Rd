@@ -39,7 +39,7 @@ For each species, the function:
 Species with fewer than 2 valid records return NA.
 }
 \examples{
-\dontrun{
+\donttest{
 library(dplyr)
 library(sf)
 

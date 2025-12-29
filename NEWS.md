@@ -1,3 +1,17 @@
+# divraster 1.2.3 (2025-12-29)
+
+### New features
+* `area.calc.flex()`: flexible area calculation by categories, zones, and overlays
+* `occ.avg.dist()`: average pairwise great-circle distance between occurrences
+* `rast.by.polys()`: summarise raster values by polygons with custom functions
+* `bin2crop()`: crop continuous rasters by binary footprints
+
+### Improvements
+* Updated vignette with new function examples
+* Test coverage increased to 84%
+* Fixed import conflicts (dplyr/terra)
+* Requires R >= 4.1.0 (native pipe `|>`)
+
 # divraster 1.2.1
 
 * New functions added: suit.change, area.calc, spat.alpha2, and differ.rast.

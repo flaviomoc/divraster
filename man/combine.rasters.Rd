@@ -39,7 +39,7 @@ origin and CRS; the union of all extents defines the spatial coverage.
 Areas where a raster has no data are filled with NA.
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 
 # Create 3 separate rasters with different extents

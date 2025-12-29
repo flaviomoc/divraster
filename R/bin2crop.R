@@ -13,7 +13,7 @@
 #' @importFrom terra rast values mask crop extract classify
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #'
 #' # Create continuous raster (e.g., suitability values 0-1)

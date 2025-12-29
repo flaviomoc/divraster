@@ -19,7 +19,7 @@
 #' @importFrom stats aggregate
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(terra)
 #'
 #' # Create land cover raster

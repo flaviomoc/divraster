@@ -51,7 +51,7 @@ into a single step. It supports multilayer rasters; in that case the
 summary statistics are returned for each layer.
 }
 \examples{
-\dontrun{
+\donttest{
 library(terra)
 
 # Example SpatRaster and SpatVector

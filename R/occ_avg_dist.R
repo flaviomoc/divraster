@@ -26,7 +26,7 @@
 #' @importFrom dplyr all_of
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(dplyr)
 #' library(sf)
 #'
