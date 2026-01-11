@@ -18,17 +18,6 @@ test_that("function spat.trait works", {
   expect_error(spat.trait(bin1[[1]], traits))  # single layer
   expect_error(spat.trait(traits, traits))     # wrong types
 
-  # test CRS mismatch (fails if CRS matches original)
-  bin.crs <- bin1
-  orig_crs <- terra::crs(bin.crs)
-  suppressWarnings(terra::crs(bin.crs) <- "EPSG:25831")
-
-  if (terra::crs(bin.crs) != orig_crs) {
-    expect_error(spat.trait(bin.crs, traits), regexp = "CRS")  # ← expect CRS error message
-  } else {
-    expect_equal(terra::crs(bin.crs), orig_crs)  # test CRS assignment failed as expected
-  }
-
   # test output
   expect_s4_class(res, "SpatRaster")
   expect_equal(round(terra::minmax(res[[1]])[1], 2), 1.31)

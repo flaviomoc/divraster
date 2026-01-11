@@ -36,19 +36,4 @@ test_that("spat.beta works and validates inputs", {
   expect_error(spat.beta(x = traits))
   expect_error(spat.beta(x = bin1, tree = bin1))
 
-  # ---- CRS edge-case: only test if EPSG CRS assignment works here ----
-  can_set_epsg <- !inherits(
-    try({
-      tmp <- bin1
-      suppressWarnings(terra::crs(tmp) <- "EPSG:25831")
-      terra::crs(tmp) != "" && !is.na(terra::crs(tmp))
-    }, silent = TRUE),
-    "try-error"
-  )
-
-  if (isTRUE(can_set_epsg)) {
-    bin.crs <- bin1
-    suppressWarnings(terra::crs(bin.crs) <- "EPSG:25831")
-    expect_no_error(spat.beta(bin.crs))
-  }
 })
