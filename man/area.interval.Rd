@@ -13,7 +13,6 @@ area.interval(
   include_lowest = TRUE,
   right = TRUE,
   filename = NULL,
-  verbose = TRUE,
   ...
 )
 }
@@ -38,8 +37,6 @@ For example, with interval=0.1: min 0.12 becomes 0.1, max 0.98 becomes 1.0. Defa
 \item{filename}{Character. Optional filename to save the output dataframe as CSV.
 If NULL (default), the dataframe is not saved}
 
-\item{verbose}{Logical. Print progress messages? Default TRUE}
-
 \item{...}{Additional arguments passed to the classify function}
 }
 \value{
@@ -54,27 +51,12 @@ the area for each class across all rasters.
 \donttest{
 library(terra)
 
-# Single raster - automatic min/max detection with rounding
 r1 <- rast(ncol=10, nrow=10, vals=runif(100, 0.12, 0.98))
-result <- area.interval(r1, interval = 0.1, round = TRUE)
-# min 0.12 becomes 0.1, max 0.98 becomes 1.0
-
-# Multiple rasters without rounding (use exact detected values)
 r2 <- rast(ncol=10, nrow=10, vals=runif(100, 0, 1))
 raster_list <- list(scenario1 = r1, scenario2 = r2)
-result <- area.interval(raster_list, interval = 0.1, round = FALSE)
-
-# Specify custom min/max values (rounding not applied to manual values)
 result <- area.interval(
   raster_list = raster_list,
-  min_value = 0.6,
-  max_value = 0.8,
-  interval = 0.1
-)
-
-# Save results to file
-result <- area.interval(
-  raster_list = raster_list,
-  interval = 0.1)
+  interval = 0.1,
+  round = TRUE)
 }
 }

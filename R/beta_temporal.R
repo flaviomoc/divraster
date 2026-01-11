@@ -14,29 +14,30 @@
 #' richness difference, and ratio).
 #'
 temp.beta.vec <- function(x, nspp, spp, tree, resu, ...) {
-  # Check if 'x' contains only NA values and return NA values for
-  # the result vector
+  # Check if 'x' contains only NA values and return NA values for result vector
   if (all(is.na(x))) {
     resu[] <- NA
   }
-  # Check if 'x' contains all zeros (no presence) and return zero
-  # values for the result vector
+  # Check if 'x' contains all zeros (no presence) and return zero values
   else if (sum(x, na.rm = TRUE) == 0) {
     resu[] <- 0
   }
   else {
     # Replace NA values in 'x' with 0
     x[is.na(x)] <- 0
-    # Create a new matrix by stacking 'x' on top of itself to compare
-    # two time points (before and after treatment)
+    # Create matrix by stacking 'x' on top of itself (2 time points)
     x <- rbind(x[1:nspp], x[nspp + (1:nspp)])
     colnames(x) <- spp  # Set column names using species names
-    # Calculate beta diversity using BAT::beta function with
-    # 'abund = FALSE' and store the result in 'resu'
-    resu[] <- unlist(BAT::beta(x, tree, abund = FALSE))
+
+    # Extract the 3 beta values explicitly (Btotal, Brepl, Brich)
+    beta_out <- BAT::beta(x, tree, abund = FALSE)
+    resu[1] <- beta_out$Btotal
+    resu[2] <- beta_out$Brepl
+    resu[3] <- beta_out$Brich
   }
   return(resu)  # Return the result vector 'resu'
 }
+
 
 #' Temporal beta diversity calculation for raster
 #'

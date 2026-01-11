@@ -28,16 +28,19 @@
 #'
 #' # Create 3 separate rasters with different extents
 #' r1 <- rast(ncol = 30, nrow = 30, xmin = 0, xmax = 10,
-#'            ymin = 0, ymax = 10, crs = "EPSG:4326")
+#'            ymin = 0, ymax = 10)
 #' values(r1) <- runif(ncell(r1), 0, 100)
+#' crs(r1) <- "+proj=longlat +datum=WGS84 +no_defs"
 #'
 #' r2 <- rast(ncol = 30, nrow = 30, xmin = 1, xmax = 11,
-#'            ymin = 1, ymax = 11, crs = "EPSG:4326")
+#'            ymin = 1, ymax = 11)
 #' values(r2) <- runif(ncell(r2), 0, 100)
+#' crs(r2) <- crs(r1)
 #'
 #' r3 <- rast(ncol = 30, nrow = 30, xmin = -1, xmax = 9,
-#'            ymin = -1, ymax = 9, crs = "EPSG:4326")
+#'            ymin = -1, ymax = 9)
 #' values(r3) <- runif(ncell(r3), 0, 100)
+#' crs(r3) <- crs(r1)
 #'
 #' # Combine into single multilayer SpatRaster
 #' raster_list <- list(baseline = r1, future_A = r2, future_B = r3)

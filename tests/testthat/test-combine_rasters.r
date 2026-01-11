@@ -1,86 +1,75 @@
-library(testthat)
-library(terra)
+test_that("combine.rasters works", {
 
-# Helper to create test rasters
-make_raster <- function(xmin = 0, xmax = 10, ymin = 0, ymax = 10) {
-  r <- rast(ncol = 20, nrow = 20, xmin = xmin, xmax = xmax,
-            ymin = ymin, ymax = ymax, crs = "EPSG:4326")
-  values(r) <- runif(ncell(r), 0, 100)
-  r
-}
+  skip_if_not_installed("terra")
 
-# ==============================================================================
-# Test 1: Basic list functionality
-# ==============================================================================
+  # ---------------------------------------------------------------------------
+  # Create 3 separate rasters with different extents (aligned grids, res = 1)
+  # ---------------------------------------------------------------------------
+  r1 <- terra::rast(ncol = 30, nrow = 30, xmin = 0,  xmax = 30, ymin = 0,  ymax = 30)
+  terra::values(r1) <- stats::runif(terra::ncell(r1), 0, 100)
+  terra::crs(r1) <- "+proj=longlat +datum=WGS84 +no_defs"
 
-test_that("combines list of rasters into multilayer", {
-  r1 <- make_raster()
-  r2 <- make_raster()
-  r3 <- make_raster()
+  r2 <- terra::rast(ncol = 30, nrow = 30, xmin = 10, xmax = 40, ymin = 10, ymax = 40)
+  terra::values(r2) <- stats::runif(terra::ncell(r2), 0, 100)
+  terra::crs(r2) <- terra::crs(r1)
 
+  r3 <- terra::rast(ncol = 30, nrow = 30, xmin = -10, xmax = 20, ymin = -10, ymax = 20)
+  terra::values(r3) <- stats::runif(terra::ncell(r3), 0, 100)
+  terra::crs(r3) <- terra::crs(r1)
+
+  # ---------------------------------------------------------------------------
+  # Test 1: Named list -> names preserved
+  # ---------------------------------------------------------------------------
   raster_list <- list(layer1 = r1, layer2 = r2, layer3 = r3)
   result <- combine.rasters(raster_list = raster_list)
 
   expect_s4_class(result, "SpatRaster")
-  expect_equal(nlyr(result), 3)
+  expect_equal(terra::nlyr(result), 3)
   expect_equal(names(result), c("layer1", "layer2", "layer3"))
-})
 
-# ==============================================================================
-# Test 2: Union extent
-# ==============================================================================
+  # ---------------------------------------------------------------------------
+  # Test 2: Unnamed list -> check union extent
+  # ---------------------------------------------------------------------------
+  result2 <- combine.rasters(raster_list = list(r1, r2))
 
-test_that("creates union extent from different extents", {
-  r1 <- make_raster(xmin = 0, xmax = 10)
-  r2 <- make_raster(xmin = 5, xmax = 15)
+  expect_s4_class(result2, "SpatRaster")
+  expect_equal(terra::nlyr(result2), 2)
 
-  result <- combine.rasters(raster_list = list(r1, r2))
+  expect_true(terra::ext(result2)$xmin <= 0)
+  expect_true(terra::ext(result2)$xmax >= 40)
+  expect_true(terra::ext(result2)$ymin <= 0)
+  expect_true(terra::ext(result2)$ymax >= 40)
 
-  # Result should cover both extents
-  expect_true(ext(result)$xmin <= 0)
-  expect_true(ext(result)$xmax >= 15)
-})
-
-# ==============================================================================
-# Test 3: File-based input
-# ==============================================================================
-
-test_that("combines rasters from directory", {
-  temp_dir <- file.path(tempdir(), paste0("testcomb_", as.numeric(Sys.time())))
+  # ---------------------------------------------------------------------------
+  # Test 3: Directory input (read GeoTIFFs)
+  # ---------------------------------------------------------------------------
+  temp_dir <- tempfile(pattern = "testcomb_")
   dir.create(temp_dir, recursive = TRUE)
 
-  r1 <- make_raster()
-  r2 <- make_raster()
+  on.exit(unlink(temp_dir, recursive = TRUE, force = TRUE), add = TRUE)
 
-  writeRaster(r1, file.path(temp_dir, "zztestfile1.tif"), overwrite = TRUE)
-  writeRaster(r2, file.path(temp_dir, "zztestfile2.tif"), overwrite = TRUE)
+  terra::writeRaster(r1, file.path(temp_dir, "zztestfile1.tif"), overwrite = TRUE)
+  terra::writeRaster(r2, file.path(temp_dir, "zztestfile2.tif"), overwrite = TRUE)
 
-  result <- combine.rasters(dir_path = temp_dir, pattern = "zztestfile")
+  result3 <- combine.rasters(dir_path = temp_dir, pattern = "zztestfile")
 
-  expect_s4_class(result, "SpatRaster")
-  expect_equal(nlyr(result), 2)
+  expect_s4_class(result3, "SpatRaster")
+  expect_equal(terra::nlyr(result3), 2)
 
-  unlink(temp_dir, recursive = TRUE)
-})
-
-# ==============================================================================
-# Test 4: Essential error handling
-# ==============================================================================
-
-test_that("errors on invalid input", {
+  # ---------------------------------------------------------------------------
+  # Test 4: Input validation errors
+  # ---------------------------------------------------------------------------
   expect_error(combine.rasters())
   expect_error(combine.rasters(raster_list = list()))
   expect_error(combine.rasters(raster_list = "not a list"))
-})
 
-test_that("errors when no files found", {
-  temp_dir <- file.path(tempdir(), paste0("testempty_", as.numeric(Sys.time())))
-  dir.create(temp_dir, recursive = TRUE)
+  empty_dir <- tempfile(pattern = "testempty_")
+  dir.create(empty_dir, recursive = TRUE)
+  on.exit(unlink(empty_dir, recursive = TRUE, force = TRUE), add = TRUE)
 
   expect_error(
-    combine.rasters(dir_path = temp_dir, pattern = "nonexistent"),
-    "No .tif/.tiff files found"
+    combine.rasters(dir_path = empty_dir, pattern = "nonexistent"),
+    "No .tif/.tiff files found",
+    fixed = TRUE
   )
-
-  unlink(temp_dir, recursive = TRUE)
 })

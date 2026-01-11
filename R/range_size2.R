@@ -10,54 +10,52 @@
 #' @param threshold A numeric value required to binarize 'r2_raster' if it's continuous.
 #' @param zonal_polys An optional SpatVector for zonal analysis.
 #' @param id_col A string specifying the column in 'zonal_polys'.
-#' @param add_cols An optional character vector of additional column names from 'zonal_polys'.
 #' @param omit_zero A logical value. If TRUE (default), results for category = 0 are removed.
 #' @param unit A string specifying the area unit ("km", "m", or "ha").
 #'
 #' @return A data frame with the area for each category.
 #'
-#' @importFrom stats aggregate
-#'
 #' @examples
 #' \donttest{
 #' library(terra)
 #'
-#' # Create land cover raster
-#' # 1 = Forest, 2 = Grassland, 3 = Agriculture
+#' # 1) Primary raster (integer categories)
 #' land_cover <- rast(ncol = 30, nrow = 30,
 #'                    xmin = -50, xmax = -49,
-#'                    ymin = -15, ymax = -14,
-#'                    crs = "EPSG:4326")
+#'                    ymin = -15, ymax = -14)
 #' values(land_cover) <- sample(1:3, ncell(land_cover), replace = TRUE)
+#' crs(land_cover) <- "+proj=longlat +datum=WGS84 +no_defs"
 #'
-#' # Basic: Calculate area for each category
-#' area_result <- area.calc.flex(land_cover, unit = "km")
+#' # Basic: total area by category
+#' area.calc.flex(land_cover, unit = "km")
 #'
-#' # With zones: Calculate area by region
-#' region1 <- vect("POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))",
-#'                 crs = "EPSG:4326")
-#' region2 <- vect("POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))",
-#'                 crs = "EPSG:4326")
+#' # 2) Zonal polygons (two regions)
+#' region1 <- vect("POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))")
+#' region2 <- vect("POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))")
 #' regions <- rbind(region1, region2)
+#' crs(regions) <- crs(land_cover)
 #' regions$region_id <- c("A", "B")
 #'
-#' area_zonal <- area.calc.flex(land_cover,
-#'                              zonal_polys = regions,
-#'                              id_col = "region_id",
-#'                              unit = "km")
+#' area.calc.flex(
+#'   land_cover,
+#'   zonal_polys = regions,
+#'   id_col = "region_id",
+#'   unit = "km"
+#' )
 #'
-#' # With overlay: Calculate area within protected areas
+#' # 3) Overlay raster (binary mask)
 #' protected <- rast(land_cover)
 #' values(protected) <- sample(0:1, ncell(protected), replace = TRUE)
 #'
-#' area_overlay <- area.calc.flex(land_cover,
-#'                                r2_raster = protected,
-#'                                unit = "km")
+#' area.calc.flex(
+#'   land_cover,
+#'   r2_raster = protected,
+#'   unit = "km"
+#' )
 #' }
-#'
 #' @export
 area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = NULL,
-                           zonal_polys = NULL, id_col = NULL, add_cols = NULL,
+                           zonal_polys = NULL, id_col = NULL,
                            omit_zero = TRUE, unit = "km") {
 
   # --- 1. Input Validation and Setup ---
@@ -72,7 +70,7 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
   # --- 2. Prepare Overlay Raster ---
   overlay_r <- NULL
   if (!is.null(r2_raster) || !is.null(r2_vector)) {
-    message("Preparing overlay layer...")
+
     if (!is.null(r2_raster)) {
       if (all(terra::minmax(r2_raster) %in% c(0, 1))) {
         overlay_r <- r2_raster
@@ -80,12 +78,11 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
         if (is.null(threshold)) stop("'threshold' is required for the continuous 'r2_raster'.")
         overlay_r <- r2_raster >= threshold
       }
-      if (!terra::compareGeom(r1, overlay_r, stopOnError = FALSE)) {
-        message("Aligning overlay raster grid to match r1...")
+
+      if (!terra::compareGeom(r1, overlay_r, stopOnError = FALSE, messages = FALSE)) {
         overlay_r <- terra::project(overlay_r, r1, method = "near")
       }
     } else {
-      message("Rasterizing overlay vector...")
       overlay_r <- terra::rasterize(r2_vector, r1, field = 1)
     }
   }
@@ -97,7 +94,6 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
   for (i in 1:terra::nlyr(r1)) {
     current_layer <- r1[[i]]
     layer_name <- names(current_layer)
-    message(paste("Processing layer:", layer_name))
 
     if (!is.null(zonal_polys)) {
       for (j in 1:nrow(zonal_polys)) {
@@ -105,7 +101,7 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
         poly_id <- current_poly[[id_col, drop = TRUE]]
 
         layer_masked <- terra::mask(current_layer, current_poly)
-        area_masked <- terra::mask(cell_area, current_poly)
+        area_masked  <- terra::mask(cell_area, current_poly)
 
         simple_results <- terra::zonal(area_masked, layer_masked, fun = "sum", na.rm = TRUE)
         if (nrow(simple_results) > 0) {
@@ -118,18 +114,18 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
           )
           names(result_simple)[names(result_simple) == "polygon_id"] <- id_col
           names(result_simple)[names(result_simple) == "area"] <- area_col_name
-
-          if(!is.null(add_cols)){
-            for(col_name in add_cols){
-              result_simple[[col_name]] <- current_poly[[col_name, drop = TRUE]]
-            }
-          }
           final_results_list <- append(final_results_list, list(result_simple))
         }
 
         if (!is.null(overlay_r)) {
           overlay_masked <- terra::mask(overlay_r, current_poly)
-          overlay_results <- terra::zonal(area_masked, (layer_masked * 10) + overlay_masked, fun = "sum", na.rm = TRUE)
+          overlay_results <- terra::zonal(
+            area_masked,
+            (layer_masked * 10) + overlay_masked,
+            fun = "sum",
+            na.rm = TRUE
+          )
+
           if (nrow(overlay_results) > 0) {
             df_overlay <- as.data.frame(overlay_results)
             df_overlay$category <- floor(df_overlay[, 1] / 10)
@@ -137,9 +133,8 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
             df_overlay$area <- df_overlay[, 2]
 
             df_filtered <- df_overlay[df_overlay$overlay_value == 1, ]
-
-            if(nrow(df_filtered) > 0) {
-              agg_results <- aggregate(area ~ category, data = df_filtered, FUN = sum, na.rm = TRUE)
+            if (nrow(df_filtered) > 0) {
+              agg_results <- terra::aggregate(area ~ category, data = df_filtered, FUN = sum, na.rm = TRUE)
 
               result_overlay <- data.frame(
                 layer = layer_name,
@@ -150,12 +145,6 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
               )
               names(result_overlay)[names(result_overlay) == "polygon_id"] <- id_col
               names(result_overlay)[names(result_overlay) == "area"] <- area_col_name
-
-              if(!is.null(add_cols)){
-                for(col_name in add_cols){
-                  result_overlay[[col_name]] <- current_poly[[col_name, drop = TRUE]]
-                }
-              }
               final_results_list <- append(final_results_list, list(result_overlay))
             }
           }
@@ -180,9 +169,8 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
         df_overlay$area <- df_overlay[, 2]
 
         df_filtered <- df_overlay[df_overlay$overlay_value == 1, ]
-
-        if(nrow(df_filtered) > 0) {
-          agg_results <- aggregate(area ~ category, data = df_filtered, FUN = sum, na.rm = TRUE)
+        if (nrow(df_filtered) > 0) {
+          agg_results <- terra::aggregate(area ~ category, data = df_filtered, FUN = sum, na.rm = TRUE)
 
           result_overlay <- data.frame(
             layer = layer_name,
@@ -200,9 +188,9 @@ area.calc.flex <- function(r1, r2_raster = NULL, r2_vector = NULL, threshold = N
   # --- 4. Final Output Formatting ---
   final_df <- do.call(rbind, final_results_list)
 
-  if (omit_zero && "category" %in% names(final_df) && !is.null(final_df) && nrow(final_df) > 0) {
+  if (!is.null(final_df) && nrow(final_df) > 0 && omit_zero && "category" %in% names(final_df)) {
     final_df <- final_df[final_df$category != 0, ]
   }
 
-  return(final_df)
+  final_df
 }
