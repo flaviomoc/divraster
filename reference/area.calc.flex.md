@@ -15,7 +15,6 @@ area.calc.flex(
   threshold = NULL,
   zonal_polys = NULL,
   id_col = NULL,
-  add_cols = NULL,
   omit_zero = TRUE,
   unit = "km"
 )
@@ -47,11 +46,6 @@ area.calc.flex(
 
   A string specifying the column in 'zonal_polys'.
 
-- add_cols:
-
-  An optional character vector of additional column names from
-  'zonal_polys'.
-
 - omit_zero:
 
   A logical value. If TRUE (default), results for category = 0 are
@@ -71,40 +65,56 @@ A data frame with the area for each category.
 # \donttest{
 library(terra)
 
-# Create land cover raster
-# 1 = Forest, 2 = Grassland, 3 = Agriculture
+# 1) Primary raster (integer categories)
 land_cover <- rast(ncol = 30, nrow = 30,
                    xmin = -50, xmax = -49,
-                   ymin = -15, ymax = -14,
-                   crs = "EPSG:4326")
+                   ymin = -15, ymax = -14)
 values(land_cover) <- sample(1:3, ncell(land_cover), replace = TRUE)
+crs(land_cover) <- "+proj=longlat +datum=WGS84 +no_defs"
 
-# Basic: Calculate area for each category
-area_result <- area.calc.flex(land_cover, unit = "km")
-#> Processing layer: lyr.1
+# Basic: total area by category
+area.calc.flex(land_cover, unit = "km")
+#>   layer    area_id category  area_km
+#> 1 lyr.1 Total Area        1 4015.385
+#> 2 lyr.1 Total Area        2 4161.027
+#> 3 lyr.1 Total Area        3 3750.448
 
-# With zones: Calculate area by region
-region1 <- vect("POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))",
-                crs = "EPSG:4326")
-region2 <- vect("POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))",
-                crs = "EPSG:4326")
+# 2) Zonal polygons (two regions)
+region1 <- vect("POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))")
+region2 <- vect("POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))")
 regions <- rbind(region1, region2)
+crs(regions) <- crs(land_cover)
 regions$region_id <- c("A", "B")
 
-area_zonal <- area.calc.flex(land_cover,
-                             zonal_polys = regions,
-                             id_col = "region_id",
-                             unit = "km")
-#> Processing layer: lyr.1
+area.calc.flex(
+  land_cover,
+  zonal_polys = regions,
+  id_col = "region_id",
+  unit = "km"
+)
+#>   layer region_id    area_id category  area_km
+#> 1 lyr.1         A Total Area        1 2014.267
+#> 2 lyr.1         A Total Area        2 2146.679
+#> 3 lyr.1         A Total Area        3 1802.484
+#> 4 lyr.1         B Total Area        1 2001.118
+#> 5 lyr.1         B Total Area        2 2014.348
+#> 6 lyr.1         B Total Area        3 1947.963
 
-# With overlay: Calculate area within protected areas
+# 3) Overlay raster (binary mask)
 protected <- rast(land_cover)
 values(protected) <- sample(0:1, ncell(protected), replace = TRUE)
 
-area_overlay <- area.calc.flex(land_cover,
-                               r2_raster = protected,
-                               unit = "km")
-#> Preparing overlay layer...
-#> Processing layer: lyr.1
+area.calc.flex(
+  land_cover,
+  r2_raster = protected,
+  unit = "km"
+)
+#>   layer      area_id category  area_km
+#> 1 lyr.1   Total Area        1 4015.385
+#> 2 lyr.1   Total Area        2 4161.027
+#> 3 lyr.1   Total Area        3 3750.448
+#> 4 lyr.1 Overlay Area        1 1881.803
+#> 5 lyr.1 Overlay Area        2 2027.681
+#> 6 lyr.1 Overlay Area        3 2041.098
 # }
 ```

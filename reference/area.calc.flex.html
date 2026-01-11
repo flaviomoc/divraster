@@ -55,7 +55,6 @@ perform calculations within distinct zones defined by a polygon SpatVector.</p>
 <span>  threshold <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  zonal_polys <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  id_col <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  add_cols <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  omit_zero <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">"km"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -89,10 +88,6 @@ perform calculations within distinct zones defined by a polygon SpatVector.</p>
 <dd><p>A string specifying the column in 'zonal_polys'.</p></dd>
 
 
-<dt id="arg-add-cols">add_cols<a class="anchor" aria-label="anchor" href="#arg-add-cols"></a></dt>
-<dd><p>An optional character vector of additional column names from 'zonal_polys'.</p></dd>
-
-
 <dt id="arg-omit-zero">omit_zero<a class="anchor" aria-label="anchor" href="#arg-omit-zero"></a></dt>
 <dd><p>A logical value. If TRUE (default), results for category = 0 are removed.</p></dd>
 
@@ -111,43 +106,58 @@ perform calculations within distinct zones defined by a polygon SpatVector.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Create land cover raster</span></span></span>
-<span class="r-in"><span><span class="co"># 1 = Forest, 2 = Grassland, 3 = Agriculture</span></span></span>
+<span class="r-in"><span><span class="co"># 1) Primary raster (integer categories)</span></span></span>
 <span class="r-in"><span><span class="va">land_cover</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span>ncol <span class="op">=</span> <span class="fl">30</span>, nrow <span class="op">=</span> <span class="fl">30</span>,</span></span>
 <span class="r-in"><span>                   xmin <span class="op">=</span> <span class="op">-</span><span class="fl">50</span>, xmax <span class="op">=</span> <span class="op">-</span><span class="fl">49</span>,</span></span>
-<span class="r-in"><span>                   ymin <span class="op">=</span> <span class="op">-</span><span class="fl">15</span>, ymax <span class="op">=</span> <span class="op">-</span><span class="fl">14</span>,</span></span>
-<span class="r-in"><span>                   crs <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>                   ymin <span class="op">=</span> <span class="op">-</span><span class="fl">15</span>, ymax <span class="op">=</span> <span class="op">-</span><span class="fl">14</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="st">"+proj=longlat +datum=WGS84 +no_defs"</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Basic: Calculate area for each category</span></span></span>
-<span class="r-in"><span><span class="va">area_result</span> <span class="op">&lt;-</span> <span class="fu">area.calc.flex</span><span class="op">(</span><span class="va">land_cover</span>, unit <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
+<span class="r-in"><span><span class="co"># Basic: total area by category</span></span></span>
+<span class="r-in"><span><span class="fu">area.calc.flex</span><span class="op">(</span><span class="va">land_cover</span>, unit <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   layer    area_id category  area_km</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 lyr.1 Total Area        1 4015.385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 lyr.1 Total Area        2 4161.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 lyr.1 Total Area        3 3750.448</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># With zones: Calculate area by region</span></span></span>
-<span class="r-in"><span><span class="va">region1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">"POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))"</span>,</span></span>
-<span class="r-in"><span>                crs <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">region2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">"POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))"</span>,</span></span>
-<span class="r-in"><span>                crs <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># 2) Zonal polygons (two regions)</span></span></span>
+<span class="r-in"><span><span class="va">region1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">"POLYGON ((-50 -15, -49.5 -15, -49.5 -14, -50 -14, -50 -15))"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">region2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/vect.html" class="external-link">vect</a></span><span class="op">(</span><span class="st">"POLYGON ((-49.5 -15, -49 -15, -49 -14, -49.5 -14, -49.5 -15))"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">regions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">region1</span>, <span class="va">region2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/crs.html" class="external-link">crs</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">regions</span><span class="op">$</span><span class="va">region_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">area_zonal</span> <span class="op">&lt;-</span> <span class="fu">area.calc.flex</span><span class="op">(</span><span class="va">land_cover</span>,</span></span>
-<span class="r-in"><span>                             zonal_polys <span class="op">=</span> <span class="va">regions</span>,</span></span>
-<span class="r-in"><span>                             id_col <span class="op">=</span> <span class="st">"region_id"</span>,</span></span>
-<span class="r-in"><span>                             unit <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
+<span class="r-in"><span><span class="fu">area.calc.flex</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">land_cover</span>,</span></span>
+<span class="r-in"><span>  zonal_polys <span class="op">=</span> <span class="va">regions</span>,</span></span>
+<span class="r-in"><span>  id_col <span class="op">=</span> <span class="st">"region_id"</span>,</span></span>
+<span class="r-in"><span>  unit <span class="op">=</span> <span class="st">"km"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   layer region_id    area_id category  area_km</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 lyr.1         A Total Area        1 2014.267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 lyr.1         A Total Area        2 2146.679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 lyr.1         A Total Area        3 1802.484</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 lyr.1         B Total Area        1 2001.118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 lyr.1         B Total Area        2 2014.348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 lyr.1         B Total Area        3 1947.963</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># With overlay: Calculate area within protected areas</span></span></span>
+<span class="r-in"><span><span class="co"># 3) Overlay raster (binary mask)</span></span></span>
 <span class="r-in"><span><span class="va">protected</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="va">land_cover</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rspatial.github.io/terra/reference/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">protected</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">0</span><span class="op">:</span><span class="fl">1</span>, <span class="fu"><a href="https://rspatial.github.io/terra/reference/dimensions.html" class="external-link">ncell</a></span><span class="op">(</span><span class="va">protected</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">area_overlay</span> <span class="op">&lt;-</span> <span class="fu">area.calc.flex</span><span class="op">(</span><span class="va">land_cover</span>,</span></span>
-<span class="r-in"><span>                               r2_raster <span class="op">=</span> <span class="va">protected</span>,</span></span>
-<span class="r-in"><span>                               unit <span class="op">=</span> <span class="st">"km"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Preparing overlay layer...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
+<span class="r-in"><span><span class="fu">area.calc.flex</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">land_cover</span>,</span></span>
+<span class="r-in"><span>  r2_raster <span class="op">=</span> <span class="va">protected</span>,</span></span>
+<span class="r-in"><span>  unit <span class="op">=</span> <span class="st">"km"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   layer      area_id category  area_km</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 lyr.1   Total Area        1 4015.385</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 lyr.1   Total Area        2 4161.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 lyr.1   Total Area        3 3750.448</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 lyr.1 Overlay Area        1 1881.803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 lyr.1 Overlay Area        2 2027.681</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 lyr.1 Overlay Area        3 2041.098</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

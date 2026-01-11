@@ -57,7 +57,6 @@ the area for each class across all rasters.</p>
 <span>  include_lowest <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  right <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  filename <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -102,10 +101,6 @@ For example, with interval=0.1: min 0.12 becomes 0.1, max 0.98 becomes 1.0. Defa
 If NULL (default), the dataframe is not saved</p></dd>
 
 
-<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Logical. Print progress messages? Default TRUE</p></dd>
-
-
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments passed to the classify function</p></dd>
 
@@ -120,57 +115,13 @@ If NULL (default), the dataframe is not saved</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Single raster - automatic min/max detection with rounding</span></span></span>
 <span class="r-in"><span><span class="va">r1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, vals<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0.12</span>, <span class="fl">0.98</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">area.interval</span><span class="op">(</span><span class="va">r1</span>, interval <span class="op">=</span> <span class="fl">0.1</span>, round <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Single SpatRaster detected. Converting to list.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating min/max values from 1 raster(s)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected minimum value: 0.120519</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected maximum value: 0.977443</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Rounded minimum: 0.120519 -&gt; 0.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Rounded maximum: 0.977443 -&gt; 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Using 10 breaks from 0.1 to 1 (interval: 0.1)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
-<span class="r-in"><span><span class="co"># min 0.12 becomes 0.1, max 0.98 becomes 1.0</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Multiple rasters without rounding (use exact detected values)</span></span></span>
 <span class="r-in"><span><span class="va">r2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/rast.html" class="external-link">rast</a></span><span class="op">(</span>ncol<span class="op">=</span><span class="fl">10</span>, nrow<span class="op">=</span><span class="fl">10</span>, vals<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">raster_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>scenario1 <span class="op">=</span> <span class="va">r1</span>, scenario2 <span class="op">=</span> <span class="va">r2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">area.interval</span><span class="op">(</span><span class="va">raster_list</span>, interval <span class="op">=</span> <span class="fl">0.1</span>, round <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating min/max values from 2 raster(s)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Processing raster 1/2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Processing raster 2/2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected minimum value: 0.005146</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected maximum value: 0.996688</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Using 10 breaks from 0.005146 to 0.996688 (interval: 0.1)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Specify custom min/max values (rounding not applied to manual values)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">area.interval</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  raster_list <span class="op">=</span> <span class="va">raster_list</span>,</span></span>
-<span class="r-in"><span>  min_value <span class="op">=</span> <span class="fl">0.6</span>,</span></span>
-<span class="r-in"><span>  max_value <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
-<span class="r-in"><span>  interval <span class="op">=</span> <span class="fl">0.1</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Using 3 breaks from 0.6 to 0.8 (interval: 0.1)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Save results to file</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">area.interval</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  raster_list <span class="op">=</span> <span class="va">raster_list</span>,</span></span>
-<span class="r-in"><span>  interval <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Calculating min/max values from 2 raster(s)...</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Processing raster 1/2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>   Processing raster 2/2</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected minimum value: 0.005146</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Detected maximum value: 0.996688</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Rounded minimum: 0.005146 -&gt; 0</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Rounded maximum: 0.996688 -&gt; 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Using 11 breaks from 0 to 1 (interval: 0.1)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Processing layer: lyr.1</span>
+<span class="r-in"><span>  interval <span class="op">=</span> <span class="fl">0.1</span>,</span></span>
+<span class="r-in"><span>  round <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

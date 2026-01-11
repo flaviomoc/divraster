@@ -509,9 +509,7 @@ summarises raster values by polygons using a user‑defined function.
 r_env <- rast(
 ncol = 50, nrow = 50,
 xmin = 0, xmax = 10,
-ymin = 0, ymax = 10,
-crs = "EPSG:4326"
-)
+ymin = 0, ymax = 10)
 values(r_env) <- runif(ncell(r_env), 0, 1)
 names(r_env) <- "suitability"
 
@@ -565,9 +563,7 @@ crops a continuous raster according to a binary footprint (0/1).
 r_cont <- rast(
 ncol = 50, nrow = 50,
 xmin = 0, xmax = 10,
-ymin = 0, ymax = 10,
-crs = "EPSG:4326"
-)
+ymin = 0, ymax = 10)
 values(r_cont) <- runif(ncell(r_cont), 0, 1)
 names(r_cont) <- "suitability"
 
@@ -586,7 +582,7 @@ r_cropped
 #> size        : 30, 30, 1  (nrow, ncol, nlyr)
 #> resolution  : 0.2, 0.2  (x, y)
 #> extent      : 2, 8, 2, 8  (xmin, xmax, ymin, ymax)
-#> coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+#> coord. ref. : lon/lat WGS 84 (CRS84) (OGC:CRS84) 
 #> source(s)   : memory
 #> name        : suitability 
 #> min value   : 0.001161998 

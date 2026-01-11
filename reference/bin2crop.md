@@ -59,7 +59,7 @@ library(terra)
 
 # Create continuous raster (e.g., suitability values 0-1)
 r_continuous <- rast(ncol = 50, nrow = 50, xmin = 0, xmax = 10,
-                     ymin = 0, ymax = 10, crs = "EPSG:4326")
+                     ymin = 0, ymax = 10)
 values(r_continuous) <- runif(ncell(r_continuous), 0, 1)
 names(r_continuous) <- "suitability"
 
