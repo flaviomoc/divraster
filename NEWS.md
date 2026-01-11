@@ -1,4 +1,4 @@
-# divraster 1.2.3 (2025-12-29)
+# divraster 1.2.3 (2026-01-11)
 
 ### New features
 * `area.calc.flex()`: flexible area calculation by categories, zones, and overlays
