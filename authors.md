@@ -14,7 +14,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/flaviomoc/divraster/blob/v1.2.3/inst/CITATION)
+[`inst/CITATION`](https://github.com/flaviomoc/divraster/blob/master/inst/CITATION)
 
 Mota FMM, Alves-Ferreira G, Talora DC, Heming NM (2023). “divraster: an
 R package to calculate taxonomic, functional and phylogenetic diversity

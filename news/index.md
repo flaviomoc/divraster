@@ -1,6 +1,6 @@
 # Changelog
 
-## divraster 1.2.3 (2025-12-29)
+## divraster 1.2.3 (2026-01-11)
 
 #### New features
 
